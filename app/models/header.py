@@ -4,14 +4,15 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Adding The «Header» CLASS
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.10.23, 09:00 PM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Editing The «Header» CLASS (ICONS)
+# Modification Date: 2023.10.23, 10:45 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
 
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (
     QWidget,
     QFrame,
@@ -64,16 +65,19 @@ class Header(QWidget):
         frame.setObjectName("header")
 
         layout = QHBoxLayout()
+        layout.setSpacing(10)
 
         text = string_values("header_title")
         title = QLabel(text)
 
         btn_settings = QPushButton()
         btn_settings.setObjectName("header_btn_settings")
+        btn_settings.setIcon(QIcon("app/icons/settings.svg"))
         btn_settings.setFixedWidth(25)
 
         btn_license = QPushButton()
         btn_license.setObjectName("header_btn_license")
+        btn_license.setIcon(QIcon("app/icons/license.svg"))
         btn_license.setFixedWidth(25)
 
         layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignLeft)
