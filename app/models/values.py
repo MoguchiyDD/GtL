@@ -1,12 +1,12 @@
 # Developer && Owner: МогучийДД (MoguchiyDD)
-# LISENCE: MIT License which is located in the text file LICENSE
+# LICENSE: MIT License which is located in the text file LICENSE
 #
 # Goal: Parse XML Files
 # Result: Returning The RESULT through an ATTRIBUTE with The NAME
 #
 # Past Modification: Checking CODE The PEP8
 # Last Modification: Editing The «string_values» FUNCTION (SOURCE PARSE)
-# Modification Date: 2023.10.23, 06:31 PM
+# Modification Date: 2023.10.23, 08:50 PM
 #
 # Create Date: 2023.10.23, 03:23 PM
 
