@@ -4,9 +4,9 @@
 # Goal: Parse XML Files
 # Result: Returning The RESULT through an ATTRIBUTE with The NAME
 #
-# Past Modification: Adding The «string_values» FUNCTION
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.10.23, 04:52 PM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Editing The «string_values» FUNCTION (SOURCE PARSE)
+# Modification Date: 2023.10.23, 06:31 PM
 #
 # Create Date: 2023.10.23, 03:23 PM
 
@@ -30,7 +30,7 @@ def string_values(attribute_name: str) -> str:
     result = ""
 
     try:
-        xml = parse(str("../values/strings.xml"))
+        xml = parse(str("app/values/strings.xml"))
     except FileNotFoundError:
         xml = None
     except TypeError:
