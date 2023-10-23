@@ -4,9 +4,9 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Adding «MainWindow» CLASS
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.10.23, 12:26 PM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Editing «MainWindow» CLASS (WINDOW TITLE)
+# Modification Date: 2023.10.23, 06:30 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -19,6 +19,8 @@ from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout
 )
+
+from models.values import string_values
 
 from sys import argv, exit
 
@@ -46,7 +48,10 @@ class MainWindow(QMainWindow):
     ) -> None:
         super(MainWindow, self).__init__(parent, flags)
 
-        self.setWindowTitle("QtL : Guide to Letters")  # TITLE
+		# TITLE
+        window_title = string_values("app_title")
+        self.setWindowTitle(window_title)
+
         self.setMinimumSize(self.MIN_WIDTH, self.MIN_HEIGHT)  # SIZE
 
         # CENTER WINDOW
