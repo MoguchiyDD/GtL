@@ -4,9 +4,9 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Adding The STYLE
-# Modification Date: 2023.10.23, 09:10 PM
+# Past Modification: Adding The STYLE
+# Last Modification: Editing The «main_layout» (setContentsMargins)
+# Modification Date: 2023.10.23, 09:23 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -68,6 +68,7 @@ class MainWindow(QMainWindow):
 
         # CONTENT
         self.main_layout = QVBoxLayout()
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
         Header(self)
 
         # INSTALL
