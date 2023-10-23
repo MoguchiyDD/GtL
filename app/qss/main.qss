@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Adding The «WINDOW» STYLE BLOCK
-Last Modification: Adding The «HEADER» STYLE BLOCK
-Modification Date: 2023.10.23, 09:21 PM
+Past Modification: Adding The «HEADER» STYLE BLOCK
+Last Modification: Editing The «HEADER» STYLE BLOCK (ALL)
+Modification Date: 2023.10.23, 10:20 PM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -15,14 +15,22 @@ Create Date: 2023.10.23, 09:02 PM
 
 /*
     COLORS
-Primary : #F8F0E5
+Primary     : #FFF8DF
+Secondary   : #FFE99F
+Enabled     : #FFF0BF
+Disabled    : #FFE27E
+Top-Bottom  : #FFDC5A
+Eye-Color   : #241973
+
+    FONTS SIZES
+Header Title : 32px
 */
 
 
 /* ------------ WINDOW ------------ */
 
 QMainWindow {
-  background: #F8F0E5;
+  background: #FFF8DF;
 }
 
 /* -------------------------------- */
@@ -31,7 +39,13 @@ QMainWindow {
 /* ------------ HEADER ------------ */
 
 QFrame#header {
-  background: #DAC0A3;
+  background: #FFDC5A;
 }
+QFrame#header QLabel {
+  font-size: 32px;
+  font-weight: bold;
+  color: #241973;
+}
+QFrame#header QPushButton {}
 
 /* -------------------------------- */
