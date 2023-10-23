@@ -4,9 +4,9 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Editing «MainWindow» CLASS (HEADER)
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.10.23, 09:00 PM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Adding The STYLE
+# Modification Date: 2023.10.23, 09:10 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -24,6 +24,9 @@ from models.values import string_values
 from models.header import Header
 
 from sys import argv, exit
+from os import path
+
+basedir = path.dirname(__file__)
 
 
 # ------------ SOFTWARE ------------
@@ -77,6 +80,9 @@ class MainWindow(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(argv)
+
+    with open(path.join(basedir, "qss", "main.qss"), "r") as qss_file:
+        app.setStyleSheet(qss_file.read())
 
     window = MainWindow()
     window.show()
