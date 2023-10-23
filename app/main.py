@@ -4,9 +4,9 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Editing «MainWindow» CLASS (WINDOW TITLE)
-# Last Modification: Editing «MainWindow» CLASS (HEADER)
-# Modification Date: 2023.10.23, 08:49 PM
+# Past Modification: Editing «MainWindow» CLASS (HEADER)
+# Last Modification: Checking CODE The PEP8
+# Modification Date: 2023.10.23, 09:00 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -49,7 +49,7 @@ class MainWindow(QMainWindow):
     ) -> None:
         super(MainWindow, self).__init__(parent, flags)
 
-		# TITLE
+        # TITLE
         window_title = string_values("app_title")
         self.setWindowTitle(window_title)
 
