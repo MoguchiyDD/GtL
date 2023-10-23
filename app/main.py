@@ -1,12 +1,12 @@
 # Developer && Owner: МогучийДД (MoguchiyDD)
-# LISENCE: MIT License which is located in the text file LICENSE
+# LICENSE: MIT License which is located in the text file LICENSE
 #
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Editing «MainWindow» CLASS (WINDOW TITLE)
-# Modification Date: 2023.10.23, 06:30 PM
+# Past Modification: Editing «MainWindow» CLASS (WINDOW TITLE)
+# Last Modification: Editing «MainWindow» CLASS (HEADER)
+# Modification Date: 2023.10.23, 08:49 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -21,6 +21,7 @@ from PySide6.QtWidgets import (
 )
 
 from models.values import string_values
+from models.header import Header
 
 from sys import argv, exit
 
@@ -62,7 +63,9 @@ class MainWindow(QMainWindow):
         geo.moveCenter(center)
         self.move(geo.topLeft())
 
-        self.main_layout = QVBoxLayout()  # CONTENT
+        # CONTENT
+        self.main_layout = QVBoxLayout()
+        Header(self)
 
         # INSTALL
         widget = QWidget()
