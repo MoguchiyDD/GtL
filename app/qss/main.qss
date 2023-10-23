@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Adding The «HEADER» STYLE BLOCK
-Last Modification: Editing The «HEADER» STYLE BLOCK (ALL)
-Modification Date: 2023.10.23, 10:20 PM
+Past Modification: Editing The «HEADER» STYLE BLOCK (ALL)
+Last Modification: Editing The «HEADER» STYLE BLOCK (QPushButton)
+Modification Date: 2023.10.23, 10:47 PM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -15,12 +15,13 @@ Create Date: 2023.10.23, 09:02 PM
 
 /*
     COLORS
-Primary     : #FFF8DF
-Secondary   : #FFE99F
-Enabled     : #FFF0BF
-Disabled    : #FFE27E
-Top-Bottom  : #FFDC5A
-Eye-Color   : #241973
+Primary       : #FFF8DF
+Secondary     : #FFE99F
+Enabled       : #FFF0BF
+Disabled      : #FFE27E
+Top-Bottom    : #FFDC5A
+Eye-Color     : #241973
+Eye-Color (H) : #5A4EB1
 
     FONTS SIZES
 Header Title : 32px
@@ -46,6 +47,10 @@ QFrame#header QLabel {
   font-weight: bold;
   color: #241973;
 }
-QFrame#header QPushButton {}
+QFrame#header QPushButton {
+  background: none;
+  border: none;
+  icon-size: 25px;
+}
 
 /* -------------------------------- */
