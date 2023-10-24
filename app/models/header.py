@@ -4,14 +4,14 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «Header» CLASS (HOVER ICONS)
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.10.23, 11:22 PM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Editing The «Header» CLASS («page»)
+# Modification Date: 2023.10.24, 04:32 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
 
-from PySide6.QtCore import Qt, QEvent
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (
     QWidget,
@@ -65,22 +65,20 @@ class Header(QWidget):
         frame.setObjectName("header")
 
         layout = QHBoxLayout()
-        layout.setSpacing(10)
+        layout.setSpacing(8)
 
         text = string_values("header_title")
         title = QLabel(text)
 
         btn_settings = QPushButton()
-        btn_settings.installEventFilter(self)
         btn_settings.setObjectName("header_btn_settings")
         btn_settings.setIcon(QIcon("app/icons/settings.svg"))
-        btn_settings.setFixedWidth(25)
+        btn_settings.setFixedWidth(40)
 
         btn_license = QPushButton()
-        btn_license.installEventFilter(self)
         btn_license.setObjectName("header_btn_license")
         btn_license.setIcon(QIcon("app/icons/license.svg"))
-        btn_license.setFixedWidth(25)
+        btn_license.setFixedWidth(40)
 
         layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignLeft)
         layout.addWidget(btn_settings, alignment=Qt.AlignmentFlag.AlignRight)
@@ -88,34 +86,5 @@ class Header(QWidget):
 
         frame.setLayout(layout)
         return frame
-
-    def eventFilter(self, object: QPushButton, event: QEvent) -> bool:
-        """
-        Filters Incoming EVENTS
-
-        ---
-        PARAMETERS:
-        - object: QPushButton -> BUTTON
-        - event: QEvent -> EVENT
-        ---
-        RESULT: True (EVENT) || False (PAST)
-        """
-
-        if event.type() == QEvent.Type.HoverMove:
-            if object.objectName() == "header_btn_settings":
-                object.setIcon(QIcon("app/icons/h_settings.svg"))
-            elif object.objectName() == "header_btn_license":
-                object.setIcon(QIcon("app/icons/h_license.svg"))
-
-            return True
-        elif event.type() == QEvent.Type.HoverLeave:
-            if object.objectName() == "header_btn_settings":
-                object.setIcon(QIcon("app/icons/settings.svg"))
-            elif object.objectName() == "header_btn_license":
-                object.setIcon(QIcon("app/icons/license.svg"))
-
-            return True
-
-        return False
 
 # --------------------------------
