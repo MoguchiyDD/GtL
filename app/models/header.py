@@ -4,22 +4,16 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Editing The «Header» CLASS («page»)
-# Modification Date: 2023.10.24, 04:32 PM
+# Past Modification: Editing The «Header» CLASS («page»)
+# Last Modification: Reducing IMPOT
+# Modification Date: 2023.10.24, 05:21 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import (
-    QWidget,
-    QFrame,
-    QHBoxLayout,
-    QLabel,
-    QPushButton
-)
+from PySide6.QtWidgets import QWidget, QFrame, QHBoxLayout, QLabel, QPushButton
 
 from .values import string_values
 
