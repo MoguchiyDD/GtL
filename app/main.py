@@ -4,9 +4,9 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Editing The «main_layout» (setContentsMargins)
-# Last Modification: Adding The FOOTER TEMPLATE
-# Modification Date: 2023.10.24, 05:31 PM
+# Past Modification: Adding The FOOTER TEMPLATE
+# Last Modification: Adding The CONTENT TEMPLATE
+# Modification Date: 2023.10.24, 05:45 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -22,6 +22,7 @@ from PySide6.QtWidgets import (
 
 from models.values import string_values
 from models.header import Header
+from models.content import Content
 from models.footer import Footer
 
 from sys import argv, exit
@@ -71,6 +72,7 @@ class MainWindow(QMainWindow):
         self.main_layout = QVBoxLayout()
         self.main_layout.setContentsMargins(0, 0, 0, 0)
         Header(self)
+        Content(self)
         Footer(self)
 
         # INSTALL
