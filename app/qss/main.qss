@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Editing The «HEADER» STYLE BLOCK (ALL)
+Past Modification: Editing The COLORS
 Last Modification: Editing The «HEADER» STYLE BLOCK (QPushButton)
-Modification Date: 2023.10.23, 10:47 PM
+Modification Date: 2023.10.24, 04:35 PM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -15,13 +15,12 @@ Create Date: 2023.10.23, 09:02 PM
 
 /*
     COLORS
-Primary       : #FFF8DF
-Secondary     : #FFE99F
-Enabled       : #FFF0BF
-Disabled      : #FFE27E
-Top-Bottom    : #FFDC5A
-Eye-Color     : #241973
-Eye-Color (H) : #5A4EB1
+Primary       : #D1C4E9 100
+Secondary     : #7E57C2 400
+Enabled       : #9575CD 300
+Disabled      : #673AB7 500
+Top-Bottom    : #512DA8 700
+Eye-Color     : #EDE7F6 50
 
     FONTS SIZES
 Header Title : 32px
@@ -31,7 +30,7 @@ Header Title : 32px
 /* ------------ WINDOW ------------ */
 
 QMainWindow {
-  background: #FFF8DF;
+  background: #D1C4E9;
 }
 
 /* -------------------------------- */
@@ -40,17 +39,23 @@ QMainWindow {
 /* ------------ HEADER ------------ */
 
 QFrame#header {
-  background: #FFDC5A;
+  background: #512DA8;
 }
 QFrame#header QLabel {
   font-size: 32px;
   font-weight: bold;
-  color: #241973;
+  color: #EDE7F6;
 }
 QFrame#header QPushButton {
-  background: none;
-  border: none;
-  icon-size: 25px;
+  padding: 0.4em;
+  icon-size: 1.25em;
+  color: #EDE7F6;
+  background: qconicalgradient(cx:0.5, cy:0.5, angle:226, stop: 0 #9575CD, stop: 1 #673AB7);
+  border: 1px solid #512DA8;
+  border-radius: 1.08em;
+}
+QFrame#header QPushButton:hover {
+  background: #7E57C2;
 }
 
 /* -------------------------------- */
