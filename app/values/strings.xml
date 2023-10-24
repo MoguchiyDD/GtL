@@ -2,4 +2,5 @@
 <resources>
 	<string name="app_title">GTL : Guide to Letters</string>
     <string name="header_title">Guide to Letters</string>
+    <string name="footer_title">© МогучийДД (MoguchiyDD), 2023</string>
 </resources>
