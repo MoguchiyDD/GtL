@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Editing The «Content» CLASS (PROGRESS BLOCK)
-# Modification Date: 2023.10.25, 03:19 PM
+# Past Modification: Editing The «Content» CLASS (PROGRESS BLOCK)
+# Last Modification: Editing The «Content» CLASS (BUTTONS BLOCK)
+# Modification Date: 2023.10.25, 03:24 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -19,7 +19,8 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QLabel,
     QTextEdit,
-    QProgressBar
+    QProgressBar,
+    QPushButton
 )
 
 from .values import string_values
@@ -81,8 +82,12 @@ class Content(QWidget):
 
         # RIGHT
         progressbox = self.box_with_progress()
+        buttonsbox = self.box_with_buttons()
         progress_layout.addWidget(
             progressbox, alignment=Qt.AlignmentFlag.AlignTop
+        )
+        progress_layout.addWidget(
+            buttonsbox, alignment=Qt.AlignmentFlag.AlignBottom
         )
 
         main_layout.addLayout(textbox_layout)
@@ -162,5 +167,33 @@ class Content(QWidget):
 
         frame.setLayout(layout)
         return frame
+
+    def box_with_buttons(self) -> QFrame:
+        """
+        Responsible for The BUTTONS BLOCK
+
+        ---
+        RESULT: The FRAME with LAYOUT inside WIDGETS
+        """
+
+        frame = QFrame()
+        frame.setObjectName("content_buttons")
+
+        layout = QVBoxLayout()
+
+        text_for_finish = string_values("ru_content_start_app")
+        btn_finish = QPushButton(text_for_finish)
+        btn_finish.setObjectName("content_btn_finish")
+
+        text_for_copy = string_values("ru_content_copy_two_textbox")
+        btn_copy = QPushButton(text_for_copy)
+        btn_copy.setObjectName("content_btn_copy")
+
+        layout.addWidget(btn_finish)
+        layout.addWidget(btn_copy)
+
+        frame.setLayout(layout)
+        return frame
+
 
 # ---------------------------------
