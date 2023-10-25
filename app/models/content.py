@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «Content» CLASS (PROGRESS BLOCK)
-# Last Modification: Editing The «Content» CLASS (BUTTONS BLOCK)
-# Modification Date: 2023.10.25, 03:24 PM
+# Past Modification: Editing The «Content» CLASS (BUTTONS BLOCK)
+# Last Modification: Editing The «Content» CLASS (CORRENTION OF BLOCKS)
+# Modification Date: 2023.10.25, 07:45 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -92,6 +92,8 @@ class Content(QWidget):
 
         main_layout.addLayout(textbox_layout)
         main_layout.addLayout(progress_layout)
+        main_layout.setContentsMargins(20, 20, 20, 20)
+        main_layout.setSpacing(25)
 
         frame.setLayout(main_layout)
         return frame
@@ -122,7 +124,7 @@ class Content(QWidget):
         layout = QVBoxLayout()
 
         text = string_values(attribute_name)
-        title = QLabel(text)
+        title = QLabel(text.upper())
         title.setObjectName("content_title_textbox")
 
         textbox = QTextEdit()
@@ -146,15 +148,19 @@ class Content(QWidget):
 
         frame = QFrame()
         frame.setObjectName("content_progress")
+        frame.setFixedWidth(300)
 
         layout = QVBoxLayout()
 
         text_for_title = string_values("ru_content_progress")
         title = QLabel(text_for_title)
         title.setObjectName("content_title_progress")
+        title.setStyleSheet(
+            "padding-bottom: 0.65em; font-size: 27px; color: #EEEEEE;"
+        )
 
         self.text_for_status = string_values("ru_content_ready")
-        status = QLabel(self.text_for_status)
+        status = QLabel(self.text_for_status.upper())
         status.setObjectName("content_status")
 
         self.progress = QProgressBar()
@@ -180,13 +186,15 @@ class Content(QWidget):
         frame.setObjectName("content_buttons")
 
         layout = QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(15)
 
         text_for_finish = string_values("ru_content_start_app")
-        btn_finish = QPushButton(text_for_finish)
+        btn_finish = QPushButton(text_for_finish.upper())
         btn_finish.setObjectName("content_btn_finish")
 
         text_for_copy = string_values("ru_content_copy_two_textbox")
-        btn_copy = QPushButton(text_for_copy)
+        btn_copy = QPushButton(text_for_copy.upper())
         btn_copy.setObjectName("content_btn_copy")
 
         layout.addWidget(btn_finish)
