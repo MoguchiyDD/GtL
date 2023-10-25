@@ -2,5 +2,14 @@
 <resources>
 	<string name="app_title">GTL : Guide to Letters</string>
     <string name="header_title">Guide to Letters</string>
+    <string name="ru_content_textbox_creative_mess">Творческий Беспорядок</string>
+    <string name="ru_content_textbox_ready_text">Готовый Текст</string>
+    <string name="ru_content_progress">Прогресс</string>
+    <string name="ru_content_ready">Я на готове</string>
+    <string name="ru_content_line_number">Строка #</string>
+    <string name="ru_content_translate_two_textbox">Идёт перевод текста</string>
+    <string name="ru_content_end_app">Финиш</string>
+    <string name="ru_content_start_app">Запуск программы</string>
+    <string name="ru_content_copy_two_textbox">Копирование 2-го блока текста</string>
     <string name="footer_title">© МогучийДД (MoguchiyDD), 2023</string>
 </resources>
