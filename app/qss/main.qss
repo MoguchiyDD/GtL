@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Editing The «HEADER» STYLE BLOCK (QPushButton)
-Last Modification: Adding The «FOOTER» STYLE BLOCK
-Modification Date: 2023.10.24, 05:30 PM
+Past Modification: Adding The «SCROLL BAR» STYLE BLOCK
+Last Modification: Editing The COLORS
+Modification Date: 2023.10.25, 07:44 PM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -15,62 +15,190 @@ Create Date: 2023.10.23, 09:02 PM
 
 /*
     COLORS
-Primary       : #D1C4E9 100
-Secondary     : #7E57C2 400
-Enabled       : #9575CD 300
-Disabled      : #673AB7 500
-Top-Bottom    : #512DA8 700
-Eye-Color     : #EDE7F6 50
+Eye         : #B71B0F
+Primary     : #212121
+Window      : #404040
+Blocks      : #292929 && #303030
+Textbox (D) : #353535
+Scroll      : #353535
+Scroll (D)  : #272727
+Text        : #EEEEEE
+Text (D)    : #C5C5C5
 
     FONTS SIZES
-Header Title  : 32px
-FOOTER Title  : 13px 
+Header Title                        : 32px
+Content Title Progress              : 27px
+Content Title                       : 17px
+Content Textbox && Content Progress : 15px
+Content Buttons                     : 14px
+Footer Title                        : 13px
 */
 
 
-/* ------------ WINDOW ------------ */
+/* -------------- WINDOW -------------- */
 
 QMainWindow {
-  background: #D1C4E9;
+  background-color: #404040;
 }
 
-/* -------------------------------- */
+/* ------------------------------------ */
 
 
-/* ------------ HEADER ------------ */
+/* -------------- HEADER -------------- */
 
 QFrame#header {
-  background: #512DA8;
+  background-color: #212121;
 }
 QFrame#header QLabel {
   font-size: 32px;
   font-weight: bold;
-  color: #EDE7F6;
+  color: #EEEEEE;
 }
 QFrame#header QPushButton {
   padding: 0.4em;
   icon-size: 1.25em;
-  color: #EDE7F6;
-  background: qconicalgradient(cx:0.5, cy:0.5, angle:226, stop: 0 #9575CD, stop: 1 #673AB7);
-  border: 1px solid #512DA8;
+  color: #EEEEEE;
+  background-color: #404040;
+  border: 1px solid #212121;
   border-radius: 1.08em;
 }
 QFrame#header QPushButton:hover {
-  background: #7E57C2;
+  background-color: #B71B0F;
 }
 
-/* -------------------------------- */
+/* ------------------------------------ */
 
 
-/* ------------ FOOTER ------------ */
+/* ------------- CONTENT -------------- */
+
+/* TEXTBOX && PROGRESS */
+QFrame#content QFrame#content_textbox,
+QFrame#content QFrame#content_progress {
+  padding: 0.85em;
+  background-color: qradialgradient(cx:0, cy:0, radius: 1, fx:0.5, fy:0.5, stop:0 #292929, stop:1 #303030);
+  border: 1px solid #292929;
+  border-radius: 0.75em;
+}
+
+/* TEXTBOX */
+QFrame#content QFrame#content_textbox QLabel {
+  padding-bottom: 0.25em;
+  font-size: 17px;
+  color: #EEEEEE;
+}
+QFrame#content QFrame#content_textbox QTextEdit {
+  font-size: 15px;
+  color: #EEEEEE;
+  selection-background-color: #B71B0F;
+  selection-color: #EEEEEE;
+  background-color: #212121;
+  border: 1px solid #212121;
+  border-radius: 0.25em;
+}
+QFrame#content QFrame#content_textbox QTextEdit:disabled {
+  color: #C5C5C5;
+  background-color: #353535;
+  border: 1px solid #212121;
+}
+
+/* PROGRESS */
+QFrame#content QFrame#content_progress QLabel {
+  padding-bottom: 0.25em;
+  font-size: 17px;
+  color: #EEEEEE;
+}
+QFrame#content QFrame#content_progress QProgressBar {
+  font-size: 15px;
+  text-align: center;
+  background-color: #212121;
+  border: 1px solid #212121;
+  border-radius: 0.15em;
+}
+QFrame#content QFrame#content_progress QProgressBar:chunk {
+  width: 0.9em;
+  padding: 0.25em;
+  color: #EEEEEE;
+  background-color: #B71B0F;
+  border: 1px solid #B71B0F;
+  border-radius: 0.15em;
+}
+
+/* BUTTONS */
+QFrame#content QFrame#content_buttons QPushButton {
+  padding: 0.8em;
+  font-size: 14px;
+  color: #EEEEEE;
+  border-radius: 0.25em;
+}
+QFrame#content QFrame#content_buttons QPushButton#content_btn_finish {
+  background-color: #B71B0F;
+  border: 1px solid #B71B0F;
+}
+QFrame#content QFrame#content_buttons QPushButton#content_btn_finish:hover {
+  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #313131, stop: 1 #292929);
+  border: 1px solid #292929;
+}
+QFrame#content QFrame#content_buttons QPushButton#content_btn_copy {
+  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #313131, stop: 1 #292929);
+  border: 1px solid #292929;
+}
+QFrame#content QFrame#content_buttons QPushButton#content_btn_copy:hover {
+  background-color: #B71B0F;
+  border: 1px solid #B71B0F;
+}
+
+/* ------------------------------------ */
+
+
+/* -------------- FOOTER -------------- */
 
 QFrame#footer {
-  background: #512DA8;
+  background-color: #212121;
 }
 QFrame#footer QLabel {
   font-size: 13px;
   font-weight: bold;
-  color: #EDE7F6;
+  color: #EEEEEE;
 }
 
-/* -------------------------------- */
+/* ------------------------------------ */
+
+
+/* ------------ SCROLL BAR ------------ */
+
+QScrollBar::handle:vertical {
+  background-color: #B71B0F;
+}
+QScrollBar::handle:vertical:disabled {
+  background-color: #C5C5C5;
+}
+QScrollBar:vertical,
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+  background-color: #353535;
+}
+QScrollBar:vertical:disabled,
+QScrollBar::add-line:vertical:disabled,
+QScrollBar::sub-line:vertical:disabled {
+  background-color: #272727;
+}
+QScrollBar:vertical,
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+  border-left: 1px solid #353535;
+}
+QScrollBar:vertical:disabled,
+QScrollBar::add-line:vertical:disabled,
+QScrollBar::sub-line:vertical:disabled {
+  border-left: 1px solid #272727;
+}
+QScrollBar::add-line:vertical {
+  border-left: 1px solid #353535;
+  border-right: 1px solid #353535;
+}
+QScrollBar::add-line:vertical:disabled {
+  border-left: 1px solid #272727;
+  border-right: 1px solid #272727;
+}
+
+/* ------------------------------------ */
