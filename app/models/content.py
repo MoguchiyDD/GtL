@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «Content» CLASS (TEXT BLOCK)
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.10.25, 02:57 PM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Editing The «Content» CLASS (PROGRESS BLOCK)
+# Modification Date: 2023.10.25, 03:19 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -18,7 +18,8 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QVBoxLayout,
     QLabel,
-    QTextEdit
+    QTextEdit,
+    QProgressBar
 )
 
 from .values import string_values
@@ -65,8 +66,8 @@ class Content(QWidget):
         frame.setObjectName("content")
 
         main_layout = QHBoxLayout()
-        textbox_layout = QVBoxLayout()
-        progress_layout = QVBoxLayout()
+        textbox_layout = QVBoxLayout()  # LEFT
+        progress_layout = QVBoxLayout()  # RIGHT
 
         # LEFT
         textbox_creative_mess = self.box_with_text(
@@ -78,7 +79,14 @@ class Content(QWidget):
         textbox_layout.addWidget(textbox_creative_mess)
         textbox_layout.addWidget(textbox_ready_text)
 
+        # RIGHT
+        progressbox = self.box_with_progress()
+        progress_layout.addWidget(
+            progressbox, alignment=Qt.AlignmentFlag.AlignTop
+        )
+
         main_layout.addLayout(textbox_layout)
+        main_layout.addLayout(progress_layout)
 
         frame.setLayout(main_layout)
         return frame
@@ -94,7 +102,7 @@ class Content(QWidget):
 
         ---
         PARAMETERS:
-        - attribute_name: str -> ATTRIBUTE with The NAME
+        - attribute_name: str -> ATTRIBUTE with The NAME (for TEXTBOX)
         - object_name: str -> NAME for OBJECT
         - is_enabled: bool -> OPEN or CLOSE Textbox
         ---
@@ -119,8 +127,40 @@ class Content(QWidget):
 
         layout.addWidget(title)
         layout.addWidget(textbox)
-        frame.setLayout(layout)
 
+        frame.setLayout(layout)
+        return frame
+
+    def box_with_progress(self) -> QFrame:
+        """
+        Responsible for The PROGRESS BLOCK
+
+        ---
+        RESULT: The FRAME with LAYOUT inside WIDGETS
+        """
+
+        frame = QFrame()
+        frame.setObjectName("content_progress")
+
+        layout = QVBoxLayout()
+
+        text_for_title = string_values("ru_content_progress")
+        title = QLabel(text_for_title)
+        title.setObjectName("content_title_progress")
+
+        self.text_for_status = string_values("ru_content_ready")
+        status = QLabel(self.text_for_status)
+        status.setObjectName("content_status")
+
+        self.progress = QProgressBar()
+        self.progress.setObjectName("content_progress_bar")
+        self.progress.setValue(0)
+
+        layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(status)
+        layout.addWidget(self.progress)
+
+        frame.setLayout(layout)
         return frame
 
 # ---------------------------------
