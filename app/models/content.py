@@ -4,15 +4,22 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Adding COPYRIGHT
-# Last Modification: Adding The «Content» CLASS
-# Modification Date: 2023.10.24, 05:41 PM
+# Past Modification: Editing The «Content» CLASS (TEXT BLOCK)
+# Last Modification: Checking CODE The PEP8
+# Modification Date: 2023.10.25, 02:57 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QFrame, QHBoxLayout
+from PySide6.QtWidgets import (
+    QWidget,
+    QFrame,
+    QHBoxLayout,
+    QVBoxLayout,
+    QLabel,
+    QTextEdit
+)
 
 from .values import string_values
 
@@ -57,9 +64,63 @@ class Content(QWidget):
         frame = QFrame()
         frame.setObjectName("content")
 
-        layout = QHBoxLayout()
+        main_layout = QHBoxLayout()
+        textbox_layout = QVBoxLayout()
+        progress_layout = QVBoxLayout()
 
+        # LEFT
+        textbox_creative_mess = self.box_with_text(
+            "ru_content_textbox_creative_mess", "creative_mess", True
+        )
+        textbox_ready_text = self.box_with_text(
+            "ru_content_textbox_ready_text", "ready_text", False
+        )
+        textbox_layout.addWidget(textbox_creative_mess)
+        textbox_layout.addWidget(textbox_ready_text)
+
+        main_layout.addLayout(textbox_layout)
+
+        frame.setLayout(main_layout)
+        return frame
+
+    def box_with_text(
+        self,
+        attribute_name: str,
+        object_name: str,
+        is_enabled: bool
+    ) -> QFrame:
+        """
+        Responsible for The TEXT BLOCK
+
+        ---
+        PARAMETERS:
+        - attribute_name: str -> ATTRIBUTE with The NAME
+        - object_name: str -> NAME for OBJECT
+        - is_enabled: bool -> OPEN or CLOSE Textbox
+        ---
+        RESULT: The FRAME with LAYOUT inside WIDGETS
+        """
+
+        object_name = "content_textbox_" + object_name
+
+        frame = QFrame()
+        frame.setObjectName("content_textbox")
+
+        layout = QVBoxLayout()
+
+        text = string_values(attribute_name)
+        title = QLabel(text)
+        title.setObjectName("content_title_textbox")
+
+        textbox = QTextEdit()
+        textbox.setObjectName(object_name)
+        if is_enabled is False:
+            textbox.setEnabled(is_enabled)
+
+        layout.addWidget(title)
+        layout.addWidget(textbox)
         frame.setLayout(layout)
+
         return frame
 
 # ---------------------------------
