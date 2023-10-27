@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Adding The «SCROLL BAR» STYLE BLOCK
-Last Modification: Editing The COLORS
-Modification Date: 2023.10.25, 07:44 PM
+Past Modification: Editing The COLORS
+Last Modification: Editing The «CONTENT» STYLE BLOCK (PROGRESS TITLE)
+Modification Date: 2023.10.27, 02:41 PM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -102,6 +102,11 @@ QFrame#content QFrame#content_textbox QTextEdit:disabled {
 }
 
 /* PROGRESS */
+QFrame#content QFrame#content_progress QLabel#content_title_progress {
+  padding-bottom: 0.65em;
+  font-size: 27px;
+  color: #EEEEEE;
+}
 QFrame#content QFrame#content_progress QLabel {
   padding-bottom: 0.25em;
   font-size: 17px;
