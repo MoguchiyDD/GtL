@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «Content» CLASS (BUTTONS BLOCK)
-# Last Modification: Editing The «Content» CLASS (CORRENTION OF BLOCKS)
-# Modification Date: 2023.10.25, 07:45 PM
+# Past Modification: Editing The «Content» CLASS (CORRENTION OF BLOCKS)
+# Last Modification: Editing The «Content» CLASS (PROGRESS BLOCK : TITLE)
+# Modification Date: 2023.10.27, 02:42 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -155,9 +155,6 @@ class Content(QWidget):
         text_for_title = string_values("ru_content_progress")
         title = QLabel(text_for_title)
         title.setObjectName("content_title_progress")
-        title.setStyleSheet(
-            "padding-bottom: 0.65em; font-size: 27px; color: #EEEEEE;"
-        )
 
         self.text_for_status = string_values("ru_content_ready")
         status = QLabel(self.text_for_status.upper())
