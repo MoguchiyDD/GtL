@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+Developer && Owner: МогучийДД (MoguchiyDD)
+LICENSE: MIT License which is located in the text file LICENSE
+
+Goal: Store All STRINGS of The SOFTWARE in 1 PLACE
+Result: Returns 1 Desired STRING via The «name» ATTRIBUTE («string_values» FUN)
+
+Past Modification: Adding The «License» String (RU)
+Last Modification: Adding COPYRIGHT
+Modification Date: 2023.10.29, 02:37 AM
+
+Create Date: 2023.10.23, 02:49 PM
+-->
+
 <resources>
 	<string name="app_title">GTL : Guide to Letters</string>
     <string name="header_title">Guide to Letters</string>
