@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Editing The COLORS
-Last Modification: Editing The «CONTENT» STYLE BLOCK (PROGRESS TITLE)
-Modification Date: 2023.10.27, 02:41 PM
+Past Modification: Editing The «CONTENT» STYLE BLOCK (PROGRESS TITLE)
+Last Modification: Adding The «LICENSE» STYLE BLOCK
+Modification Date: 2023.10.29, 02:01 AM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -163,6 +163,29 @@ QFrame#footer {
 QFrame#footer QLabel {
   font-size: 13px;
   font-weight: bold;
+  color: #EEEEEE;
+}
+
+/* ------------------------------------ */
+
+
+/* ------------- LICENSE -------------- */
+
+QFrame#header_modal_license {
+  padding: 1em;
+  background-color: #404040;
+}
+QFrame#header_modal_license QLabel#license_title {
+  padding-bottom: 0.65em;
+  font-size: 27px;
+}
+QFrame#header_modal_license QLabel#license_copyright {
+  font-weight: bold;
+}
+QFrame#header_modal_license QLabel {
+  qproperty-alignment: AlignJustify;
+  padding-bottom: 0.35em;
+  font-size: 15px;
   color: #EEEEEE;
 }
 
