@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Install FONTS
-# Modification Date: 2023.10.29, 02:49 PM
+# Past Modification: Adding The «HeaderModal» CLASS («page_settings»)
+# Last Modification: Adding The «Header» CLASS (UPDATE ACTIVATE BUTTONS)
+# Modification Date: 2023.10.29, 04:13 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -41,6 +41,7 @@ class Header(QWidget):
     - page() -> QFrame : Create 1 HEADER FRAME
     ---
     SLOTS:
+    - activate_btn_settings() -> None : Opens 1 MODAL WINDOW for The SETTINGS
     - activate_btn_license() -> None : Opens 1 MODAL WINDOW for The LICENSE
     """
 
@@ -52,6 +53,9 @@ class Header(QWidget):
         super(Header, self).__init__(parent, flags)
         self.setParent(parent)
         self.parent = parent
+
+        self.__settings = HeaderModal("settings", self)
+        self.__license = HeaderModal("license", self)
 
         template = self.page()
         parent.main_layout.addWidget(
@@ -80,6 +84,7 @@ class Header(QWidget):
         btn_settings.setObjectName("header_btn_settings")
         btn_settings.setIcon(QIcon("app/icons/settings.svg"))
         btn_settings.setFixedWidth(40)
+        btn_settings.clicked.connect(self.activate_btn_settings)
 
         btn_license = QPushButton()
         btn_license.setObjectName("header_btn_license")
@@ -94,13 +99,39 @@ class Header(QWidget):
         frame.setLayout(layout)
         return frame
 
+    def __activate(self, mode: str) -> None:
+        """
+        Opens and Clodes 1 MODAL WINDOW
+
+        ---
+        PARAMETERS:
+        - mode: str -> Mode «settings» or «license»
+        """
+
+        self.__settings.hide()
+        self.__license.hide()
+
+        match mode:
+            case "settings":
+                self.__settings.show()
+            case "license":
+                self.__license.show()
+
+    @Slot()
+    def activate_btn_settings(self) -> None:
+        """
+        Opens 1 MODAL WINDOW for The SETTINGS
+        """
+
+        self.__activate("settings")
+
     @Slot()
     def activate_btn_license(self) -> None:
         """
         Opens 1 MODAL WINDOW for The LICENSE
         """
 
-        HeaderModal("license", self)
+        self.__activate("license")
 
 # --------------------------------------
 
@@ -119,6 +150,7 @@ class HeaderModal(QWidget):
     - f: Qt.WindowType = Qt.WindowType.Widget -> Window-System (Widget)
     ---
     FUNCTIONS:
+    - page_settings() -> QFrame : Create 1 SETTINGS TEMPLATE
     - page_license() -> QFrame : Create 1 LICENSE TEMPLATE
     """
 
@@ -137,7 +169,7 @@ class HeaderModal(QWidget):
         template = QFrame()
         match(mode):
             case "settings":
-                pass
+                template = self.page_settings()
             case "license":
                 template = self.page_license()
 
@@ -146,7 +178,35 @@ class HeaderModal(QWidget):
         layout.addWidget(template, alignment=Qt.AlignmentFlag.AlignCenter)
 
         self.setLayout(layout)
-        self.show()
+
+    def page_settings(self) -> QFrame:
+        """
+        Create 1 SETTINGS TEMPLATE
+
+        ---
+        RESULT: SETTINGS TEMPLATE
+        """
+
+        # STRINGS
+        text_for_title = string_values("ru_settings_title")
+
+        # MODAL WINDOW
+        self.setWindowTitle(text_for_title)
+        self.setFixedSize(640, 480)
+
+        frame = QFrame()
+        frame.setObjectName("header_modal_settings")
+
+        layout = QVBoxLayout()
+
+        title = QLabel(text_for_title)
+        title.setObjectName("settings_title")
+        title.setFont(QFont("Lora"))
+
+        layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignCenter)
+
+        frame.setLayout(layout)
+        return frame
 
     def page_license(self) -> QFrame:
         """
