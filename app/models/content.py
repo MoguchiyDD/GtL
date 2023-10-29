@@ -4,14 +4,15 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «Content» CLASS (CORRENTION OF BLOCKS)
-# Last Modification: Editing The «Content» CLASS (PROGRESS BLOCK : TITLE)
-# Modification Date: 2023.10.27, 02:42 PM
+# Past Modification: Editing The «Content» CLASS (PROGRESS BLOCK : TITLE)
+# Last Modification: Install FONTS
+# Modification Date: 2023.10.29, 03:44 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
 
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QFont
 from PySide6.QtWidgets import (
     QWidget,
     QFrame,
@@ -40,6 +41,10 @@ class Content(QWidget):
     ---
     FUNCTIONS:
     - page() -> QFrame : Create 1 CONTENT FRAME
+    - box_with_text(attribute_name: str, object_name: str, is_enabled: bool) ->
+    QFrame : Responsible for The TEXT BLOCK
+    - box_with_progress() -> QFrame : Responsible for The PROGRESS BLOCK
+    - box_with_buttons() -> QFrame : Responsible for The BUTTONS BLOCK
     """
 
     def __init__(
@@ -126,9 +131,11 @@ class Content(QWidget):
         text = string_values(attribute_name)
         title = QLabel(text.upper())
         title.setObjectName("content_title_textbox")
+        title.setFont(QFont("Lora"))
 
         textbox = QTextEdit()
         textbox.setObjectName(object_name)
+        textbox.setFont(QFont("Ubuntu"))
         if is_enabled is False:
             textbox.setEnabled(is_enabled)
 
@@ -155,14 +162,17 @@ class Content(QWidget):
         text_for_title = string_values("ru_content_progress")
         title = QLabel(text_for_title)
         title.setObjectName("content_title_progress")
+        title.setFont(QFont("Lora"))
 
         self.text_for_status = string_values("ru_content_ready")
         status = QLabel(self.text_for_status.upper())
         status.setObjectName("content_status")
+        status.setFont(QFont("Ubuntu"))
 
         self.progress = QProgressBar()
         self.progress.setObjectName("content_progress_bar")
         self.progress.setValue(0)
+        self.progress.setFont(QFont("Ubuntu"))
 
         layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(status)
@@ -199,6 +209,5 @@ class Content(QWidget):
 
         frame.setLayout(layout)
         return frame
-
 
 # ---------------------------------

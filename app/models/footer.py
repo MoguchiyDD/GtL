@@ -4,14 +4,15 @@
 # Goal: Create a FOOTER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a FOOTER TEMPLATE
 #
-# Past Modification: Adding COPYRIGHT
-# Last Modification: Adding The «Footer» CLASS
-# Modification Date: 2023.10.24, 05:21 PM
+# Past Modification: Adding The «Footer» CLASS
+# Last Modification: Install FONTS
+# Modification Date: 2023.10.29, 02:57 PM
 #
 # Create Date: 2023.10.24, 05:17 PM
 
 
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QFrame, QVBoxLayout, QLabel
 
 from .values import string_values
@@ -59,6 +60,7 @@ class Footer(QWidget):
 
         text = string_values("footer_title")
         title = QLabel(text)
+        title.setFont(QFont("Lora"))
 
         layout = QVBoxLayout()
         layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignCenter)

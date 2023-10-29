@@ -4,21 +4,16 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Adding The FOOTER TEMPLATE
-# Last Modification: Adding The CONTENT TEMPLATE
-# Modification Date: 2023.10.24, 05:45 PM
+# Past Modification: Working with IMPORTS
+# Last Modification: Install FONTS
+# Modification Date: 2023.10.29, 02:56 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QScreen
-from PySide6.QtWidgets import (
-    QApplication,
-    QMainWindow,
-    QWidget,
-    QVBoxLayout
-)
+from PySide6.QtGui import QScreen, QFontDatabase
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
 
 from models.values import string_values
 from models.header import Header
@@ -67,6 +62,12 @@ class MainWindow(QMainWindow):
         geo = self.frameGeometry()
         geo.moveCenter(center)
         self.move(geo.topLeft())
+
+        # FONTS
+        QFontDatabase.addApplicationFont("app/fonts/Lora/Lora-Bold.ttf")
+        QFontDatabase.addApplicationFont("app/fonts/Lora/Lora-Regular.ttf")
+        QFontDatabase.addApplicationFont("app/fonts/Ubuntu/Ubuntu-B.ttf")
+        QFontDatabase.addApplicationFont("app/fonts/Ubuntu/Ubuntu-R.ttf")
 
         # CONTENT
         self.main_layout = QVBoxLayout()

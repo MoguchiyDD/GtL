@@ -4,15 +4,15 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Adding The «HeaderModal» CLASS (LICENSE)
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.10.29, 01:56 AM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Install FONTS
+# Modification Date: 2023.10.29, 02:49 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
 
 from PySide6.QtCore import Qt, Slot
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QFont, QIcon
 from PySide6.QtWidgets import (
     QWidget,
     QFrame,
@@ -74,6 +74,7 @@ class Header(QWidget):
 
         text = string_values("header_title")
         title = QLabel(text)
+        title.setFont(QFont("Lora"))
 
         btn_settings = QPushButton()
         btn_settings.setObjectName("header_btn_settings")
@@ -174,25 +175,30 @@ class HeaderModal(QWidget):
         # TITLE
         title_license = QLabel(text_for_title)
         title_license.setObjectName("license_title")
+        title_license.setFont(QFont("Lora"))
 
         # COPYRIGHT
         copyright_license = QLabel(text_for_copyright)
         copyright_license.setObjectName("license_copyright")
+        copyright_license.setFont(QFont("Ubuntu"))
 
         # TEXT #0
         text_zero_license = QLabel(text_for_zero)
         text_zero_license.setObjectName("license_text_zero")
         text_zero_license.setWordWrap(True)
+        text_zero_license.setFont(QFont("Ubuntu"))
 
         # TEXT #1
         text_one_license = QLabel(text_for_one)
         text_one_license.setObjectName("license_text_one")
         text_one_license.setWordWrap(True)
+        text_one_license.setFont(QFont("Ubuntu"))
 
         # TEXT #2
         text_two_license = QLabel(text_for_two)
         text_two_license.setObjectName("license_text_two")
         text_two_license.setWordWrap(True)
+        text_two_license.setFont(QFont("Ubuntu"))
 
         layout.addWidget(title_license, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(copyright_license)
