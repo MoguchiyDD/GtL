@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Adding The «HeaderModal» CLASS («page_settings»)
-# Last Modification: Adding The «Header» CLASS (UPDATE ACTIVATE BUTTONS)
-# Modification Date: 2023.10.29, 04:13 PM
+# Past Modification: Adding The «HeaderModal» CLASS (SETTINGS MAIN GROUP)
+# Last Modification: Editing The «HeaderModal» CLASS (SETTINGS)
+# Modification Date: 2023.10.30, 02:33 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -18,11 +18,14 @@ from PySide6.QtWidgets import (
     QFrame,
     QVBoxLayout,
     QHBoxLayout,
+    QGroupBox,
     QLabel,
+    QTextEdit,
+    QCheckBox,
     QPushButton
 )
 
-from .values import string_values
+from .values import StringsValues
 
 
 # --------------- HEADER ---------------
@@ -54,6 +57,8 @@ class Header(QWidget):
         self.setParent(parent)
         self.parent = parent
 
+        self.str_val = StringsValues()
+
         self.__settings = HeaderModal("settings", self)
         self.__license = HeaderModal("license", self)
 
@@ -76,7 +81,7 @@ class Header(QWidget):
         layout = QHBoxLayout()
         layout.setSpacing(8)
 
-        text = string_values("header_title")
+        text = self.str_val.string_values("header_title")
         title = QLabel(text)
         title.setFont(QFont("Lora"))
 
@@ -162,9 +167,9 @@ class HeaderModal(QWidget):
     ) -> None:
         super(HeaderModal, self).__init__(parent, f)
         self.setParent(parent)
+        self.parent = parent
 
         self.setWindowFlags(Qt.WindowType.Dialog)
-        self.setStyleSheet("background-color: #404040;")
 
         template = QFrame()
         match(mode):
@@ -188,22 +193,36 @@ class HeaderModal(QWidget):
         """
 
         # STRINGS
-        text_for_title = string_values("ru_settings_title")
+        text_for_title = self.parent.str_val.string_values("ru_settings_title")
+        text_for_btn_save = self.parent.str_val.string_values(
+            "ru_settings_btn_save"
+        )
 
         # MODAL WINDOW
         self.setWindowTitle(text_for_title)
-        self.setFixedSize(640, 480)
+        self.setFixedSize(382, 390)
 
         frame = QFrame()
         frame.setObjectName("header_modal_settings")
 
         layout = QVBoxLayout()
 
+        # TITLE
         title = QLabel(text_for_title)
         title.setObjectName("settings_title")
         title.setFont(QFont("Lora"))
 
+        # GROUPS
+        main_group = self.__settings_main_group()
+
+        # BUTTON
+        btn_save = QPushButton(text_for_btn_save.upper())
+        btn_save.setObjectName("settings_btn_save")
+        btn_save.setFont(QFont("Ubuntu"))
+
         layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(main_group)
+        layout.addWidget(btn_save)
 
         frame.setLayout(layout)
         return frame
@@ -217,14 +236,25 @@ class HeaderModal(QWidget):
         """
 
         # STRINGS
-        text_for_title = string_values("ru_license_part_one")
-        text_for_copyright = string_values("license_part_zero")
-        text_for_zero = string_values("ru_license_part_two")
-        text_for_one = string_values("ru_license_part_three")
-        text_for_two = string_values("ru_license_part_four")
+        text_for_title = self.parent.str_val.string_values(
+            "ru_license_part_one"
+        )
+        text_for_copyright = self.parent.str_val.string_values(
+            "license_part_zero"
+        )
+        text_for_zero = self.parent.str_val.string_values(
+            "ru_license_part_two"
+        )
+        text_for_one = self.parent.str_val.string_values(
+            "ru_license_part_three"
+        )
+        text_for_two = self.parent.str_val.string_values(
+            "ru_license_part_four"
+        )
 
         # MODAL WINDOW
         self.setWindowTitle(text_for_title)
+        self.setStyleSheet("background-color: #404040;")
         self.setFixedSize(675, 500)
 
         frame = QFrame()
@@ -268,5 +298,97 @@ class HeaderModal(QWidget):
 
         frame.setLayout(layout)
         return frame
+
+    def __settings_main_group(self) -> QGroupBox:
+        """
+        CREATE 1 MAIN GROUP for SETTINGS TEMPLATE
+
+        ---
+        RESULT: MAIN GROUP
+        """
+
+        # STRINGS
+        text_for_main_group = self.parent.str_val.string_values(
+            "ru_settings_main"
+        )
+        text_for_main_dash = self.parent.str_val.strings_values_idx(
+            "ru_settings_main_dash", 1
+        )
+        text_for_title_punctuations = self.parent.str_val.string_values(
+            "ru_settings_main_title_punctuations"
+        )
+        text_for_punctuations = self.parent.str_val.string_values(
+            "settings_main_punctuations"
+        )
+        text_for_hint_punctuations = self.parent.str_val.string_values(
+            "ru_settings_main_hint_punctuations"
+        )
+
+        # MAIN GROUP
+        main_group = QGroupBox()
+        main_group.setTitle(text_for_main_group.upper())
+        main_group.setFont(QFont("Lora"))
+
+        main_group_layout = QVBoxLayout()
+        main_group_layout.setContentsMargins(0, 0, 0, 0)
+
+        main_frame = QFrame()
+        main_frame.setObjectName("settings_main_group")
+
+        main_frame_layout = QVBoxLayout()
+        main_frame_layout.setContentsMargins(0, 0, 0, 0)
+
+        # DASH
+        dash_checkbox_layout = QHBoxLayout()
+        dash_checkbox_layout.setContentsMargins(0, 0, 0, 0)
+        dash_checkbox_layout.setSpacing(0)
+
+        dash = QCheckBox()
+        dash.setObjectName("settings_checkboxes")
+        dash.setFont(QFont("Ubuntu"))
+        dash.setChecked(True)
+
+        dash_zero_part = QLabel(text_for_main_dash[1])
+        dash_zero_part.setObjectName("settings_checkboxes_find")
+        dash_zero_part.setFont(QFont("Ubuntu"))
+        dash_one_part = QLabel(text_for_main_dash[0])
+        dash_one_part.setObjectName("settings_checkboxes_one_part")
+        dash_one_part.setFont(QFont("Ubuntu"))
+        dash_two_part = QLabel(text_for_main_dash[2])
+        dash_two_part.setObjectName("settings_checkboxes_two_part")
+        dash_two_part.setFont(QFont("Ubuntu"))
+
+        dash_checkbox_layout.addWidget(dash)
+        dash_checkbox_layout.addWidget(dash_zero_part)
+        dash_checkbox_layout.addWidget(dash_one_part)
+        dash_checkbox_layout.addWidget(dash_two_part)
+
+        # TITLE PUNCTUATIONS
+        title_punctuations = QLabel(text_for_title_punctuations)
+        title_punctuations.setObjectName("settings_title_edits")
+        title_punctuations.setFont(QFont("Ubuntu"))
+
+        # PUNCTUATIONS
+        punctuations = QTextEdit()
+        punctuations.setObjectName("settings_edits")
+        punctuations.setText(text_for_punctuations)
+        punctuations.setFont(QFont("Ubuntu"))
+        punctuations.setFixedHeight(73)
+
+        # HINT PUNCTUATIONS
+        hint_punctuations = QLabel(text_for_hint_punctuations)
+        hint_punctuations.setObjectName("settings_hint_edits")
+        hint_punctuations.setFont(QFont("Lora"))
+        hint_punctuations.setWordWrap(True)
+
+        main_frame_layout.addLayout(dash_checkbox_layout)
+        main_frame_layout.addWidget(title_punctuations)
+        main_frame_layout.addWidget(punctuations)
+        main_frame_layout.addWidget(hint_punctuations)
+        main_frame.setLayout(main_frame_layout)
+
+        main_group_layout.addWidget(main_frame)
+        main_group.setLayout(main_group_layout)
+        return main_group
 
 # --------------------------------------
