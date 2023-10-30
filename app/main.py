@@ -4,9 +4,9 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Working with IMPORTS
-# Last Modification: Install FONTS
-# Modification Date: 2023.10.29, 02:56 PM
+# Past Modification: Install FONTS
+# Last Modification: Update TEXT
+# Modification Date: 2023.10.30, 02:27 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -15,7 +15,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QScreen, QFontDatabase
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
 
-from models.values import string_values
+from models.values import StringsValues
 from models.header import Header
 from models.content import Content
 from models.footer import Footer
@@ -50,7 +50,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__(parent, flags)
 
         # TITLE
-        window_title = string_values("app_title")
+        window_title = StringsValues().string_values("app_title")
         self.setWindowTitle(window_title)
 
         self.setMinimumSize(self.MIN_WIDTH, self.MIN_HEIGHT)  # SIZE

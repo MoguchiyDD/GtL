@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «Content» CLASS (PROGRESS BLOCK : TITLE)
-# Last Modification: Install FONTS
-# Modification Date: 2023.10.29, 03:44 PM
+# Past Modification: Install FONTS
+# Last Modification: Update TEXT
+# Modification Date: 2023.10.30, 02:34 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -24,7 +24,7 @@ from PySide6.QtWidgets import (
     QPushButton
 )
 
-from .values import string_values
+from .values import StringsValues
 
 
 # ------------ CONTENT ------------
@@ -54,6 +54,8 @@ class Content(QWidget):
     ) -> None:
         super(Content, self).__init__(parent, flags)
         self.setParent(parent)
+
+        self.str_val = StringsValues()
 
         template = self.page()
         parent.main_layout.addWidget(
@@ -128,7 +130,7 @@ class Content(QWidget):
 
         layout = QVBoxLayout()
 
-        text = string_values(attribute_name)
+        text = self.str_val.string_values(attribute_name)
         title = QLabel(text.upper())
         title.setObjectName("content_title_textbox")
         title.setFont(QFont("Lora"))
@@ -159,12 +161,12 @@ class Content(QWidget):
 
         layout = QVBoxLayout()
 
-        text_for_title = string_values("ru_content_progress")
+        text_for_title = self.str_val.string_values("ru_content_progress")
         title = QLabel(text_for_title)
         title.setObjectName("content_title_progress")
         title.setFont(QFont("Lora"))
 
-        self.text_for_status = string_values("ru_content_ready")
+        self.text_for_status = self.str_val.string_values("ru_content_ready")
         status = QLabel(self.text_for_status.upper())
         status.setObjectName("content_status")
         status.setFont(QFont("Ubuntu"))
@@ -196,11 +198,13 @@ class Content(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(15)
 
-        text_for_finish = string_values("ru_content_start_app")
+        text_for_finish = self.str_val.string_values("ru_content_start_app")
         btn_finish = QPushButton(text_for_finish.upper())
         btn_finish.setObjectName("content_btn_finish")
 
-        text_for_copy = string_values("ru_content_copy_two_textbox")
+        text_for_copy = self.str_val.string_values(
+            "ru_content_copy_two_textbox"
+        )
         btn_copy = QPushButton(text_for_copy.upper())
         btn_copy.setObjectName("content_btn_copy")
 
