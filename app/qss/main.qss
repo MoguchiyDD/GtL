@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Editing The «CONTENT» STYLE BLOCK (PROGRESS TITLE)
-Last Modification: Adding The «LICENSE» STYLE BLOCK
-Modification Date: 2023.10.29, 02:01 AM
+Past Modification: Adding The «LICENSE» STYLE BLOCK
+Last Modification: Adding The «STRINGS» STYLE BLOCK
+Modification Date: 2023.10.30, 02:37 PM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -32,6 +32,7 @@ Content Title                       : 17px
 Content Textbox && Content Progress : 15px
 Content Buttons                     : 14px
 Footer Title                        : 13px
+Hint Text                           : 12px
 */
 
 
@@ -87,6 +88,7 @@ QFrame#content QFrame#content_textbox QLabel {
   color: #EEEEEE;
 }
 QFrame#content QFrame#content_textbox QTextEdit {
+  padding: 0.2em;
   font-size: 15px;
   color: #EEEEEE;
   selection-background-color: #B71B0F;
@@ -169,11 +171,93 @@ QFrame#footer QLabel {
 /* ------------------------------------ */
 
 
+/* ------------- STRINGS -------------- */
+
+QFrame#header_modal_settings {
+  padding: 1em;
+  background-color: #404040;
+}
+QFrame#header_modal_settings QLabel#settings_title {
+  padding-bottom: 0.5em;
+  font-size: 27px;
+}
+
+/* GROUPS */
+QFrame#header_modal_settings QGroupBox {
+  color: #EEEEEE;
+  border: none;
+}
+QFrame#header_modal_settings QFrame#settings_main_group {
+  padding: 1em;
+  color: #EEEEEE;
+  background-color: qradialgradient(cx:0, cy:0, radius: 1, fx:0.5, fy:0.5, stop:0 #292929, stop:1 #303030);
+  border: 1px solid #292929;
+  border-radius: 0.35em;
+}
+
+/* CHECKBOXES */
+QFrame#header_modal_settings QCheckBox {
+  padding-right: 0.13em;
+}
+QFrame#header_modal_settings QCheckBox::indicator {
+  width: 1em;
+  height: 1em;
+  background-color: #212121;
+  border-radius: 0.1em;
+}
+QFrame#header_modal_settings QCheckBox::indicator:checked {
+  image: url(app/icons/checked.svg);
+}
+
+/* TEXT */
+QFrame#header_modal_settings QLabel {
+  font-size: 15px;
+  color: #EEEEEE;
+}
+QFrame#header_modal_settings QLabel#settings_title_edits {
+  padding-top: 0.35em;
+  padding-bottom: 0.2em;
+}
+QFrame#header_modal_settings QLabel#settings_hint_edits {
+  font-size: 12px;
+  color: #C5C5C5;
+}
+
+/* TEXTBOX */
+QFrame#header_modal_settings QGroupBox QTextEdit {
+  margin-bottom: 0.15em;
+  padding: 0.2em;
+  font-size: 15px;
+  color: #EEEEEE;
+  selection-background-color: #B71B0F;
+  selection-color: #EEEEEE;
+  background-color: #212121;
+  border: 1px solid #212121;
+  border-radius: 0.25em;
+}
+
+/* BUTTON */
+QFrame#header_modal_settings QPushButton#settings_btn_save {
+  margin-top: 1.21em;
+  padding: 0.8em;
+  font-size: 14px;
+  color: #EEEEEE;
+  background-color: #B71B0F;
+  border: 1px solid #B71B0F;
+  border-radius: 0.25em;
+}
+QFrame#header_modal_settings QPushButton#settings_btn_save:hover {
+  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #313131, stop: 1 #292929);
+  border: 1px solid #292929;
+}
+
+/* ------------------------------------ */
+
+
 /* ------------- LICENSE -------------- */
 
 QFrame#header_modal_license {
   padding: 1em;
-  background-color: #404040;
 }
 QFrame#header_modal_license QLabel#license_title {
   padding-bottom: 0.65em;
