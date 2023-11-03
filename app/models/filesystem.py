@@ -4,9 +4,9 @@
 # Goal: Writing and Reading IMPORTANT FILES
 # Result: AUTOMATED SYSTEM with FILES
 #
-# Past Modification: Adding The «FileSystem» CLASS
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.11.04, 12:43 AM
+# Past Modification: Editing The «FileSystem» CLASS (__check_existence_folder)
+# Last Modification: Editing The «FileSystem» CLASS (write_file_settings)
+# Modification Date: 2023.11.04, 01:07 AM
 #
 # Create Date: 2023.11.01, 10:01 PM
 
@@ -26,7 +26,8 @@ class FyleSystem:
     - path_main_file: str -> The «basedir» VARIABLE from The «app/main.py» FILE
     ---
     FUNCTIONS:
-    - write_file_settings(self, data: str) -> None : Writes The SETTINGS FILE
+    - write_file_settings(self, data: dict[str, any]) -> None :
+    Writes The SETTINGS FILE
     - read_file_settings(self) -> dict[str, any] : Reads The SETTINGS FILE
     """
 
@@ -57,22 +58,20 @@ class FyleSystem:
         if path.exists(self.path_folder_settings) is False:
             chdir(self.basedir)
             mkdir(self.FOLDER)
-            chdir(self.path_file_system)
-            self.write_file_settings(dumps(self.TEMPLATE))
-        else:
-            chdir(self.path_file_system)
+            chdir("..")
+            self.write_file_settings(self.TEMPLATE)
 
-    def write_file_settings(self, data: str) -> None:
+    def write_file_settings(self, data: dict[str, any]) -> None:
         """
         Writes The SETTINGS FILE
 
         ---
         PARAMETERS:
-        - data: str -> The DATA for SETTINGS FILE
+        - data: dict[str, any] -> The DATA for SETTINGS FILE
         """
 
         with open(self.path_file_settings, "w+") as f:
-            f.write(data)
+            f.write(dumps(data))
 
     def read_file_settings(self) -> dict[str, any]:
         """
