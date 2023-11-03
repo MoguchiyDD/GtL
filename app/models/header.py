@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Adding The «HeaderModal» CLASS (SETTINGS MAIN GROUP)
-# Last Modification: Editing The «HeaderModal» CLASS (SETTINGS)
-# Modification Date: 2023.10.30, 02:33 PM
+# Past Modification: Editing The «HeaderModal» CLASS (SETTINGS)
+# Last Modification: Editing The «HeaderModal» CLASS (SAVING SETTINGS)
+# Modification Date: 2023.11.04, 01:09 AM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -25,6 +25,7 @@ from PySide6.QtWidgets import (
     QPushButton
 )
 
+from .filesystem import FyleSystem
 from .values import StringsValues
 
 
@@ -213,15 +214,16 @@ class HeaderModal(QWidget):
         title.setFont(QFont("Lora"))
 
         # GROUPS
-        main_group = self.__settings_main_group()
+        self.main_group = self.__settings_main_group()
 
         # BUTTON
         btn_save = QPushButton(text_for_btn_save.upper())
         btn_save.setObjectName("settings_btn_save")
         btn_save.setFont(QFont("Ubuntu"))
+        btn_save.clicked.connect(self.save_settings)
 
         layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(main_group)
+        layout.addWidget(self.main_group)
         layout.addWidget(btn_save)
 
         frame.setLayout(layout)
@@ -307,6 +309,9 @@ class HeaderModal(QWidget):
         RESULT: MAIN GROUP
         """
 
+        # DATA from SETTINGS FILE
+        data = self.parent.parent.data_from_settings_file
+
         # STRINGS
         text_for_main_group = self.parent.str_val.string_values(
             "ru_settings_main"
@@ -316,9 +321,6 @@ class HeaderModal(QWidget):
         )
         text_for_title_punctuations = self.parent.str_val.string_values(
             "ru_settings_main_title_punctuations"
-        )
-        text_for_punctuations = self.parent.str_val.string_values(
-            "settings_main_punctuations"
         )
         text_for_hint_punctuations = self.parent.str_val.string_values(
             "ru_settings_main_hint_punctuations"
@@ -346,7 +348,7 @@ class HeaderModal(QWidget):
         dash = QCheckBox()
         dash.setObjectName("settings_checkboxes")
         dash.setFont(QFont("Ubuntu"))
-        dash.setChecked(True)
+        dash.setChecked(data["dash"])
 
         dash_zero_part = QLabel(text_for_main_dash[1])
         dash_zero_part.setObjectName("settings_checkboxes_find")
@@ -371,7 +373,7 @@ class HeaderModal(QWidget):
         # PUNCTUATIONS
         punctuations = QTextEdit()
         punctuations.setObjectName("settings_edits")
-        punctuations.setText(text_for_punctuations)
+        punctuations.setText(data["block"])
         punctuations.setFont(QFont("Ubuntu"))
         punctuations.setFixedHeight(73)
 
@@ -390,5 +392,25 @@ class HeaderModal(QWidget):
         main_group_layout.addWidget(main_frame)
         main_group.setLayout(main_group_layout)
         return main_group
+
+    @Slot()
+    def save_settings(self, ) -> None:
+        """
+        Saving NEW DATA to 1 SETTINGS FILE
+        """
+
+        # MAIN GROUP
+        main_frame = self.main_group.findChild(QFrame, "settings_main_group")
+        main_dash = main_frame.findChild(QCheckBox, "settings_checkboxes")
+        main_textbox = main_frame.findChild(QTextEdit, "settings_edits")
+
+        new_data = {
+            "dash": main_dash.isChecked(),
+            "block": main_textbox.toPlainText()
+        }
+
+        filesystem = FyleSystem(self.parent.parent.basedir)
+        filesystem.write_file_settings(new_data)
+        self.parent.parent.data_from_settings_file = new_data
 
 # --------------------------------------
