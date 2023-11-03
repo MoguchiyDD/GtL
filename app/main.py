@@ -4,9 +4,9 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Install FONTS
-# Last Modification: Update TEXT
-# Modification Date: 2023.10.30, 02:27 PM
+# Past Modification: Adding The «MainWindow» CLASS (basedir)
+# Last Modification: Adding The «MainWindow» CLASS (RAM (Settings File))
+# Modification Date: 2023.11.03, 12:49 AM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -15,6 +15,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QScreen, QFontDatabase
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
 
+from models.filesystem import FyleSystem
 from models.values import StringsValues
 from models.header import Header
 from models.content import Content
@@ -48,6 +49,13 @@ class MainWindow(QMainWindow):
         flags: Qt.WindowType = Qt.WindowType.Window
     ) -> None:
         super(MainWindow, self).__init__(parent, flags)
+
+        global basedir
+        self.basedir = basedir
+
+        # RAM (Settings File)
+        filesystem = FyleSystem(self.basedir)
+        self.data_from_settings_file = filesystem.read_file_settings()
 
         # TITLE
         window_title = StringsValues().string_values("app_title")
