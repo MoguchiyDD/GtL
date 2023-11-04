@@ -4,9 +4,9 @@
 # Goal: Writing and Reading IMPORTANT FILES
 # Result: AUTOMATED SYSTEM with FILES
 #
-# Past Modification: Editing The «FileSystem» CLASS (__check_existence_folder)
-# Last Modification: Editing The «FileSystem» CLASS (write_file_settings)
-# Modification Date: 2023.11.04, 01:07 AM
+# Past Modification: Editing The «FileSystem» CLASS (write_file_settings)
+# Last Modification: Checking CODE The PEP8
+# Modification Date: 2023.11.04, 01:06 PM
 #
 # Create Date: 2023.11.01, 10:01 PM
 
@@ -17,16 +17,21 @@ from os import path, chdir, mkdir
 
 # ------------ FILE SYSTEM ------------
 
-class FyleSystem:
+class FileSystem:
     """
     Storage of SYSTEM FILES
 
     ---
     PARAMETERS:
     - path_main_file: str -> The «basedir» VARIABLE from The «app/main.py» FILE
+    - overwrite_file: bool = False -> Overwrite The SETTINGS FILE if there is
+    a PROBLEM with The KEYS
     ---
     FUNCTIONS:
-    - write_file_settings(self, data: dict[str, any]) -> None :
+    - _check_existence_folder(self) -> None : Creates 1 FOLDER for The SETTINGS
+    FILE if The FOLDER does not Exist and Writes The Finished TEMPLATE inside
+    The FILE
+    - write_file_settings(self, data: dict[str, any]=TEMPLATE) -> None :
     Writes The SETTINGS FILE
     - read_file_settings(self) -> dict[str, any] : Reads The SETTINGS FILE
     """
@@ -38,8 +43,12 @@ class FyleSystem:
         "block": ". ? !"
     }
 
-    def __init__(self, path_main_file: str) -> None:
+    def __init__(
+        self, path_main_file: str,
+        overwrite_file: bool = False
+    ) -> None:
         self.basedir = path_main_file
+        self.is_create_folder = False
 
         self.path_file_system = path.dirname(__file__)
         self.path_folder_settings = path.join(path_main_file, self.FOLDER)
@@ -47,9 +56,14 @@ class FyleSystem:
             self.path_folder_settings, self.FILE_SETTINGS
         )
 
-        self.__check_existence_folder()
+        self._check_existence_folder()
+        if self.is_create_folder is True:
+            self.write_file_settings()
+            self.is_create_folder = False
+        elif overwrite_file is True:
+            self.write_file_settings()
 
-    def __check_existence_folder(self) -> None:
+    def _check_existence_folder(self) -> None:
         """
         Creates 1 FOLDER for The SETTINGS FILE if The FOLDER does not Exist and
         Writes The Finished TEMPLATE inside The FILE
@@ -59,15 +73,15 @@ class FyleSystem:
             chdir(self.basedir)
             mkdir(self.FOLDER)
             chdir("..")
-            self.write_file_settings(self.TEMPLATE)
+            self.is_create_folder = True
 
-    def write_file_settings(self, data: dict[str, any]) -> None:
+    def write_file_settings(self, data: dict[str, any]=TEMPLATE) -> None:
         """
         Writes The SETTINGS FILE
 
         ---
         PARAMETERS:
-        - data: dict[str, any] -> The DATA for SETTINGS FILE
+        - data: dict[str, any]=TEMPLATE -> The DATA for SETTINGS FILE
         """
 
         with open(self.path_file_settings, "w+") as f:
