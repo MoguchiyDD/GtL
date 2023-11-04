@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «HeaderModal» CLASS (SAVING SETTINGS)
-# Last Modification: Editing The «HeaderModal» CLASS (DATA SETTINGS FILE)
-# Modification Date: 2023.11.04, 01:10 PM
+# Past Modification: Editing The «HeaderModal» CLASS (MESSAGES)
+# Last Modification: Checking CODE The PEP8
+# Modification Date: 2023.11.04, 04:16 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -27,6 +27,7 @@ from PySide6.QtWidgets import (
 
 from .filesystem import FileSystem
 from .values import StringsValues
+from .messages import MessageBox
 
 
 # --------------- HEADER ---------------
@@ -158,6 +159,9 @@ class HeaderModal(QWidget):
     FUNCTIONS:
     - page_settings() -> QFrame : Create 1 SETTINGS TEMPLATE
     - page_license() -> QFrame : Create 1 LICENSE TEMPLATE
+    ---
+    SLOTS:
+    - save_settings() -> None : Saving NEW DATA to 1 SETTINGS FILE
     """
 
     def __init__(
@@ -193,6 +197,18 @@ class HeaderModal(QWidget):
         RESULT: SETTINGS TEMPLATE
         """
 
+        # STRINGS
+        text_for_title = self.parent.str_val.string_values("ru_settings_title")
+        text_for_btn_save = self.parent.str_val.string_values(
+            "ru_settings_btn_save"
+        )
+        text_for_info_msg_data_title = self.parent.str_val.string_values(
+            "ru_info_msg_data_title"
+        )
+        text_for_info_msg_data_text = self.parent.str_val.string_values(
+            "ru_info_msg_data_text"
+        )
+
         # DATA from SETTINGS FILE
         keys = ("dash", "block")
         data = self.parent.parent.data_settings_file
@@ -204,15 +220,15 @@ class HeaderModal(QWidget):
                 filesystem = FileSystem(self.parent.parent.basedir, True)
                 self.parent.parent.data_settings_file = filesystem.TEMPLATE
                 data = self.parent.parent.data_settings_file
+                MessageBox(  # INFO
+                    "app/icons/info.svg",
+                    text_for_info_msg_data_title,
+                    text_for_info_msg_data_text,
+                    self
+                )
 
         main_data_dash = data["dash"]
         main_data_textbox = data["block"]
-
-        # STRINGS
-        text_for_title = self.parent.str_val.string_values("ru_settings_title")
-        text_for_btn_save = self.parent.str_val.string_values(
-            "ru_settings_btn_save"
-        )
 
         # MODAL WINDOW
         self.setWindowTitle(text_for_title)
@@ -324,6 +340,9 @@ class HeaderModal(QWidget):
         CREATE 1 MAIN GROUP for SETTINGS TEMPLATE
 
         ---
+        PARAMETERS:
+        - *data: any -> The DATA from RAM with SETTINGS FILE
+        ---
         RESULT: MAIN GROUP
         """
 
@@ -409,10 +428,18 @@ class HeaderModal(QWidget):
         return main_group
 
     @Slot()
-    def save_settings(self, ) -> None:
+    def save_settings(self) -> None:
         """
         Saving NEW DATA to 1 SETTINGS FILE
         """
+
+        # STRINGS
+        text_for_info_msg_save_title = self.parent.str_val.string_values(
+            "ru_info_msg_save_settings_title"
+        )
+        text_for_info_msg_save_text = self.parent.str_val.string_values(
+            "ru_info_msg_save_settings_text"
+        )
 
         # MAIN GROUP
         main_frame = self.main_group.findChild(QFrame, "settings_main_group")
@@ -427,5 +454,12 @@ class HeaderModal(QWidget):
         filesystem = FileSystem(self.parent.parent.basedir)
         filesystem.write_file_settings(new_data)
         self.parent.parent.data_settings_file = new_data
+
+        MessageBox(  # SUCCESS
+            "app/icons/success.svg",
+            text_for_info_msg_save_title,
+            text_for_info_msg_save_text,
+            self
+        )
 
 # --------------------------------------
