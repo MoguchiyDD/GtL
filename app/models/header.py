@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «HeaderModal» CLASS (SETTINGS)
-# Last Modification: Editing The «HeaderModal» CLASS (SAVING SETTINGS)
-# Modification Date: 2023.11.04, 01:09 AM
+# Past Modification: Editing The «HeaderModal» CLASS (SAVING SETTINGS)
+# Last Modification: Editing The «HeaderModal» CLASS (DATA SETTINGS FILE)
+# Modification Date: 2023.11.04, 01:10 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -25,7 +25,7 @@ from PySide6.QtWidgets import (
     QPushButton
 )
 
-from .filesystem import FyleSystem
+from .filesystem import FileSystem
 from .values import StringsValues
 
 
@@ -193,6 +193,21 @@ class HeaderModal(QWidget):
         RESULT: SETTINGS TEMPLATE
         """
 
+        # DATA from SETTINGS FILE
+        keys = ("dash", "block")
+        data = self.parent.parent.data_settings_file
+        data_keys = list(data.keys())
+        for key in keys:
+            try:
+                data_keys.index(key)
+            except:
+                filesystem = FileSystem(self.parent.parent.basedir, True)
+                self.parent.parent.data_settings_file = filesystem.TEMPLATE
+                data = self.parent.parent.data_settings_file
+
+        main_data_dash = data["dash"]
+        main_data_textbox = data["block"]
+
         # STRINGS
         text_for_title = self.parent.str_val.string_values("ru_settings_title")
         text_for_btn_save = self.parent.str_val.string_values(
@@ -214,7 +229,10 @@ class HeaderModal(QWidget):
         title.setFont(QFont("Lora"))
 
         # GROUPS
-        self.main_group = self.__settings_main_group()
+        self.main_group = self.__settings_main_group(
+            main_data_dash,
+            main_data_textbox
+        )
 
         # BUTTON
         btn_save = QPushButton(text_for_btn_save.upper())
@@ -301,16 +319,13 @@ class HeaderModal(QWidget):
         frame.setLayout(layout)
         return frame
 
-    def __settings_main_group(self) -> QGroupBox:
+    def __settings_main_group(self, *data: any) -> QGroupBox:
         """
         CREATE 1 MAIN GROUP for SETTINGS TEMPLATE
 
         ---
         RESULT: MAIN GROUP
         """
-
-        # DATA from SETTINGS FILE
-        data = self.parent.parent.data_from_settings_file
 
         # STRINGS
         text_for_main_group = self.parent.str_val.string_values(
@@ -348,7 +363,7 @@ class HeaderModal(QWidget):
         dash = QCheckBox()
         dash.setObjectName("settings_checkboxes")
         dash.setFont(QFont("Ubuntu"))
-        dash.setChecked(data["dash"])
+        dash.setChecked(data[0])  # dash
 
         dash_zero_part = QLabel(text_for_main_dash[1])
         dash_zero_part.setObjectName("settings_checkboxes_find")
@@ -373,7 +388,7 @@ class HeaderModal(QWidget):
         # PUNCTUATIONS
         punctuations = QTextEdit()
         punctuations.setObjectName("settings_edits")
-        punctuations.setText(data["block"])
+        punctuations.setText(data[1])  # block
         punctuations.setFont(QFont("Ubuntu"))
         punctuations.setFixedHeight(73)
 
@@ -409,8 +424,8 @@ class HeaderModal(QWidget):
             "block": main_textbox.toPlainText()
         }
 
-        filesystem = FyleSystem(self.parent.parent.basedir)
+        filesystem = FileSystem(self.parent.parent.basedir)
         filesystem.write_file_settings(new_data)
-        self.parent.parent.data_from_settings_file = new_data
+        self.parent.parent.data_settings_file = new_data
 
 # --------------------------------------
