@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Adding The «LICENSE» STYLE BLOCK
-Last Modification: Adding The «STRINGS» STYLE BLOCK
-Modification Date: 2023.10.30, 02:37 PM
+Past Modification: Adding The «STRINGS» STYLE BLOCK
+Last Modification: Adding The «MESSAGE BOX» STYLE BLOCK
+Modification Date: 2023.11.04, 04:34 PM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -36,16 +36,16 @@ Hint Text                           : 12px
 */
 
 
-/* -------------- WINDOW -------------- */
+/* -------------- WINDOW --------------- */
 
 QMainWindow {
   background-color: #404040;
 }
 
-/* ------------------------------------ */
+/* ------------------------------------- */
 
 
-/* -------------- HEADER -------------- */
+/* -------------- HEADER --------------- */
 
 QFrame#header {
   background-color: #212121;
@@ -67,10 +67,10 @@ QFrame#header QPushButton:hover {
   background-color: #B71B0F;
 }
 
-/* ------------------------------------ */
+/* ------------------------------------- */
 
 
-/* ------------- CONTENT -------------- */
+/* -------------- CONTENT -------------- */
 
 /* TEXTBOX && PROGRESS */
 QFrame#content QFrame#content_textbox,
@@ -154,10 +154,10 @@ QFrame#content QFrame#content_buttons QPushButton#content_btn_copy:hover {
   border: 1px solid #B71B0F;
 }
 
-/* ------------------------------------ */
+/* ------------------------------------- */
 
 
-/* -------------- FOOTER -------------- */
+/* -------------- FOOTER --------------- */
 
 QFrame#footer {
   background-color: #212121;
@@ -168,10 +168,10 @@ QFrame#footer QLabel {
   color: #EEEEEE;
 }
 
-/* ------------------------------------ */
+/* ------------------------------------- */
 
 
-/* ------------- STRINGS -------------- */
+/* -------------- STRINGS -------------- */
 
 QFrame#header_modal_settings {
   padding: 1em;
@@ -251,10 +251,10 @@ QFrame#header_modal_settings QPushButton#settings_btn_save:hover {
   border: 1px solid #292929;
 }
 
-/* ------------------------------------ */
+/* ------------------------------------- */
 
 
-/* ------------- LICENSE -------------- */
+/* -------------- LICENSE -------------- */
 
 QFrame#header_modal_license {
   padding: 1em;
@@ -273,10 +273,26 @@ QFrame#header_modal_license QLabel {
   color: #EEEEEE;
 }
 
-/* ------------------------------------ */
+/* ------------------------------------- */
 
 
-/* ------------ SCROLL BAR ------------ */
+/* ------------ MESSAGE BOX ------------ */
+
+QFrame#message {
+  padding: 1em;
+  background-color: #404040;
+  border-radius: 0.22em;
+}
+QFrame#message QLabel#message_text {
+  qproperty-alignment: AlignJustify;
+  font-size: 15px;
+  color: #EEEEEE;
+}
+
+/* ------------------------------------- */
+
+
+/* ------------ SCROLL BAR ------------- */
 
 QScrollBar::handle:vertical {
   background-color: #B71B0F;
@@ -313,4 +329,4 @@ QScrollBar::add-line:vertical:disabled {
   border-right: 1px solid #272727;
 }
 
-/* ------------------------------------ */
+/* ------------------------------------- */
