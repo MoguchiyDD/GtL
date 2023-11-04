@@ -1,0 +1,17 @@
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 32 32" id="OBJECT" xmlns="http://www.w3.org/2000/svg" fill="#B71B0F" stroke="#B71B0F">
+<g id="SVGRepo_bgCarrier" stroke-width="0"/>
+<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+<g id="SVGRepo_iconCarrier">
+<defs>
+<style>.cls-1{fill:#EEEEEE;}</style>
+</defs>
+<title/>
+<path d="M19,13.89a1,1,0,0,1-1-1V8a1,1,0,0,1,2,0v4.89A1,1,0,0,1,19,13.89Z"/>
+<path class="cls-1" d="M27,1H19a1,1,0,0,0-1,1V9h9a1,1,0,0,0,1-1V2A1,1,0,0,0,27,1Z"/>
+<path d="M20.84,29.46l-9-14a1,1,0,0,0-1.68,0l-9,14A1,1,0,0,0,2,31H20a1,1,0,0,0,.84-1.54Z"/>
+<path class="cls-1" d="M30.84,29.46l-11-17.11a1,1,0,0,0-1.68,0L6.16,31H30a1,1,0,0,0,.84-1.54Z"/>
+<path d="M19,19.89a7,7,0,0,0,4.58-1.72l-3.74-5.82a1,1,0,0,0-1.68,0l-3.74,5.82A7,7,0,0,0,19,19.89Z"/>
+</g>
+</svg>
