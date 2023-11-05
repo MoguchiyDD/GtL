@@ -4,9 +4,9 @@
 # Goal: Writing and Reading IMPORTANT FILES
 # Result: AUTOMATED SYSTEM with FILES
 #
-# Past Modification: Editing The «FileSystem» CLASS (write_file_settings)
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.11.04, 01:06 PM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Editing The «FileSystem» CLASS (TEMPLATE)
+# Modification Date: 2023.11.05, 04:19 PM
 #
 # Create Date: 2023.11.01, 10:01 PM
 
@@ -40,7 +40,7 @@ class FileSystem:
     FILE_SETTINGS = ".settings.json"
     TEMPLATE = {
         "dash": True,
-        "block": ". ? !"
+        "block": [".", "?", "!"]
     }
 
     def __init__(
