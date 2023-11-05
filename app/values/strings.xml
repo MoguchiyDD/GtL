@@ -7,9 +7,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Store All STRINGS of The SOFTWARE in 1 PLACE
 Result: Returns 1 Desired STRING via The «name» ATTRIBUTE («string_values» FUN)
 
-Past Modification: Adding The «Settings» String (RU)
-Last Modification: Adding The «MESSAGE BOX» String (RU)
-Modification Date: 2023.11.04, 04:12 PM
+Past Modification: Adding The «MESSAGE BOX» String (RU)
+Last Modification: Editing The «CONTENT» String (RU : MAIN HINT PUNCTUATIONS)
+Modification Date: 2023.11.05, 04:24 PM
 
 Create Date: 2023.10.23, 02:49 PM
 -->
@@ -42,7 +42,7 @@ Create Date: 2023.10.23, 02:49 PM
     <string name="ru_settings_main_dash">Убирать тире в конце каждой строки</string>
     <string name="ru_settings_main_title_punctuations">Пунктуации</string>
     <string name="settings_main_punctuations">. ? !</string>
-    <string name="ru_settings_main_hint_punctuations">Пробелы — разделители между пунктуациями</string>
+    <string name="ru_settings_main_hint_punctuations">Пробелы — разделители между пунктуациями. Пунктуации могут открываться по-разному из-за проверки на уникальность символов</string>
     <string name="ru_settings_btn_save">Сохранить</string>
 
     <!-- LICENSE -->
