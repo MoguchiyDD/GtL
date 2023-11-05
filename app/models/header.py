@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «HeaderModal» CLASS (MESSAGES)
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.11.04, 04:16 PM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Editing The «HeaderModal» CLASS (VALIDATION PUNCTUATIONS)
+# Modification Date: 2023.11.05, 04:26 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -232,7 +232,7 @@ class HeaderModal(QWidget):
 
         # MODAL WINDOW
         self.setWindowTitle(text_for_title)
-        self.setFixedSize(382, 390)
+        self.setFixedSize(382, 422)
 
         frame = QFrame()
         frame.setObjectName("header_modal_settings")
@@ -247,7 +247,7 @@ class HeaderModal(QWidget):
         # GROUPS
         self.main_group = self.__settings_main_group(
             main_data_dash,
-            main_data_textbox
+            " ".join(main_data_textbox)
         )
 
         # BUTTON
@@ -405,11 +405,11 @@ class HeaderModal(QWidget):
         title_punctuations.setFont(QFont("Ubuntu"))
 
         # PUNCTUATIONS
-        punctuations = QTextEdit()
-        punctuations.setObjectName("settings_edits")
-        punctuations.setText(data[1])  # block
-        punctuations.setFont(QFont("Ubuntu"))
-        punctuations.setFixedHeight(73)
+        self.punctuations = QTextEdit()
+        self.punctuations.setObjectName("settings_edits")
+        self.punctuations.setText(data[1])  # block
+        self.punctuations.setFont(QFont("Ubuntu"))
+        self.punctuations.setFixedHeight(73)
 
         # HINT PUNCTUATIONS
         hint_punctuations = QLabel(text_for_hint_punctuations)
@@ -419,7 +419,7 @@ class HeaderModal(QWidget):
 
         main_frame_layout.addLayout(dash_checkbox_layout)
         main_frame_layout.addWidget(title_punctuations)
-        main_frame_layout.addWidget(punctuations)
+        main_frame_layout.addWidget(self.punctuations)
         main_frame_layout.addWidget(hint_punctuations)
         main_frame.setLayout(main_frame_layout)
 
@@ -445,15 +445,17 @@ class HeaderModal(QWidget):
         main_frame = self.main_group.findChild(QFrame, "settings_main_group")
         main_dash = main_frame.findChild(QCheckBox, "settings_checkboxes")
         main_textbox = main_frame.findChild(QTextEdit, "settings_edits")
+        main_textbox_set_list = list(set(main_textbox.toPlainText().split()))
 
         new_data = {
             "dash": main_dash.isChecked(),
-            "block": main_textbox.toPlainText()
+            "block": main_textbox_set_list
         }
 
         filesystem = FileSystem(self.parent.parent.basedir)
         filesystem.write_file_settings(new_data)
         self.parent.parent.data_settings_file = new_data
+        self.punctuations.setText(" ".join(main_textbox_set_list))
 
         MessageBox(  # SUCCESS
             "app/icons/success.svg",
