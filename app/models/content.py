@@ -6,12 +6,12 @@
 #
 # Past Modification: Update TEXT
 # Last Modification: Editing The «Content» CLASS (FINISH)
-# Modification Date: 2023.11.07, 05:19 PM
+# Modification Date: 2023.11.07, 08:39 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
 
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtCore import Qt, Slot, QTimer
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import (
     QWidget,
@@ -64,6 +64,7 @@ class Content(QWidget):
         self.parent = parent
 
         self.str_val = StringsValues()
+        self.current_percent_progress = 0
 
         template = self.page()
         self.parent.main_layout.addWidget(
@@ -246,10 +247,31 @@ class Content(QWidget):
 
             return result
 
-        _cnt_valid_false = 0
+        def __count_percent_progress(lines: list[str]) -> float:
+            """
+            Calculates The Percentage of 1 LINE from a List of LINES
 
-        textbox_creative_mess = self.textbox_creative_mess
-        text_create = textbox_creative_mess.findChild(QTextEdit).toPlainText()
+            ---
+            PARAMETERS:
+            - lines: list[str] -> The List of LINES with WORDS
+            ---
+            RESULTS: Percentage of The Number of LINES
+            """
+
+            len_lines = len(lines)
+            percent = 100 / len_lines
+            return percent
+
+        _cnt_valid_false = 0
+        self.current_percent_progress = 0
+
+        progress = self.progressbox.findChild(QProgressBar)
+        progress.setValue(0)
+        text_create = self.textbox_creative_mess.findChild(
+            QTextEdit
+        ).toPlainText().strip()
+        text_ready = self.textbox_ready_text.findChild(QTextEdit)
+        text_ready.setText("")
 
         # LENGTH TEXT
         valid_text_create = __validation_length_text(len(text_create))
@@ -295,5 +317,51 @@ class Content(QWidget):
                     text_for_info_msg_data_text,
                     self
                 )
+
+        # FINISH
+        if (_cnt_valid_false == 0) and (valid_keys is True):
+            text_create_without_new_lines = text_create.split("\n")
+            percent_progress = __count_percent_progress(
+                text_create_without_new_lines
+            )
+
+            # DATA
+            data = self.parent.data_settings_file
+            dash = data["dash"]
+            block = data["block"]
+
+            is_dash = False
+
+            for line in text_create_without_new_lines:  # Line
+                words = split(r"\s", line)
+                for word in words[:-1]:  # Word
+                    if is_dash is True:
+                        is_dash = False
+                        text_ready.setText(text_ready.toPlainText() + word)
+                    elif is_dash is False:
+                        text_ready.setText(
+                            text_ready.toPlainText() + word + " "
+                        )
+
+                if dash is True:  # DASH
+                    if words[-1] in ("-", "–", "—", "‒", "﹘"):
+                        is_dash = True
+                        word = words[-1][:-1]
+                        text_ready.setText(text_ready.toPlainText() + word)
+
+                if is_dash is False:  # BLOCK
+                    if words[-1][-1] in block:
+                        text_ready.setText(
+                            text_ready.toPlainText() + words[-1] + "\n"
+                        )
+
+                if progress.value() < 100:
+                    self.current_percent_progress += percent_progress
+                    progress.setValue(int(self.current_percent_progress))
+
+                QTimer().setSingleShot(1000)  # 1 seconds
+
+            if progress.value() < 100:
+                progress.setValue(100)
 
 # ---------------------------------
