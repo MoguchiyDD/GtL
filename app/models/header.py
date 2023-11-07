@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Editing The «HeaderModal» CLASS (VALIDATION PUNCTUATIONS)
-# Modification Date: 2023.11.05, 04:26 PM
+# Past Modification: Editing The «HeaderModal» CLASS (VALIDATION PUNCTUATIONS)
+# Last Modification: Editing The «HeaderModal» CLASS («page_settings» SIZE)
+# Modification Date: 2023.11.07, 01:21 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -232,7 +232,7 @@ class HeaderModal(QWidget):
 
         # MODAL WINDOW
         self.setWindowTitle(text_for_title)
-        self.setFixedSize(382, 422)
+        self.setFixedSize(384, 422)
 
         frame = QFrame()
         frame.setObjectName("header_modal_settings")
