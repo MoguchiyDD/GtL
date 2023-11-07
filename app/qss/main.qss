@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Adding The «STRINGS» STYLE BLOCK
-Last Modification: Adding The «MESSAGE BOX» STYLE BLOCK
-Modification Date: 2023.11.04, 04:34 PM
+Past Modification: Adding The «MESSAGE BOX» STYLE BLOCK
+Last Modification: Editing The «STRINGS» STYLE BLOCK (TEXT)
+Modification Date: 2023.11.07, 01:19 PM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -213,6 +213,9 @@ QFrame#header_modal_settings QCheckBox::indicator:checked {
 QFrame#header_modal_settings QLabel {
   font-size: 15px;
   color: #EEEEEE;
+}
+QFrame#header_modal_settings QLabel#settings_checkboxes_one_part {
+  font-weight: bold;
 }
 QFrame#header_modal_settings QLabel#settings_title_edits {
   padding-top: 0.35em;
