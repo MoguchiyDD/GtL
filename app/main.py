@@ -6,7 +6,7 @@
 #
 # Past Modification: Adding The «MainWindow» CLASS (basedir)
 # Last Modification: Adding The «MainWindow» CLASS (RAM (Settings File))
-# Modification Date: 2023.11.04, 12:53 PM
+# Modification Date: 2023.11.07, 05:07 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -17,6 +17,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
 
 from models.filesystem import FileSystem
 from models.values import StringsValues
+from models.messages import MessageBox
 from models.header import Header
 from models.content import Content
 from models.footer import Footer
@@ -53,12 +54,34 @@ class MainWindow(QMainWindow):
         global basedir
         self.basedir = basedir
 
+        str_val = StringsValues()
+
         # RAM (Settings File)
         filesystem = FileSystem(self.basedir)
         self.data_settings_file = filesystem.read_file_settings()
+        valid_keys = filesystem._valid_true_keys(
+            list(self.data_settings_file.keys())
+        )
+        if valid_keys is False:
+            filesystem.write_file_settings()
+            self.data_settings_file = filesystem.TEMPLATE
+
+            # INFO
+            text_for_info_msg_data_title = str_val.string_values(
+                "ru_info_msg_data_title"
+            )
+            text_for_info_msg_data_text = str_val.string_values(
+                "ru_info_msg_data_text"
+            )
+            MessageBox(
+                "app/icons/info.svg",
+                text_for_info_msg_data_title,
+                text_for_info_msg_data_text,
+                self
+            )
 
         # TITLE
-        window_title = StringsValues().string_values("app_title")
+        window_title = str_val.string_values("app_title")
         self.setWindowTitle(window_title)
 
         self.setMinimumSize(self.MIN_WIDTH, self.MIN_HEIGHT)  # SIZE
