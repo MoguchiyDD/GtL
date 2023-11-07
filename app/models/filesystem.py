@@ -4,9 +4,9 @@
 # Goal: Writing and Reading IMPORTANT FILES
 # Result: AUTOMATED SYSTEM with FILES
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Editing The «FileSystem» CLASS (TEMPLATE)
-# Modification Date: 2023.11.05, 04:19 PM
+# Past Modification: Editing The «FileSystem» CLASS (ADDING «_valid_true_keys»)
+# Last Modification: Editing The «FileSystem» CLASS (RES «read_file_settings»)
+# Modification Date: 2023.11.07, 05:01 PM
 #
 # Create Date: 2023.11.01, 10:01 PM
 
@@ -28,6 +28,8 @@ class FileSystem:
     a PROBLEM with The KEYS
     ---
     FUNCTIONS:
+    - _valid_true_keys() -> bool : Checks The TITLE of The KEYS for Correct
+    Spelling
     - _check_existence_folder(self) -> None : Creates 1 FOLDER for The SETTINGS
     FILE if The FOLDER does not Exist and Writes The Finished TEMPLATE inside
     The FILE
@@ -42,6 +44,7 @@ class FileSystem:
         "dash": True,
         "block": [".", "?", "!"]
     }
+    TEMPLATE_KEYS = TEMPLATE.keys()
 
     def __init__(
         self, path_main_file: str,
@@ -62,6 +65,28 @@ class FileSystem:
             self.is_create_folder = False
         elif overwrite_file is True:
             self.write_file_settings()
+
+    def _valid_true_keys(self, data: list[str]) -> bool:
+        """
+        Checks The TITLE of The KEYS for Correct Spelling
+
+        ---
+        PARAMETERS:
+        - data: list[str] -> The DATA with CURRENT KEYS from RAM
+        ---
+        RESULT: True (RIGHT KEYS) || False (NOT RIGHT KEYS)
+        """
+
+        result = True
+
+        for key in self.TEMPLATE_KEYS:
+            try:
+                data.index(key)
+            except:
+                result = False
+                return result
+
+        return result
 
     def _check_existence_folder(self) -> None:
         """
@@ -98,6 +123,11 @@ class FileSystem:
         with open(self.path_file_settings, "r") as f:
             data = f.read()
 
-        return loads(data)
+        try:
+            result = loads(data)
+        except:
+            result = {}
+
+        return result
 
 # -------------------------------------
