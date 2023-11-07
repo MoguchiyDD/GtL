@@ -1,0 +1,19 @@
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 32 32" id="OBJECT" xmlns="http://www.w3.org/2000/svg" fill="#B71B0F" stroke="#B71B0F">
+<g id="SVGRepo_bgCarrier" stroke-width="0"/>
+<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+<g id="SVGRepo_iconCarrier">
+<defs>
+<style>.cls-1{fill:#EEEEEE;}</style>
+</defs>
+<title/>
+<path d="M12,31H10a5,5,0,0,1-5-5V16H7V26a3,3,0,0,0,3,3h2a3,3,0,0,0,3-3V6a5,5,0,0,1,5-5h2a5,5,0,0,1,5,5V16H25V6a3,3,0,0,0-3-3H20a3,3,0,0,0-3,3V26A5,5,0,0,1,12,31Z"/>
+<path class="cls-1" d="M10,5H2A1,1,0,0,0,1,6v6a5,5,0,0,0,10,0V6A1,1,0,0,0,10,5Z"/>
+<rect class="cls-1" height="6" rx="1" ry="1" width="7" x="2.5" y="1"/>
+<path d="M10,5H2A1,1,0,0,0,1,6V9H11V6A1,1,0,0,0,10,5Z"/>
+<path class="cls-1" d="M26,15a5,5,0,0,0-5,5v6a1,1,0,0,0,1,1h8a1,1,0,0,0,1-1V20A5,5,0,0,0,26,15Z"/>
+<rect class="cls-1" height="6" rx="1" ry="1" width="7" x="22.5" y="25"/>
+<path d="M21,23v3a1,1,0,0,0,1,1h8a1,1,0,0,0,1-1V23Z"/>
+</g>
+</svg>

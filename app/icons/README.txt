@@ -7,3 +7,4 @@ settings.svg  : https://www.svgrepo.com/svg/512820/settings-1491
 checked.svg   : https://www.svgrepo.com/svg/157770/checked
 success.svg   : https://www.svgrepo.com/svg/380877/goal-target-idea-success-strategy
 info.svg      : https://www.svgrepo.com/svg/380860/marketing-business-communication-service-advertising
+error.svg     : https://www.svgrepo.com/svg/380863/usb-cable-hardware-plug-equipment
