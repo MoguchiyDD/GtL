@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «HeaderModal» CLASS (VALIDATION PUNCTUATIONS)
-# Last Modification: Editing The «HeaderModal» CLASS («page_settings» SIZE)
-# Modification Date: 2023.11.07, 01:21 PM
+# Past Modification: Editing The «HeaderModal» CLASS («save_settings» STRING)
+# Last Modification: Editing The «HeaderModal» CLASS («page_settings» DATA)
+# Modification Date: 2023.11.07, 05:08 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -202,31 +202,31 @@ class HeaderModal(QWidget):
         text_for_btn_save = self.parent.str_val.string_values(
             "ru_settings_btn_save"
         )
-        text_for_info_msg_data_title = self.parent.str_val.string_values(
-            "ru_info_msg_data_title"
-        )
-        text_for_info_msg_data_text = self.parent.str_val.string_values(
-            "ru_info_msg_data_text"
-        )
 
         # DATA from SETTINGS FILE
-        keys = ("dash", "block")
-        data = self.parent.parent.data_settings_file
-        data_keys = list(data.keys())
-        for key in keys:
-            try:
-                data_keys.index(key)
-            except:
-                filesystem = FileSystem(self.parent.parent.basedir, True)
-                self.parent.parent.data_settings_file = filesystem.TEMPLATE
-                data = self.parent.parent.data_settings_file
-                MessageBox(  # INFO
-                    "app/icons/info.svg",
-                    text_for_info_msg_data_title,
-                    text_for_info_msg_data_text,
-                    self
-                )
+        filesystem = FileSystem(self.parent.parent.basedir)
+        valid_keys = filesystem._valid_true_keys(
+            list(self.parent.parent.data_settings_file.keys())
+        )
+        if valid_keys is False:
+            filesystem.write_file_settings()
+            self.parent.parent.data_settings_file = filesystem.TEMPLATE
 
+            # INFO
+            text_for_info_msg_data_title = self.parent.str_val.string_values(
+                "ru_info_msg_data_title"
+            )
+            text_for_info_msg_data_text = self.parent.str_val.string_values(
+                "ru_info_msg_data_text"
+            )
+            MessageBox(
+                "app/icons/info.svg",
+                text_for_info_msg_data_title,
+                text_for_info_msg_data_text,
+                self
+            )
+
+        data = self.parent.parent.data_settings_file
         main_data_dash = data["dash"]
         main_data_textbox = data["block"]
 
@@ -434,11 +434,11 @@ class HeaderModal(QWidget):
         """
 
         # STRINGS
-        text_for_info_msg_save_title = self.parent.str_val.string_values(
-            "ru_info_msg_save_settings_title"
+        text_for_success_msg_save_title = self.parent.str_val.string_values(
+            "ru_success_msg_save_settings_title"
         )
-        text_for_info_msg_save_text = self.parent.str_val.string_values(
-            "ru_info_msg_save_settings_text"
+        text_for_success_msg_save_text = self.parent.str_val.string_values(
+            "ru_success_msg_save_settings_text"
         )
 
         # MAIN GROUP
@@ -459,8 +459,8 @@ class HeaderModal(QWidget):
 
         MessageBox(  # SUCCESS
             "app/icons/success.svg",
-            text_for_info_msg_save_title,
-            text_for_info_msg_save_text,
+            text_for_success_msg_save_title,
+            text_for_success_msg_save_text,
             self
         )
 
