@@ -4,9 +4,9 @@
 # Goal: Message DIALOG BOX
 # Result: Shows The Generated Message DIALOG BOX
 #
-# Past Modification: Adding The «MessageBox» CLASS
-# Last Modification: Editing The «MessageBox» CLASS (TEMPLATE)
-# Modification Date: 2023.11.04, 04:22 PM
+# Past Modification: Editing The «MessageBox» CLASS (TEMPLATE)
+# Last Modification: Editing The «MessageBox» CLASS (SIZE)
+# Modification Date: 2023.11.10, 10:59 PM
 #
 # Create Date: 2023.11.04, 01:11 PM
 
@@ -43,7 +43,10 @@ class MessageBox(QDialog):
     - page(icon: str, text: str) -> QFrame : Create 1 MESSAGE TEMPLATE
     """
 
+    HEIGHT = 107
     WIDTH = 430
+    WIDTH_ICON = 90
+    WIDTH_TEXT = WIDTH - 130
 
     def __init__(
         self,
@@ -62,7 +65,7 @@ class MessageBox(QDialog):
         template = self.page(icon, text)
         layout.addWidget(template, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        self.setFixedSize(self.WIDTH, layout.heightForWidth(self.WIDTH))
+        self.setFixedSize(self.WIDTH, self.HEIGHT)
 
         # CENTER WINDOW
         center = QScreen.availableGeometry(
@@ -89,22 +92,25 @@ class MessageBox(QDialog):
 
         frame = QFrame()
         frame.setObjectName("message")
+        frame.setFixedSize(self.WIDTH, self.HEIGHT)
 
         layout = QHBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(17)
+        layout.setSpacing(0)
 
         w_icon = QLabel()
         w_icon.setObjectName("message_icon")
         w_icon.setPixmap(QPixmap(icon).scaled(67, 64))
+        w_icon.setFixedWidth(self.WIDTH_ICON)
 
         w_text = QLabel(text)
         w_text.setObjectName("message_text")
         w_text.setFont(QFont("Ubuntu"))
         w_text.setWordWrap(True)
+        w_text.setFixedWidth(self.WIDTH_TEXT)
 
-        layout.addWidget(w_icon, alignment=Qt.AlignmentFlag.AlignLeft)
-        layout.addWidget(w_text, alignment=Qt.AlignmentFlag.AlignTop)
+        layout.addWidget(w_icon, alignment=Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(w_text)
 
         frame.setLayout(layout)
         return frame
