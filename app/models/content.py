@@ -4,14 +4,14 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «Content» CLASS (COPY 2nd BLOCK)
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.11.10, 04:35 PM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Editing The «Content» CLASS (STATUS && TIME)
+# Modification Date: 2023.11.10, 09:05 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
 
-from PySide6.QtCore import Qt, Slot, QTimer
+from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QFont, QGuiApplication
 from PySide6.QtWidgets import (
     QWidget,
@@ -29,6 +29,7 @@ from .values import StringsValues
 from .messages import MessageBox
 
 from re import split
+from time import sleep
 
 
 # ------------ CONTENT ------------
@@ -178,10 +179,11 @@ class Content(QWidget):
         title.setObjectName("content_title_progress")
         title.setFont(QFont("Lora"))
 
-        self.text_for_status = self.str_val.string_values("ru_content_ready")
-        status = QLabel(self.text_for_status.upper())
-        status.setObjectName("content_status")
-        status.setFont(QFont("Ubuntu"))
+        text_for_status = self.str_val.string_values("ru_content_ready")
+        self.status = QLabel(text_for_status.upper())
+        self.status.setObjectName("content_status")
+        self.status.setFont(QFont("Ubuntu"))
+        self.status.setWordWrap(True)
 
         self.progress = QProgressBar()
         self.progress.setObjectName("content_progress_bar")
@@ -189,7 +191,7 @@ class Content(QWidget):
         self.progress.setFont(QFont("Ubuntu"))
 
         layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(status)
+        layout.addWidget(self.status)
         layout.addWidget(self.progress)
 
         frame.setLayout(layout)
@@ -271,9 +273,21 @@ class Content(QWidget):
         _cnt_valid_false = 0
         self.current_percent_progress = 0
 
+        # STRINGS for PROGRESS
+        text_for_progress_start = self.str_val.string_values(
+            "ru_content_ready"
+        )
+        text_for_progress_line_number = self.str_val.string_values(
+            "ru_content_line_number"
+        )
+        text_for_progress_end = self.str_val.string_values(
+            "ru_content_end_app"
+        )
+
         # PROGRESS BAR
         progress = self.progressbox.findChild(QProgressBar)
         progress.setValue(0)
+        self.status.setText(text_for_progress_start)
 
         # TEXTBOXES
         text_create = self.textbox_creative_mess.findChild(
@@ -341,7 +355,13 @@ class Content(QWidget):
 
             is_dash = False
 
+            _num_lines = 0
             for line in text_create_without_new_lines:  # Line
+                self.status.setText(
+                    text_for_progress_line_number + str(_num_lines)
+                )
+                _num_lines += 1
+
                 words = split(r"\s", line)
                 for word in words[:-1]:  # Word
                     if is_dash is True:
@@ -368,25 +388,26 @@ class Content(QWidget):
                     self.current_percent_progress += percent_progress
                     progress.setValue(int(self.current_percent_progress))
 
-                QTimer().setSingleShot(1000)  # 1 seconds
+                sleep(0.1)
 
             if progress.value() < 100:
                 progress.setValue(100)
 
+            self.status.setText(text_for_progress_end)
             self.text_for_copy = text_ready.toPlainText()
 
             # STRINGS
-            text_for_success_msg_end_title = self.parent.str_val.string_values(
+            text_for_success_msg_finish_title = self.str_val.string_values(
                 "ru_success_msg_finish_title"
             )
-            text_for_success_msg_end_text = self.parent.str_val.string_values(
+            text_for_success_msg_finish_text = self.str_val.string_values(
                 "ru_success_msg_finish_text"
             )
 
             MessageBox(  # SUCCESS
                 "app/icons/success.svg",
-                text_for_success_msg_end_title,
-                text_for_success_msg_end_text,
+                text_for_success_msg_finish_title,
+                text_for_success_msg_finish_text,
                 self
             )
 
@@ -413,10 +434,10 @@ class Content(QWidget):
             mdg_text = "ru_error_msg_copy_second_block_text"
 
         # STRINGS
-        text_for_msg_copy_2nd_block_title = self.parent.str_val.string_values(
+        text_for_msg_copy_2nd_block_title = self.str_val.string_values(
             mdg_title
         )
-        text_for_msg_copy_2nd_block_text = self.parent.str_val.string_values(
+        text_for_msg_copy_2nd_block_text = self.str_val.string_values(
             mdg_text
         )
 
