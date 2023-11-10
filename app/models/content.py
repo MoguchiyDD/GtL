@@ -4,15 +4,22 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Editing The «Content» CLASS (STATUS && TIME)
-# Modification Date: 2023.11.10, 09:05 PM
+# Past Modification: Adding The «AnimationText» CLASS
+# Last Modification: Editing The «Content» CLASS (ANIMATION 2ND TEXTBOX)
+# Modification Date: 2023.11.11, 03:23 AM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
 
-from PySide6.QtCore import Qt, Slot
-from PySide6.QtGui import QFont, QGuiApplication
+from PySide6.QtCore import (
+    Qt,
+    Slot,
+    QObject,
+    QTimer,
+    QPropertyAnimation,
+    QSequentialAnimationGroup
+)
+from PySide6.QtGui import QFont, QGuiApplication, QTextCursor
 from PySide6.QtWidgets import (
     QWidget,
     QFrame,
@@ -32,7 +39,7 @@ from re import split
 from time import sleep
 
 
-# ------------ CONTENT ------------
+# ------------------- CONTENT -------------------
 
 class Content(QWidget):
     """
@@ -354,6 +361,7 @@ class Content(QWidget):
             block = data["block"]
 
             is_dash = False
+            is_add_text = False
 
             _num_lines = 0
             for line in text_create_without_new_lines:  # Line
@@ -364,52 +372,64 @@ class Content(QWidget):
 
                 words = split(r"\s", line)
                 for word in words[:-1]:  # Word
-                    if is_dash is True:
-                        is_dash = False
-                        text_ready.setText(text_ready.toPlainText() + word)
-                    elif is_dash is False:
-                        text_ready.setText(text_ready.toPlainText() + word)
-
-                    text_ready.setText(text_ready.toPlainText() + " ")
+                    text_ready.setText(text_ready.toPlainText() + word + " ")
 
                 if dash is True:  # DASH
                     if words[-1][-1] in ("-", "-", "–", "—", "‒", "﹘"):
                         is_dash = True
-                        word = words[-1][:-1]
-                        text_ready.setText(text_ready.toPlainText() + word)
+                        is_add_text = True
+                        text_ready.setText(
+                            text_ready.toPlainText() + words[-1][:-1]
+                        )
 
                 if is_dash is False:  # BLOCK
                     if words[-1][-1] in block:
+                        is_add_text = True
                         text_ready.setText(
-                            text_ready.toPlainText() + words[-1] + "\n"
+                            text_ready.toPlainText() + words[-1]
                         )
+                        if text_create_without_new_lines[-1] != line:
+                            text_ready.setText(text_ready.toPlainText() + "\n")
+                else:
+                    is_dash = False
 
-                if progress.value() < 100:
+                if is_add_text is False:  # for OTHER WORDS
+                    text_ready.setText(
+                        text_ready.toPlainText() + words[-1] + " "
+                    )
+                else:
+                    is_add_text = False
+
+                if progress.value() < 100:  # PROGRESS
                     self.current_percent_progress += percent_progress
                     progress.setValue(int(self.current_percent_progress))
 
                 sleep(0.1)
 
-            if progress.value() < 100:
+            if progress.value() < 100:  # PROGRESS
                 progress.setValue(100)
 
             self.status.setText(text_for_progress_end)
             self.text_for_copy = text_ready.toPlainText()
 
-            # STRINGS
+            # SUCCESS MESSAGE BOX
             text_for_success_msg_finish_title = self.str_val.string_values(
                 "ru_success_msg_finish_title"
             )
             text_for_success_msg_finish_text = self.str_val.string_values(
                 "ru_success_msg_finish_text"
             )
-
-            MessageBox(  # SUCCESS
+            MessageBox(
                 "app/icons/success.svg",
                 text_for_success_msg_finish_title,
                 text_for_success_msg_finish_text,
                 self
             )
+
+            # Animation 2nd Textbox
+            self.anim_text_ready = AnimationText(text_ready)
+            self.anim_text_ready.timer_text.start()
+            self.anim_text_ready.animation()
 
     @Slot()
     def activate_btn_copy(self, text: str) -> None:
@@ -433,19 +453,118 @@ class Content(QWidget):
             mdg_title = "ru_error_msg_copy_second_block_title"
             mdg_text = "ru_error_msg_copy_second_block_text"
 
-        # STRINGS
+        # SUCCESS or ERROR MESSAGE BOX
         text_for_msg_copy_2nd_block_title = self.str_val.string_values(
             mdg_title
         )
         text_for_msg_copy_2nd_block_text = self.str_val.string_values(
             mdg_text
         )
-
-        MessageBox(  # SUCCESS or ERROR
+        MessageBox(
             mdg_icon,
             text_for_msg_copy_2nd_block_title,
             text_for_msg_copy_2nd_block_text,
             self
         )
 
-# ---------------------------------
+# -----------------------------------------------
+
+
+# ------------ ANIMATION 2ND TEXTBOX ------------
+
+class AnimationText(QWidget):
+    """
+    Responsible for The ANIMATION of TEXT in 1 TEXTBOX
+
+    ---
+    PARAMETERS:
+    - textbox: QTextEdit -> The TEXTBOX
+    ---
+    FUNCTIONS:
+    - animation(self) -> None : RUNS to an ANIMATION
+    """
+
+    def __init__(self, textbox: QTextEdit) -> None:
+        super(AnimationText, self).__init__()
+
+        self.textbox = textbox
+        self.doc_textbox = textbox.document()
+
+        # START ANIMATION
+        self.s_anim_text = QPropertyAnimation(
+            self.textbox, b"move_start_to_end", self
+        )
+        self.s_anim_text.valueChanged.connect(self.__move)
+        self.s_anim_text = self.__start_animation()
+
+        # END ANIMATION
+        self.e_anim_text = QPropertyAnimation(
+            self.textbox, b"move_end_to_start", self
+        )
+        self.e_anim_text.valueChanged.connect(self.__move)
+        self.e_anim_text = self.__end_animation()
+
+        # TOTAL ANIMATIONS
+        self.animations_group = QSequentialAnimationGroup()
+        self.animations_group.addAnimation(self.s_anim_text)
+        self.animations_group.addAnimation(self.e_anim_text)
+
+        # DURATION : START && END
+        durations = self.s_duration_anim_text + self.e_duration_anim_text
+
+        self.timer_text = QTimer()
+        self.timer_text.setInterval(durations)
+        self.timer_text.timeout.connect(self.animation)
+
+    def __start_animation(self) -> None:
+        """
+        An ANIMATION that goes from TEXT POSITION 0 to The LAST POSITION
+        """
+
+        self.s_anim_text.stop()
+
+        self.s_duration_anim_text = self.doc_textbox.blockCount() * 1000 / 2
+
+        self.s_anim_text.setStartValue(0)
+        self.s_anim_text.setEndValue(self.doc_textbox.blockCount())
+        self.s_anim_text.setDuration(self.s_duration_anim_text)
+
+        return self.s_anim_text
+
+    def __end_animation(self) -> None:
+        """
+        An ANIMATION that goes from TEXT POSITION The LAST POSITION to 0
+        """
+
+        self.e_anim_text.stop()
+
+        self.e_duration_anim_text = self.doc_textbox.blockCount() * 10 / 2
+
+        self.e_anim_text.setStartValue(self.doc_textbox.blockCount())
+        self.e_anim_text.setEndValue(0)
+        self.e_anim_text.setDuration(self.e_duration_anim_text)
+
+        return self.e_anim_text
+
+    def animation(self) -> None:
+        """
+        RUNS to an ANIMATION
+        """
+
+        self.animations_group.stop()
+        self.animations_group.start()
+
+    @Slot()
+    def __move(self, pos: int) -> None:
+        """
+        Moves TEXT According to POSITION NUMBER
+
+        ---
+        PARAMETERS:
+        - pos: int -> The POSITION NUMBER
+        """
+
+        cursor = QTextCursor(self.doc_textbox.findBlockByLineNumber(pos))
+        self.textbox.setTextCursor(cursor)
+
+# -----------------------------------------------
