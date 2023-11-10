@@ -7,9 +7,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Store All STRINGS of The SOFTWARE in 1 PLACE
 Result: Returns 1 Desired STRING via The «name» ATTRIBUTE («string_values» FUN)
 
-Past Modification: Editing The «CONTENT» String (RU : MAIN HINT PUNCTUATIONS)
-Last Modification: Editing The «MESSAGE BOX» String (RU : ERROR)
-Modification Date: 2023.11.07, 03:07 PM
+Past Modification: Editing The «MESSAGE BOX» String (RU : COPY 2nd BLOCK)
+Last Modification: Editing The «MESSAGE BOX» String (RU : FINISH)
+Modification Date: 2023.11.10, 04:33 PM
 
 Create Date: 2023.10.23, 02:49 PM
 -->
@@ -53,11 +53,17 @@ Create Date: 2023.10.23, 02:49 PM
     <string name="ru_license_part_four">ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ «КАК ЕСТЬ», БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ЯВНО ВЫРАЖЕННЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ, СООТВЕТСТВИЯ ПО ЕГО КОНКРЕТНОМУ НАЗНАЧЕНИЮ И ОТСУТСТВИЯ НАРУШЕНИЙ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ. НИ В КАКОМ СЛУЧАЕ АВТОРЫ ИЛИ ПРАВООБЛАДАТЕЛИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ ПО КАКИМ-ЛИБО ИСКАМ, ЗА УЩЕРБ ИЛИ ПО ИНЫМ ТРЕБОВАНИЯМ, В ТОМ ЧИСЛЕ, ПРИ ДЕЙСТВИИ КОНТРАКТА, ДЕЛИКТЕ ИЛИ ИНОЙ СИТУАЦИИ, ВОЗНИКШИМ ИЗ-ЗА ИСПОЛЬЗОВАНИЯ ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ ИЛИ ИНЫХ ДЕЙСТВИЙ С ПРОГРАММНЫМ ОБЕСПЕЧЕНИЕМ.</string>
 
     <!-- MESSAGE BOX -->
-    <string name="ru_info_msg_data_title">Исправление файла с настройками</string>
-    <string name="ru_info_msg_data_text">Ключи из файла настроек были повреждены в связи с этим файл настроек вернулся к настройкам по умолчанию</string>
     <string name="ru_success_msg_save_settings_title">Успешное сохранение новых данных</string>
     <string name="ru_success_msg_save_settings_text">Изменённые данные успешно сохранились в файл содержащий настройки программы</string>
+    <string name="ru_success_msg_finish_title">Успех, и никак иначе</string>
+    <string name="ru_success_msg_finish_text">Программа закочила работать с текстом</string>
+    <string name="ru_success_msg_copy_second_block_title">Успешное сохранение текста в буфер обмена</string>
+    <string name="ru_success_msg_copy_second_block_text">Текст из второго блока с итоговым текстом успешно сохранился в буфер обмена</string>
+    <string name="ru_info_msg_data_title">Исправление файла с настройками</string>
+    <string name="ru_info_msg_data_text">Ключи из файла настроек были повреждены в связи с этим файл настроек вернулся к настройкам по умолчанию</string>
     <string name="ru_error_msg_valid_length_title">Ошибка проверки по количеству символов</string>
     <string name="ru_error_msg_valid_length_text">Для соединения текста до нужной пунктуации требуется больше символов в текстовике «ТВОРЧЕСКИЙ БЕСПОРЯДОК»</string>
+    <string name="ru_error_msg_copy_second_block_title">Что-то пошло не так..</string>
+    <string name="ru_error_msg_copy_second_block_text">Текст из второго блока с итоговым текстом не смог сохранится в буфер обмена. Напечатайте разработчику с какими данными Вы работали, а также само описание Вашей Операционной Системы для рефакторинга кода с буфером обмена</string>
 
 </resources>
