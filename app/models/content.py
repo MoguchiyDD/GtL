@@ -4,15 +4,15 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Update TEXT
-# Last Modification: Editing The «Content» CLASS (FINISH)
-# Modification Date: 2023.11.07, 08:39 PM
+# Past Modification: Editing The «Content» CLASS (COPY 2nd BLOCK)
+# Last Modification: Checking CODE The PEP8
+# Modification Date: 2023.11.10, 04:35 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
 
 from PySide6.QtCore import Qt, Slot, QTimer
-from PySide6.QtGui import QFont
+from PySide6.QtGui import QFont, QGuiApplication
 from PySide6.QtWidgets import (
     QWidget,
     QFrame,
@@ -52,6 +52,8 @@ class Content(QWidget):
     ---
     SLOTS:
     - activate_btn_finish() -> None : Runs PROCESSING TEXT
+    - activate_btn_copy(text: str) -> None : Copies The 2nd BLOCK of TEXT to
+    The CLIPBOARD
     """
 
     def __init__(
@@ -65,6 +67,7 @@ class Content(QWidget):
 
         self.str_val = StringsValues()
         self.current_percent_progress = 0
+        self.text_for_copy = ""
 
         template = self.page()
         self.parent.main_layout.addWidget(
@@ -217,6 +220,9 @@ class Content(QWidget):
         )
         btn_copy = QPushButton(text_for_copy.upper())
         btn_copy.setObjectName("content_btn_copy")
+        btn_copy.clicked.connect(
+            lambda clicked: self.activate_btn_copy(self.text_for_copy)
+        )
 
         layout.addWidget(btn_finish)
         layout.addWidget(btn_copy)
@@ -265,8 +271,11 @@ class Content(QWidget):
         _cnt_valid_false = 0
         self.current_percent_progress = 0
 
+        # PROGRESS BAR
         progress = self.progressbox.findChild(QProgressBar)
         progress.setValue(0)
+
+        # TEXTBOXES
         text_create = self.textbox_creative_mess.findChild(
             QTextEdit
         ).toPlainText().strip()
@@ -339,12 +348,12 @@ class Content(QWidget):
                         is_dash = False
                         text_ready.setText(text_ready.toPlainText() + word)
                     elif is_dash is False:
-                        text_ready.setText(
-                            text_ready.toPlainText() + word + " "
-                        )
+                        text_ready.setText(text_ready.toPlainText() + word)
+
+                    text_ready.setText(text_ready.toPlainText() + " ")
 
                 if dash is True:  # DASH
-                    if words[-1] in ("-", "–", "—", "‒", "﹘"):
+                    if words[-1][-1] in ("-", "-", "–", "—", "‒", "﹘"):
                         is_dash = True
                         word = words[-1][:-1]
                         text_ready.setText(text_ready.toPlainText() + word)
@@ -363,5 +372,59 @@ class Content(QWidget):
 
             if progress.value() < 100:
                 progress.setValue(100)
+
+            self.text_for_copy = text_ready.toPlainText()
+
+            # STRINGS
+            text_for_success_msg_end_title = self.parent.str_val.string_values(
+                "ru_success_msg_finish_title"
+            )
+            text_for_success_msg_end_text = self.parent.str_val.string_values(
+                "ru_success_msg_finish_text"
+            )
+
+            MessageBox(  # SUCCESS
+                "app/icons/success.svg",
+                text_for_success_msg_end_title,
+                text_for_success_msg_end_text,
+                self
+            )
+
+    @Slot()
+    def activate_btn_copy(self, text: str) -> None:
+        """
+        Copies The 2nd BLOCK of TEXT to The CLIPBOARD
+
+        ---
+        PARAMETERS:
+        - text: str -> The 2nd BLOCK of TEXT
+        """
+
+        try:
+            clipboard = QGuiApplication.clipboard()
+            clipboard.setText(text, clipboard.Mode.Clipboard)
+
+            mdg_icon = "app/icons/success.svg"
+            mdg_title = "ru_success_msg_copy_second_block_title"
+            mdg_text = "ru_success_msg_copy_second_block_text"
+        except:
+            mdg_icon = "app/icons/error.svg"
+            mdg_title = "ru_error_msg_copy_second_block_title"
+            mdg_text = "ru_error_msg_copy_second_block_text"
+
+        # STRINGS
+        text_for_msg_copy_2nd_block_title = self.parent.str_val.string_values(
+            mdg_title
+        )
+        text_for_msg_copy_2nd_block_text = self.parent.str_val.string_values(
+            mdg_text
+        )
+
+        MessageBox(  # SUCCESS or ERROR
+            mdg_icon,
+            text_for_msg_copy_2nd_block_title,
+            text_for_msg_copy_2nd_block_text,
+            self
+        )
 
 # ---------------------------------
