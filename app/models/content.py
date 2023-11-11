@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Adding The «AnimationText» CLASS
-# Last Modification: Editing The «Content» CLASS (ANIMATION 2ND TEXTBOX)
-# Modification Date: 2023.11.11, 03:23 AM
+# Past Modification: Refactoring CODE
+# Last Modification: Checking CODE The PEP8
+# Modification Date: 2023.11.11, 06:03 AP
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -239,6 +239,107 @@ class Content(QWidget):
         frame.setLayout(layout)
         return frame
 
+    def __finish(
+        self,
+        data: dict[str, any],
+        percent: float,
+        status: str,
+        text: list[str],
+        text_ready: QTextEdit,
+        progress: QProgressBar
+    ) -> None:
+        """
+        Builds BEAUTIFUL TEXT from The 1st TEXTBOX into The 2nd TEXTBOX
+
+        ---
+        PARAMETERS:
+        - data: dict[str, any] -> The DATA from The RAM
+        - percent: float -> The Percentage of The Number of LINES
+        - status: str -> The STATUS of The PROGRESS
+        - text: list[str] -> The LIST 1st TEXTBOX without NEW LINES
+        - text_ready: QTextEdit -> The TEXT 1nd TEXTBOX
+        - progress: QProgressBar -> The PROGRESS
+        """
+
+        def _dash(word: str, is_dash: bool, is_add_text: bool) -> tuple[bool]:
+            """
+            Word to be TESTED with DASH
+
+            ---
+            PARAMETERS:
+            - word: str -> Word to CHECK
+            - is_dash: bool -> Meeting The DASH (True || False)
+            - is_add_text: bool -> The LINE has been Added (True || False)
+            ---
+            RESULT: (is_dash, is_add_text)
+            """
+
+            if word[-1] in ("-", "–", "—", "‒", "﹘"):
+                is_dash = True
+                is_add_text = True
+                text_ready.setText(text_ready.toPlainText() + word[:-1])
+
+            result = (is_dash, is_add_text)
+            return result
+
+        def _block(word: str, is_add_text) -> bool:
+            """
+            Word to be TESTED with PUNCTUATIONS
+
+            ---
+            PARAMETERS:
+            - word: str -> Word to CHECK
+            - is_add_text: bool -> The LINE has been Added (True || False)
+            ---
+            RESULT: is_add_text
+            """
+
+            if word[-1] in block:
+                is_add_text = True
+                text_ready.setText(text_ready.toPlainText() + word)
+                if text[-1] != line:
+                    text_ready.setText(text_ready.toPlainText() + "\n")
+
+            return is_add_text
+
+        # DATA
+        dash = data["dash"]
+        block = data["block"]
+
+        # DOTS
+        is_dash = False
+        is_add_text = False
+
+        _num_lines = 0
+        for line in text:  # Line
+            self.status.setText(status + str(_num_lines))
+            _num_lines += 1
+
+            words = split(r"\s", line)
+            for word in words[:-1]:  # Word
+                text_ready.setText(text_ready.toPlainText() + word + " ")
+
+            if dash is True:  # DASH
+                def_dash = _dash(words[-1], is_dash, is_add_text)
+                is_dash = def_dash[0]
+                is_add_text = def_dash[1]
+
+            if is_dash is False:  # BLOCK
+                is_add_text = _block(words[-1], is_add_text)
+            else:
+                is_dash = False
+
+            if is_add_text is False:  # OTHER WORDS
+                text_ready.setText(text_ready.toPlainText() + words[-1] + " ")
+            else:
+                is_add_text = False
+
+            if progress.value() < 100:  # PROGRESS
+                self.current_percent_progress += percent
+                progress.setValue(int(self.current_percent_progress))
+
+            sleep(0.1)
+
     @Slot()
     def activate_btn_finish(self) -> None:
         """
@@ -354,57 +455,16 @@ class Content(QWidget):
             percent_progress = __count_percent_progress(
                 text_create_without_new_lines
             )
-
-            # DATA
             data = self.parent.data_settings_file
-            dash = data["dash"]
-            block = data["block"]
 
-            is_dash = False
-            is_add_text = False
-
-            _num_lines = 0
-            for line in text_create_without_new_lines:  # Line
-                self.status.setText(
-                    text_for_progress_line_number + str(_num_lines)
-                )
-                _num_lines += 1
-
-                words = split(r"\s", line)
-                for word in words[:-1]:  # Word
-                    text_ready.setText(text_ready.toPlainText() + word + " ")
-
-                if dash is True:  # DASH
-                    if words[-1][-1] in ("-", "-", "–", "—", "‒", "﹘"):
-                        is_dash = True
-                        is_add_text = True
-                        text_ready.setText(
-                            text_ready.toPlainText() + words[-1][:-1]
-                        )
-
-                if is_dash is False:  # BLOCK
-                    if words[-1][-1] in block:
-                        is_add_text = True
-                        text_ready.setText(
-                            text_ready.toPlainText() + words[-1]
-                        )
-                        if text_create_without_new_lines[-1] != line:
-                            text_ready.setText(text_ready.toPlainText() + "\n")
-                else:
-                    is_dash = False
-
-                if is_add_text is False:  # for OTHER WORDS
-                    text_ready.setText(
-                        text_ready.toPlainText() + words[-1] + " "
-                    )
-                else:
-                    is_add_text = False
-
-                if progress.value() < 100:  # PROGRESS
-                    self.current_percent_progress += percent_progress
-                    progress.setValue(int(self.current_percent_progress))
-
-                sleep(0.1)
+            self.__finish(
+                data,
+                percent_progress,
+                text_for_progress_line_number,
+                text_create_without_new_lines,
+                text_ready,
+                progress
+            )
 
             if progress.value() < 100:  # PROGRESS
                 progress.setValue(100)
