@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Editing The «Content» CLASS («__finish» : TITLE)
-# Modification Date: 2023.11.11, 06:39 PM
+# Past Modification: Editing The «Content» CLASS («__finish» : TITLE)
+# Last Modification: Editing The «Content» CLASS («__finish» : LIST)
+# Modification Date: 2023.11.11, 08:32 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -277,7 +277,7 @@ class Content(QWidget):
                 is_title = True
 
                 line = line[2:].strip()
-                if _num_line == 1:
+                if _num_line == 2:
                     text_ready.setText(text_ready.toPlainText() + line)
                 else:
                     text_ready.setText(
@@ -287,6 +287,34 @@ class Content(QWidget):
                 text_ready.setText(text_ready.toPlainText() + "\n\n")
 
             return is_title
+
+        def _list(
+            line: list[str], is_list: bool, is_add_text: bool
+        ) -> tuple[bool]:
+            """
+            Line to be TESTED with LIST
+
+            ---
+            PARAMETERS:
+            - line: list[str] -> Line to CHECK
+            - is_list: bool -> Meeting The LIST (True || False)
+            - is_add_text: bool -> The LINE has been Added (True || False)
+            ---
+            RESULT: (is_list, is_add_text)
+            """
+
+            if line[-1][-1] == ";":
+                is_list = True
+                is_add_text = True
+                text_ready.setText(
+                    text_ready.toPlainText() + "\t" + " ".join(line) + "\n"
+                )
+            else:
+                is_list = False
+                is_add_text = False
+
+            result = (is_list, is_add_text)
+            return result
 
         def _dash(word: str, is_dash: bool, is_add_text: bool) -> tuple[bool]:
             """
@@ -331,27 +359,38 @@ class Content(QWidget):
 
         # DATA
         title = data["title"]
+        lists = data["list"]
         dash = data["dash"]
         block = data["block"]
 
         # DOTS
         is_title = False
+        is_list = False
         is_dash = False
         is_add_text = False
 
-        _num_lines = 0
+        _num_lines = 1
         for line in text:  # Line
             self.status.setText(status + str(_num_lines))
             _num_lines += 1
 
+            if len(line) == 0:
+                continue
+
             if title is True:  # TITLE
                 is_title = _title(_num_lines, line, is_title)
                 if is_title is True:
-                    print(line)
                     is_title = False
                     continue
 
             words = split(r"\s", line)
+            if is_list is True:  # LIST
+                def_list = _list(words, is_list, is_add_text)
+                is_list = def_list[0]
+                is_add_text = def_list[1]
+                if is_list is True:
+                    continue
+
             for word in words[:-1]:  # Word
                 text_ready.setText(text_ready.toPlainText() + word + " ")
 
@@ -360,8 +399,15 @@ class Content(QWidget):
                 is_dash = def_dash[0]
                 is_add_text = def_dash[1]
 
-            if is_dash is False:  # BLOCK
-                is_add_text = _block(words[-1], is_add_text)
+            if is_dash is False:  # BLOCK && LIST
+                if (lists is True) and (words[-1][-1] == ":"):  # LIST
+                    is_list = True
+                    is_add_text = True
+                    text_ready.setText(
+                        text_ready.toPlainText() + words[-1] + "\n"
+                    )
+                if (lists is False) or (is_list is False):  # BLOCK
+                    is_add_text = _block(words[-1], is_add_text)
             else:
                 is_dash = False
 
