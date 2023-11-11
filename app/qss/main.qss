@@ -7,7 +7,7 @@ Result: Ready to Use STYLE
 
 Past Modification: Adding The «MESSAGE BOX» STYLE BLOCK
 Last Modification: Editing The «STRINGS» STYLE BLOCK (TEXT)
-Modification Date: 2023.11.07, 01:19 PM
+Modification Date: 2023.11.11, 04:58 PM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -214,7 +214,7 @@ QFrame#header_modal_settings QLabel {
   font-size: 15px;
   color: #EEEEEE;
 }
-QFrame#header_modal_settings QLabel#settings_checkboxes_one_part {
+QFrame#header_modal_settings QLabel#settings_checkboxes_find {
   font-weight: bold;
 }
 QFrame#header_modal_settings QLabel#settings_title_edits {
