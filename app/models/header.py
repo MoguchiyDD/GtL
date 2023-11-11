@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «HeaderModal» CLASS («save_settings» STRING)
-# Last Modification: Editing The «HeaderModal» CLASS («page_settings» DATA)
-# Modification Date: 2023.11.07, 05:08 PM
+# Past Modification: Editing The «HeaderModal» CLASS (MAIN GROUP)
+# Last Modification: Checking CODE The PEP8
+# Modification Date: 2023.11.11, 04:57 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -227,12 +227,14 @@ class HeaderModal(QWidget):
             )
 
         data = self.parent.parent.data_settings_file
+        main_data_title = data["title"]
+        main_data_list = data["list"]
         main_data_dash = data["dash"]
         main_data_textbox = data["block"]
 
         # MODAL WINDOW
         self.setWindowTitle(text_for_title)
-        self.setFixedSize(384, 422)
+        self.setFixedSize(384, 469)
 
         frame = QFrame()
         frame.setObjectName("header_modal_settings")
@@ -246,6 +248,8 @@ class HeaderModal(QWidget):
 
         # GROUPS
         self.main_group = self.__settings_main_group(
+            main_data_title,
+            main_data_list,
             main_data_dash,
             " ".join(main_data_textbox)
         )
@@ -335,6 +339,39 @@ class HeaderModal(QWidget):
         frame.setLayout(layout)
         return frame
 
+    def __settings_group_checkboxes(
+        self, checked: bool, *text: str
+    ) -> QHBoxLayout:
+        """
+        Creates 1 HORIZONTAL LAYOUT with CHECKBOX and TEXT Together
+
+        ---
+        PARAMETERS:
+        - checked: bool -> The Boolean from CHECKBOX
+        - *text: str -> The LIST with TEXT
+        ---
+        RESULT: HORIZONTAL LAYOUT
+        """
+
+        checkbox_layout = QHBoxLayout()
+        checkbox_layout.setContentsMargins(0, 0, 0, 0)
+        checkbox_layout.setSpacing(0)
+        checkbox_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+
+        checkbox = QCheckBox()
+        checkbox.setObjectName("settings_checkboxes")
+        checkbox.setFont(QFont("Ubuntu"))
+        checkbox.setChecked(checked)
+        checkbox_layout.addWidget(checkbox)
+
+        for tt in text:
+            part = QLabel(tt[0])
+            part.setObjectName(tt[1])
+            part.setFont(QFont("Ubuntu"))
+            checkbox_layout.addWidget(part)
+
+        return checkbox_layout
+
     def __settings_main_group(self, *data: any) -> QGroupBox:
         """
         CREATE 1 MAIN GROUP for SETTINGS TEMPLATE
@@ -349,6 +386,12 @@ class HeaderModal(QWidget):
         # STRINGS
         text_for_main_group = self.parent.str_val.string_values(
             "ru_settings_main"
+        )
+        text_for_main_title = self.parent.str_val.strings_values_idx(
+            "ru_settings_main_title", 2
+        )
+        text_for_main_list = self.parent.str_val.strings_values_idx(
+            "ru_settings_main_list", 2, 4
         )
         text_for_main_dash = self.parent.str_val.strings_values_idx(
             "ru_settings_main_dash", 1
@@ -374,30 +417,25 @@ class HeaderModal(QWidget):
         main_frame_layout = QVBoxLayout()
         main_frame_layout.setContentsMargins(0, 0, 0, 0)
 
-        # DASH
-        dash_checkbox_layout = QHBoxLayout()
-        dash_checkbox_layout.setContentsMargins(0, 0, 0, 0)
-        dash_checkbox_layout.setSpacing(0)
-
-        dash = QCheckBox()
-        dash.setObjectName("settings_checkboxes")
-        dash.setFont(QFont("Ubuntu"))
-        dash.setChecked(data[0])  # dash
-
-        dash_zero_part = QLabel(text_for_main_dash[1])
-        dash_zero_part.setObjectName("settings_checkboxes_find")
-        dash_zero_part.setFont(QFont("Ubuntu"))
-        dash_one_part = QLabel(text_for_main_dash[0])
-        dash_one_part.setObjectName("settings_checkboxes_one_part")
-        dash_one_part.setFont(QFont("Ubuntu"))
-        dash_two_part = QLabel(text_for_main_dash[2])
-        dash_two_part.setObjectName("settings_checkboxes_two_part")
-        dash_two_part.setFont(QFont("Ubuntu"))
-
-        dash_checkbox_layout.addWidget(dash)
-        dash_checkbox_layout.addWidget(dash_zero_part)
-        dash_checkbox_layout.addWidget(dash_one_part)
-        dash_checkbox_layout.addWidget(dash_two_part)
+        # CHECKBOXES
+        title_checkbox_layout = self.__settings_group_checkboxes(  # TITLE
+            data[0],  # title
+            (text_for_main_title[1], "settings_checkboxes_one_part"),
+            (text_for_main_title[0][0], "settings_checkboxes_find")
+        )
+        list_checkbox_layout = self.__settings_group_checkboxes(  # LIST
+            data[1],  # list
+            (text_for_main_list[1], "settings_checkboxes_one_part"),
+            (text_for_main_list[0][0], "settings_checkboxes_find"),
+            (text_for_main_list[2], "settings_checkboxes_two_part"),
+            (text_for_main_list[0][1], "settings_checkboxes_find")
+        )
+        dash_checkbox_layout = self.__settings_group_checkboxes(  # DASH
+            data[2],  # dash
+            (text_for_main_dash[1], "settings_checkboxes_one_part"),
+            (text_for_main_dash[0][0], "settings_checkboxes_find"),
+            (text_for_main_dash[2], "settings_checkboxes_two_part")
+        )
 
         # TITLE PUNCTUATIONS
         title_punctuations = QLabel(text_for_title_punctuations)
@@ -407,7 +445,7 @@ class HeaderModal(QWidget):
         # PUNCTUATIONS
         self.punctuations = QTextEdit()
         self.punctuations.setObjectName("settings_edits")
-        self.punctuations.setText(data[1])  # block
+        self.punctuations.setText(data[3])  # block
         self.punctuations.setFont(QFont("Ubuntu"))
         self.punctuations.setFixedHeight(73)
 
@@ -417,6 +455,8 @@ class HeaderModal(QWidget):
         hint_punctuations.setFont(QFont("Lora"))
         hint_punctuations.setWordWrap(True)
 
+        main_frame_layout.addLayout(title_checkbox_layout)
+        main_frame_layout.addLayout(list_checkbox_layout)
         main_frame_layout.addLayout(dash_checkbox_layout)
         main_frame_layout.addWidget(title_punctuations)
         main_frame_layout.addWidget(self.punctuations)
@@ -443,11 +483,18 @@ class HeaderModal(QWidget):
 
         # MAIN GROUP
         main_frame = self.main_group.findChild(QFrame, "settings_main_group")
-        main_dash = main_frame.findChild(QCheckBox, "settings_checkboxes")
+        main_checkboxes = main_frame.findChildren(
+            QCheckBox, "settings_checkboxes"
+        )
+        main_title = main_checkboxes[0]
+        main_list = main_checkboxes[1]
+        main_dash = main_checkboxes[2]
         main_textbox = main_frame.findChild(QTextEdit, "settings_edits")
         main_textbox_set_list = list(set(main_textbox.toPlainText().split()))
 
         new_data = {
+            "title": main_title.isChecked(),
+            "list": main_list.isChecked(),
             "dash": main_dash.isChecked(),
             "block": main_textbox_set_list
         }
