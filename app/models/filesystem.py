@@ -4,9 +4,9 @@
 # Goal: Writing and Reading IMPORTANT FILES
 # Result: AUTOMATED SYSTEM with FILES
 #
-# Past Modification: Editing The «FileSystem» CLASS (ADDING «_valid_true_keys»)
-# Last Modification: Editing The «FileSystem» CLASS (RES «read_file_settings»)
-# Modification Date: 2023.11.07, 05:01 PM
+# Past Modification: Editing The «FileSystem» CLASS (RES «read_file_settings»)
+# Last Modification: Editing The «FileSystem» CLASS (EDITING «TEMPLATE»)
+# Modification Date: 2023.11.11, 01:55 PM
 #
 # Create Date: 2023.11.01, 10:01 PM
 
@@ -41,6 +41,8 @@ class FileSystem:
     FOLDER = ".settings"
     FILE_SETTINGS = ".settings.json"
     TEMPLATE = {
+        "title": True,
+        "list": True,
         "dash": True,
         "block": [".", "?", "!"]
     }
