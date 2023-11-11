@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Refactoring CODE
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.11.11, 06:03 AP
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Editing The «Content» CLASS («__finish» : TITLE)
+# Modification Date: 2023.11.11, 06:39 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -14,12 +14,11 @@
 from PySide6.QtCore import (
     Qt,
     Slot,
-    QObject,
     QTimer,
     QPropertyAnimation,
     QSequentialAnimationGroup
 )
-from PySide6.QtGui import QFont, QGuiApplication, QTextCursor
+from PySide6.QtGui import QGuiApplication, QTextCursor, QFont
 from PySide6.QtWidgets import (
     QWidget,
     QFrame,
@@ -261,6 +260,34 @@ class Content(QWidget):
         - progress: QProgressBar -> The PROGRESS
         """
 
+        def _title(_num_line: int, line: str, is_title: bool) -> bool:
+            """
+            Line to be TESTED with TITLE
+
+            ---
+            PARAMETERS:
+            - _num_line: int -> Number of The LINE
+            - line: str -> Line to CHECK
+            - is_title: bool -> Meeting The TITLE (True || False)
+            ---
+            RESULT: is_title
+            """
+
+            if line[:2] == "//":
+                is_title = True
+
+                line = line[2:].strip()
+                if _num_line == 1:
+                    text_ready.setText(text_ready.toPlainText() + line)
+                else:
+                    text_ready.setText(
+                        text_ready.toPlainText() + "\n\n" + line
+                    )
+
+                text_ready.setText(text_ready.toPlainText() + "\n\n")
+
+            return is_title
+
         def _dash(word: str, is_dash: bool, is_add_text: bool) -> tuple[bool]:
             """
             Word to be TESTED with DASH
@@ -303,10 +330,12 @@ class Content(QWidget):
             return is_add_text
 
         # DATA
+        title = data["title"]
         dash = data["dash"]
         block = data["block"]
 
         # DOTS
+        is_title = False
         is_dash = False
         is_add_text = False
 
@@ -314,6 +343,13 @@ class Content(QWidget):
         for line in text:  # Line
             self.status.setText(status + str(_num_lines))
             _num_lines += 1
+
+            if title is True:  # TITLE
+                is_title = _title(_num_lines, line, is_title)
+                if is_title is True:
+                    print(line)
+                    is_title = False
+                    continue
 
             words = split(r"\s", line)
             for word in words[:-1]:  # Word
