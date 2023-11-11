@@ -7,9 +7,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Store All STRINGS of The SOFTWARE in 1 PLACE
 Result: Returns 1 Desired STRING via The «name» ATTRIBUTE («string_values» FUN)
 
-Past Modification: Editing The «MESSAGE BOX» String (RU : COPY 2nd BLOCK)
-Last Modification: Editing The «MESSAGE BOX» String (RU : FINISH)
-Modification Date: 2023.11.10, 04:33 PM
+Past Modification: Editing The «MESSAGE BOX» String (RU : FINISH)
+Last Modification: Editing The «SETTINGS» String (RU : MAIN TITLE && MAIN LIST)
+Modification Date: 2023.11.11, 02:12 PM
 
 Create Date: 2023.10.23, 02:49 PM
 -->
@@ -39,6 +39,8 @@ Create Date: 2023.10.23, 02:49 PM
     <!-- SETTINGS -->
     <string name="ru_settings_title">Настройки</string>
     <string name="ru_settings_main">Основное</string>
+    <string name="ru_settings_main_title">Заголовок из //</string>
+    <string name="ru_settings_main_list">Список из : + ;</string>
     <string name="ru_settings_main_dash">Убирать тире в конце каждой строки</string>
     <string name="ru_settings_main_title_punctuations">Пунктуации</string>
     <string name="settings_main_punctuations">. ? !</string>
