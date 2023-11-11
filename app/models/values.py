@@ -4,9 +4,9 @@
 # Goal: Parse XML Files
 # Result: Returning The RESULT through an ATTRIBUTE with The NAME
 #
-# Past Modification: Adding The «StringsValues» CLASS
-# Last Modification: Adding The «StringsValues» CLASS («strings_values_idx»)
-# Modification Date: 2023.10.30, 02:33 PM
+# Past Modification: Adding The «StringsValues» CLASS («strings_values_idx»)
+# Last Modification: Editing The «StringsValues» CLASS («strings_values_idx»)
+# Modification Date: 2023.11.11, 04:53 PM
 #
 # Create Date: 2023.10.23, 03:23 PM
 
@@ -62,7 +62,7 @@ class StringsValues:
 
         return result
 
-    def strings_values_idx(self, attribute_name: str, idx: int) -> str:
+    def strings_values_idx(self, attribute_name: str, *idx: int) -> str:
         """
         From The FILE "app/values/string.sml" it produces The RESULT through
         The ATTRIBUTE "name" + Finds The Search WORD
@@ -71,18 +71,30 @@ class StringsValues:
         - attribute_name: str -> ATTRIBUTE with The NAME
         - idx: int -> INDEX of The Search WORD
         ---
-        RESULT: ("", "", "") || ("FIND WORD", "1 PART", "2 PART")
+        RESULT: ("", "", "") || (("FIND WORD"), "1 PART", "2 PART")
         """
 
         result = ("", "", "")
 
         val = self.string_values(attribute_name)
         len_val = len(val)
-        if (len_val >= 1) and (idx < len_val):
-            list_val = val.split(" ")
-            find_word = list_val[idx]
-            parts = val.split(find_word)
-            result = (find_word, parts[0], parts[1])
+        if (len_val >= 1):
+            list_val = val.split()
+
+            parts = []
+            find_parts = []
+
+            old_idx = 0
+            for i in idx:
+                one_part = [word for word in list_val[old_idx:i]]
+                find_parts.append(" " + list_val[i] + " ")
+                parts.append(" ".join(one_part))
+                one_part = []
+                old_idx = i + 1
+
+            parts.append(" ".join(list_val[idx[-1] + 1:]))
+            parts.insert(0, tuple(find_parts))
+            result = tuple(parts)
 
         return result
 
