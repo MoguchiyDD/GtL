@@ -7,9 +7,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Store All STRINGS of The SOFTWARE in 1 PLACE
 Result: Returns 1 Desired STRING via The «name» ATTRIBUTE («string_values» FUN)
 
-Past Modification: Adding The «INFORMATION» String (RU)
-Last Modification: Editing The «INFORMATION» String (RU : ALL)
-Modification Date: 2023.11.13, 03:12 AM
+Past Modification: Editing The «SOFTWARE» String (RU : «app_readme»)
+Last Modification: Editing The «MESSAGE BOX» String (RU : URL)
+Modification Date: 2023.11.13, 04:00 AM
 
 Create Date: 2023.10.23, 02:49 PM
 -->
@@ -18,6 +18,7 @@ Create Date: 2023.10.23, 02:49 PM
 
     <!-- SOFTWARE -->
 	<string name="app_title">GTL : Guide to Letters</string>
+	<string name="app_readme">https://github.com/MoguchiyDD/GtL/blob/main/README.md</string>
 
     <!-- HEADER -->
     <string name="header_title">Guide to Letters</string>
@@ -94,6 +95,8 @@ Create Date: 2023.10.23, 02:49 PM
     <string name="ru_success_msg_copy_second_block_text">Текст из второго блока с итоговым текстом успешно сохранился в буфер обмена</string>
     <string name="ru_info_msg_data_title">Исправление файла с настройками</string>
     <string name="ru_info_msg_data_text">Ключи из файла настроек были повреждены в связи с этим файл настроек вернулся к настройкам по умолчанию</string>
+    <string name="ru_error_msg_url_title">Что-то пошло не так..</string>
+    <string name="ru_error_msg_url_text">Видимо ситуация вышла из под контроля! В связи с этим вручную откройте в браузере https://github.com/MoguchiyDD</string>
     <string name="ru_error_msg_valid_length_title">Ошибка проверки по количеству символов</string>
     <string name="ru_error_msg_valid_length_text">Для соединения текста до нужной пунктуации требуется больше символов в текстовике «ТВОРЧЕСКИЙ БЕСПОРЯДОК»</string>
     <string name="ru_error_msg_copy_second_block_title">Что-то пошло не так..</string>
