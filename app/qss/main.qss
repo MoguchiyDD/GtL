@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Adding The «MESSAGE BOX» STYLE BLOCK
-Last Modification: Editing The «STRINGS» STYLE BLOCK (TEXT)
-Modification Date: 2023.11.11, 04:58 PM
+Past Modification: Editing The «STRINGS» STYLE BLOCK (TEXT)
+Last Modification: Adding The «INFORMATION» STYLE BLOCK
+Modification Date: 2023.11.12, 11:44 PM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -252,6 +252,27 @@ QFrame#header_modal_settings QPushButton#settings_btn_save {
 QFrame#header_modal_settings QPushButton#settings_btn_save:hover {
   background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #313131, stop: 1 #292929);
   border: 1px solid #292929;
+}
+
+/* ------------------------------------- */
+
+
+/* -------------- INFORMATION -------------- */
+
+QFrame#header_modal_information {
+  padding: 1em;
+}
+QFrame#header_modal_information QLabel#information_title {
+  margin-bottom: 0.65em;
+  font-size: 27px;
+  border-bottom: 0.1em double #EEEEEE;
+  border-radius: 10em;
+}
+QFrame#header_modal_information QLabel {
+  qproperty-alignment: AlignJustify;
+  padding-bottom: 0.35em;
+  font-size: 15px;
+  color: #EEEEEE;
 }
 
 /* ------------------------------------- */
