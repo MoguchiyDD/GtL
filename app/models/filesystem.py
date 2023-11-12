@@ -4,9 +4,9 @@
 # Goal: Writing and Reading IMPORTANT FILES
 # Result: AUTOMATED SYSTEM with FILES
 #
-# Past Modification: Editing The «FileSystem» CLASS (EDITING «TEMPLATE»)
-# Last Modification: Editing The «FileSystem» CLASS (EDITING «CHECKING FILE»)
-# Modification Date: 2023.11.12, 11:04 PM
+# Past Modification: Editing The «FileSystem» CLASS (EDITING «CHECKING FILE»)
+# Last Modification: Editing The «FileSystem» CLASS (ADDING «_failed_isfile»)
+# Modification Date: 2023.11.13, 05:22 AM
 #
 # Create Date: 2023.11.01, 10:01 PM
 
@@ -34,6 +34,8 @@ class FileSystem:
     - _check_existence_folder(self) -> None : Creates 1 FOLDER for The SETTINGS
     FILE if The FOLDER does not Exist and Writes The Finished TEMPLATE inside
     The FILE
+    - _failed_isfile() -> bool : Checks The «self.failed_isfile» VARIABLE to
+    Trigger The Check when The FILE in The FOLDER did not Exist
     - write_file_settings(self, data: dict[str, any]=TEMPLATE) -> None :
     Writes The SETTINGS FILE
     - read_file_settings(self) -> dict[str, any] : Reads The SETTINGS FILE
@@ -55,6 +57,7 @@ class FileSystem:
     ) -> None:
         self.basedir = path_main_file
         self.is_create_folder = False
+        self.failed_isfile = False
 
         self.path_file_system = path.dirname(__file__)
         self.path_folder_settings = path.join(path_main_file, self.FOLDER)
@@ -69,6 +72,8 @@ class FileSystem:
 
         if (overwrite_file) or (not isfile(self.path_file_settings)):
             self.write_file_settings()
+            if overwrite_file is False:
+                self.failed_isfile = True
 
     def _valid_true_keys(self, data: list[str]) -> bool:
         """
@@ -103,6 +108,20 @@ class FileSystem:
             mkdir(self.FOLDER)
             chdir("..")
             self.is_create_folder = True
+
+    def _failed_isfile(self) -> bool:
+        """
+        Checks The «self.failed_isfile» VARIABLE to Trigger The Check when
+        The FILE in The FOLDER did not Exist
+        ---
+        RESULT: True (NOT FILE) || False (HAVE FILE)
+        """
+
+        if self.failed_isfile:
+            self.failed_isfile = False
+            return True
+
+        return False
 
     def write_file_settings(self, data: dict[str, any]=TEMPLATE) -> None:
         """
