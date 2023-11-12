@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Editing The «STRINGS» STYLE BLOCK (TEXT)
-Last Modification: Adding The «INFORMATION» STYLE BLOCK
-Modification Date: 2023.11.12, 11:44 PM
+Past Modification: Adding The «INFORMATION» STYLE BLOCK
+Last Modification: Editing The «INFORMATION» STYLE BLOCK (ALL)
+Modification Date: 2023.11.13, 03:11 AM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -262,17 +262,59 @@ QFrame#header_modal_settings QPushButton#settings_btn_save:hover {
 QFrame#header_modal_information {
   padding: 1em;
 }
+QFrame#header_modal_information,
+QFrame#header_modal_information QScrollArea QFrame#header_modal_information_scroll{
+  background-color: #404040;
+}
+
+/* TITLE */
+QFrame#header_modal_information QLabel {
+  qproperty-alignment: AlignJustify;
+  font-size: 15px;
+  color: #EEEEEE;
+}
 QFrame#header_modal_information QLabel#information_title {
   margin-bottom: 0.65em;
   font-size: 27px;
   border-bottom: 0.1em double #EEEEEE;
-  border-radius: 10em;
+  border-radius: 0px;
 }
-QFrame#header_modal_information QLabel {
-  qproperty-alignment: AlignJustify;
-  padding-bottom: 0.35em;
-  font-size: 15px;
+QFrame#header_modal_information QLabel#information_second_title {
+  margin-bottom: 0.65em;
+  font-size: 21px;
+  border-bottom: 0.1em solid #EEEEEE;
+  border-radius: 0px;
+}
+
+/* SCROLL */
+QFrame#header_modal_information QScrollArea {
+  border: 0px;
+}
+QFrame#header_modal_information QFrame#header_modal_information_scroll {
+  padding-right: 1em;
+}
+
+/* BLOCK */
+QFrame#header_modal_information QFrame#header_modal_information_scroll QFrame#information_block {
+  margin-top: 1.75em;
+  padding: 1.15em;
+  background-color: qradialgradient(cx:0, cy:0, radius: 1, fx:0.5, fy:0.5, stop:0 #292929, stop:1 #303030);
+  border: 1px solid #292929;
+  border-radius: 0.5em;
+}
+QFrame#header_modal_information QFrame#header_modal_information_scroll QFrame#information_block QLabel#information_group_title {
+  padding-left: 0.1em;
+  font-size: 17px;
+}
+QFrame#header_modal_information QFrame#header_modal_information_scroll QFrame#information_block QGroupBox {
+  border: none;
+}
+QFrame#header_modal_information QFrame#header_modal_information_scroll QFrame#information_block QFrame#information_group {
+  padding: 1em;
   color: #EEEEEE;
+  background-color: #212121;
+  border: 1px solid #212121;
+  border-radius: 0.35em;
 }
 
 /* ------------------------------------- */
