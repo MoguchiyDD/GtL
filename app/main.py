@@ -4,9 +4,9 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Adding The «MainWindow» CLASS (basedir)
-# Last Modification: Adding The «MainWindow» CLASS (RAM (Settings File))
-# Modification Date: 2023.11.07, 05:07 PM
+# Past Modification: Adding The «MainWindow» CLASS (RAM (Settings File))
+# Last Modification: Editing The «MainWindow» CLASS (RAM (Settings File))
+# Modification Date: 2023.11.13, 05:24 AM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -59,14 +59,9 @@ class MainWindow(QMainWindow):
         # RAM (Settings File)
         filesystem = FileSystem(self.basedir)
         self.data_settings_file = filesystem.read_file_settings()
-        valid_keys = filesystem._valid_true_keys(
-            list(self.data_settings_file.keys())
-        )
-        if valid_keys is False:
-            filesystem.write_file_settings()
-            self.data_settings_file = filesystem.TEMPLATE
 
-            # INFO
+        is_error_filesystem = filesystem._failed_isfile()
+        if is_error_filesystem is True:  # INFO
             text_for_info_msg_data_title = str_val.string_values(
                 "ru_info_msg_data_title"
             )
@@ -79,6 +74,27 @@ class MainWindow(QMainWindow):
                 text_for_info_msg_data_text,
                 self
             )
+        else:
+            valid_keys = filesystem._valid_true_keys(
+                list(self.data_settings_file.keys())
+            )
+            if valid_keys is False:
+                filesystem.write_file_settings()
+                self.data_settings_file = filesystem.TEMPLATE
+
+                # INFO
+                text_for_info_msg_data_title = str_val.string_values(
+                    "ru_info_msg_data_title"
+                )
+                text_for_info_msg_data_text = str_val.string_values(
+                    "ru_info_msg_data_text"
+                )
+                MessageBox(
+                    "app/icons/info.svg",
+                    text_for_info_msg_data_title,
+                    text_for_info_msg_data_text,
+                    self
+                )
 
         # TITLE
         window_title = str_val.string_values("app_title")
