@@ -4,15 +4,16 @@
 # Goal: Writing and Reading IMPORTANT FILES
 # Result: AUTOMATED SYSTEM with FILES
 #
-# Past Modification: Editing The «FileSystem» CLASS (RES «read_file_settings»)
-# Last Modification: Editing The «FileSystem» CLASS (EDITING «TEMPLATE»)
-# Modification Date: 2023.11.11, 01:55 PM
+# Past Modification: Editing The «FileSystem» CLASS (EDITING «TEMPLATE»)
+# Last Modification: Editing The «FileSystem» CLASS (EDITING «CHECKING FILE»)
+# Modification Date: 2023.11.12, 11:04 PM
 #
 # Create Date: 2023.11.01, 10:01 PM
 
 
 from json import dumps, loads
 from os import path, chdir, mkdir
+from os.path import isfile
 
 
 # ------------ FILE SYSTEM ------------
@@ -41,8 +42,8 @@ class FileSystem:
     FOLDER = ".settings"
     FILE_SETTINGS = ".settings.json"
     TEMPLATE = {
-        "title": True,
-        "list": True,
+        "title": False,
+        "list": False,
         "dash": True,
         "block": [".", "?", "!"]
     }
@@ -65,7 +66,8 @@ class FileSystem:
         if self.is_create_folder is True:
             self.write_file_settings()
             self.is_create_folder = False
-        elif overwrite_file is True:
+
+        if (overwrite_file) or (not isfile(self.path_file_settings)):
             self.write_file_settings()
 
     def _valid_true_keys(self, data: list[str]) -> bool:
