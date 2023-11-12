@@ -4,18 +4,21 @@
 # Goal: Create a FOOTER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a FOOTER TEMPLATE
 #
-# Past Modification: Install FONTS
-# Last Modification: Update TEXT
-# Modification Date: 2023.10.30, 02:34 PM
+# Past Modification: Update TEXT
+# Last Modification: Editing The «Footer» CLASS (TEXT + URL)
+# Modification Date: 2023.11.13, 04:44 AM
 #
 # Create Date: 2023.10.24, 05:17 PM
 
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QWidget, QFrame, QVBoxLayout, QLabel
+from PySide6.QtWidgets import QWidget, QFrame, QHBoxLayout, QLabel, QPushButton
 
 from .values import StringsValues
+from .messages import MessageBox
+
+from webbrowser import open
 
 
 # ------------ FOOTER ------------
@@ -32,6 +35,9 @@ class Footer(QWidget):
     ---
     FUNCTIONS:
     - page() -> QFrame : Create 1 FOOTER FRAME
+    ---
+    SLOTS:
+    - open_url() -> None : Opens The URL in The BROWSER
     """
 
     def __init__(
@@ -41,6 +47,8 @@ class Footer(QWidget):
     ) -> None:
         super(Footer, self).__init__(parent, flags)
         self.setParent(parent)
+
+        self.str_val = StringsValues()
 
         template = self.page()
         parent.main_layout.addWidget(
@@ -55,17 +63,57 @@ class Footer(QWidget):
         RESULT: FOOTER TEMPLATE
         """
 
+        # STRINGS
+        text_zero = self.str_val.string_values("footer_title_zero")
+        text_one = self.str_val.string_values("footer_title_one")
+        text_two = self.str_val.string_values("footer_title_two")
+
         frame = QFrame()
         frame.setObjectName("footer")
 
-        text = StringsValues().string_values("footer_title")
-        title = QLabel(text)
-        title.setFont(QFont("Lora"))
+        title_zero = QLabel(text_zero)
+        title_zero.setFont(QFont("Lora"))
 
-        layout = QVBoxLayout()
-        layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignCenter)
+        title_one = QPushButton(text_one)
+        title_one.setFont(QFont("Lora"))
+        title_one.setFixedWidth(172)
+        title_one.clicked.connect(self.open_url)
+
+        title_two = QLabel(text_two)
+        title_two.setFont(QFont("Lora"))
+
+        layout = QHBoxLayout()
+        layout.setSpacing(1)
+
+        layout.addWidget(title_zero, alignment=Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(title_one)
+        layout.addWidget(title_two, alignment=Qt.AlignmentFlag.AlignLeft)
 
         frame.setLayout(layout)
         return frame
+
+    @Slot()
+    def open_url(self) -> None:
+        """
+        Opens The URL in The BROWSER
+        """
+
+        try:
+            text_git = self.str_val.string_values("app_git")
+            open(text_git)
+        except:
+            text_error_msg_url_title = self.str_val.string_values(
+                "ru_error_msg_url_title"
+            )
+            text_error_msg_url_text = self.str_val.string_values(
+                "ru_error_msg_url_text"
+            )
+            MessageBox(  # ERROR
+                "app/icons/error.svg",
+                text_error_msg_url_title,
+                text_error_msg_url_text,
+                self
+            )
+
 
 # --------------------------------
