@@ -7,9 +7,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Store All STRINGS of The SOFTWARE in 1 PLACE
 Result: Returns 1 Desired STRING via The «name» ATTRIBUTE («string_values» FUN)
 
-Past Modification: Editing The «MESSAGE BOX» String (RU : FINISH)
-Last Modification: Editing The «SETTINGS» String (RU : MAIN TITLE && MAIN LIST)
-Modification Date: 2023.11.11, 02:12 PM
+Past Modification: Editing The «SETTINGS» String (RU : MAIN TITLE && MAIN LIST)
+Last Modification: Adding The «INFORMATION» String (RU)
+Modification Date: 2023.11.12, 11:19 PM
 
 Create Date: 2023.10.23, 02:49 PM
 -->
@@ -46,6 +46,10 @@ Create Date: 2023.10.23, 02:49 PM
     <string name="settings_main_punctuations">. ? !</string>
     <string name="ru_settings_main_hint_punctuations">Пробелы — разделители между пунктуациями. Пунктуации могут открываться по-разному из-за проверки на уникальность символов</string>
     <string name="ru_settings_btn_save">Сохранить</string>
+
+    <!-- INFORMATION -->
+    <string name="ru_information_lost_and_found">Бюро Находок</string>
+    <string name="ru_information_title">Информация</string>
 
     <!-- LICENSE -->
     <string name="license_part_zero">Copyright (c) 2023 MoguchiyDD</string>
