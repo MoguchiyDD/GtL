@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «HeaderModal» CLASS («page_information»)
+# Past Modification: Editing The «HeaderModal» CLASS (Adding URL)
 # Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.11.13, 03:23 AM
+# Modification Date: 2023.11.13, 03:59 AM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -29,6 +29,8 @@ from PySide6.QtWidgets import (
 from .filesystem import FileSystem
 from .values import StringsValues
 from .messages import MessageBox
+
+from webbrowser import open
 
 
 # --------------- HEADER ---------------
@@ -185,6 +187,7 @@ class HeaderModal(QWidget):
     ---
     SLOTS:
     - save_settings() -> None : Saving NEW DATA to 1 SETTINGS FILE
+    - open_url() -> None : Opens The URL in The BROWSER
     """
 
     def __init__(
@@ -409,6 +412,9 @@ class HeaderModal(QWidget):
         text_for_main = self.parent.str_val.string_values(
             "ru_information_main"
         )
+        text_for_main_url = self.parent.str_val.string_values(
+            "ru_information_main_url"
+        )
         text_for_group_before = self.parent.str_val.string_values(
             "ru_information_group_before"
         )
@@ -480,6 +486,12 @@ class HeaderModal(QWidget):
         main_text.setFont(QFont("Ubuntu"))
         main_text.setWordWrap(True)
 
+        # SCROLL : MAIN URL
+        btn_url = QPushButton(text_for_main_url)
+        btn_url.setObjectName("information_main_url")
+        btn_url.setFont(QFont("Ubuntu"))
+        btn_url.clicked.connect(self.open_url)
+
         # SCROLL : TITLE && LIST && DASH
         second_title = __block(
             text_for_second_title,
@@ -498,6 +510,7 @@ class HeaderModal(QWidget):
         )
 
         layout_scroll.addWidget(main_text)
+        layout_scroll.addWidget(btn_url, alignment=Qt.AlignmentFlag.AlignLeft)
         layout_scroll.addWidget(second_title)
         layout_scroll.addWidget(second_list)
         layout_scroll.addWidget(second_dash)
@@ -537,11 +550,11 @@ class HeaderModal(QWidget):
 
         # MODAL WINDOW
         self.setWindowTitle(text_for_title)
-        self.setStyleSheet("background-color: #404040;")
         self.setFixedSize(675, 500)
 
         frame = QFrame()
         frame.setObjectName("header_modal_license")
+        frame.setFixedHeight(500)
 
         layout = QVBoxLayout()
 
@@ -753,5 +766,28 @@ class HeaderModal(QWidget):
             text_for_success_msg_save_text,
             self
         )
+
+    @Slot()
+    def open_url(self) -> None:
+        """
+        Opens The URL in The BROWSER
+        """
+
+        try:
+            text_readme = self.parent.str_val.string_values("app_readme")
+            open(text_readme)
+        except:
+            text_error_msg_url_title = self.parent.str_val.string_values(
+                "ru_error_msg_url_title"
+            )
+            text_error_msg_url_text = self.parent.str_val.string_values(
+                "ru_error_msg_url_text"
+            )
+            MessageBox(  # ERROR
+                "app/icons/error.svg",
+                text_error_msg_url_title,
+                text_error_msg_url_text,
+                self
+            )
 
 # --------------------------------------
