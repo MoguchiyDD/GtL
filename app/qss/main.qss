@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Editing The «INFORMATION» STYLE BLOCK (ALL)
-Last Modification: Editing The «INFORMATION» STYLE BLOCK (URL)
-Modification Date: 2023.11.13, 04:00 AM
+Past Modification: Editing The «INFORMATION» STYLE BLOCK (URL)
+Last Modification: Editing The «FOOTER» STYLE BLOCK (BUTTON)
+Modification Date: 2023.11.13, 04:37 AM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -169,6 +169,21 @@ QFrame#footer QLabel {
   font-size: 13px;
   font-weight: bold;
   color: #EEEEEE;
+}
+QFrame#footer QPushButton {
+  margin-right: -0.17em;
+  font-size: 13px;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #EEEEEE;
+  background-color: none;
+  border: none;
+  border-radius: none;
+  outline: none;
+}
+QFrame#footer QPushButton:hover {
+  text-decoration: none;
+  color: #B71B0F;
 }
 
 /* ------------------------------------- */
