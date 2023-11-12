@@ -7,9 +7,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Store All STRINGS of The SOFTWARE in 1 PLACE
 Result: Returns 1 Desired STRING via The «name» ATTRIBUTE («string_values» FUN)
 
-Past Modification: Editing The «SETTINGS» String (RU : MAIN TITLE && MAIN LIST)
-Last Modification: Adding The «INFORMATION» String (RU)
-Modification Date: 2023.11.12, 11:19 PM
+Past Modification: Adding The «INFORMATION» String (RU)
+Last Modification: Editing The «INFORMATION» String (RU : ALL)
+Modification Date: 2023.11.13, 03:12 AM
 
 Create Date: 2023.10.23, 02:49 PM
 -->
@@ -50,6 +50,33 @@ Create Date: 2023.10.23, 02:49 PM
     <!-- INFORMATION -->
     <string name="ru_information_lost_and_found">Бюро Находок</string>
     <string name="ru_information_title">Информация</string>
+    <string name="ru_information_main">Вставьте текст в 1-ый текстовой блок «ТВОРЧЕСКИЙ БЕСПОРЯДОК». Запустите программу через кнопку «ЗАПУСК ПРОГРАММЫ». В ходе программы будет проверен каждый пробел и строка. Строки будут сращиваться вместе до тех пор пока не встретят символ в последнем слове из «ПУНКТУАЦИИ» (настройки). Когда символ в строке к концу слова был найден — строка закончится, а следущие строки начнётся добавляться с новой строки. Сохраняет абзацы, если нужный символ в строке последнем слове из «ПУНКТУАЦИИ» (настройки) не был найден.</string>
+    <string name="ru_information_main_url">Подробнее</string>
+    <string name="ru_information_group_before">До</string>
+    <string name="ru_information_group_after">После</string>
+    <string name="ru_information_second_title">Заголовок</string>
+    <string name="ru_information_second_title_before">Текст тексту рознь.
+// Заголовок
+Текст читают, а не карякают!</string>
+    <string name="ru_information_second_title_after">Текст тексту рознь.
+    
+    
+Заголовок
+    
+Текст читают, а не карякают!</string>
+    <string name="ru_information_second_list">Список</string>
+    <string name="ru_information_second_list_before">Текст тексту рознь:
+Потому что это текст #0;
+Потому что это текст #1;
+Текст читают, а не карякают!</string>
+    <string name="ru_information_second_list_after">Текст тексту рознь:
+    Потому что это текст #0;
+    Потому что это текст #1;
+Текст читают, а не карякают!</string>
+    <string name="ru_information_second_dash">Тире</string>
+    <string name="ru_information_second_dash_before">Текст текс-
+ту рознь.</string>
+    <string name="ru_information_second_dash_after">Текст тексту рознь.</string>
 
     <!-- LICENSE -->
     <string name="license_part_zero">Copyright (c) 2023 MoguchiyDD</string>
