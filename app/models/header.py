@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «HeaderModal» CLASS (MAIN GROUP)
-# Last Modification: Adding The «HeaderModal» and The «Header» CLASS (BTN INFO)
-# Modification Date: 2023.11.12, 11:43 PM
+# Past Modification: Editing The «HeaderModal» CLASS («page_information»)
+# Last Modification: Checking CODE The PEP8
+# Modification Date: 2023.11.13, 03:23 AM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -19,6 +19,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QHBoxLayout,
     QGroupBox,
+    QScrollArea,
     QLabel,
     QTextEdit,
     QCheckBox,
@@ -299,6 +300,105 @@ class HeaderModal(QWidget):
         RESULT: INFORMATION TEMPLATE
         """
 
+        def __title(name: str, object_name: str) -> QLabel:
+            """
+            Makes up a SIMPLE TITLE
+
+            ---
+            PARAMETERS:
+            - name: str -> The TEXT for The TITLE
+            - object_name: str -> The OBJECT NAME of The TITLE
+            ---
+            RESULT: The TITLE
+            """
+
+            title = QLabel(name)
+            title.setObjectName(object_name)
+            title.setFont(QFont("Lora"))
+
+            return title
+
+        def __group(group_title: str, label: str) -> QGroupBox:
+            """
+            Makes 1 GROUP with 1 TEMPLATE inside
+
+            ---
+            PARAMETERS:
+            - group_title: str -> The TITLE for GROUP Block
+            - label: str -> The TITLE for TEMPLATE
+            ---
+            RESULT: The GROUP Block
+            """
+
+            group = QGroupBox()
+
+            label_group = QLabel(group_title.upper())
+            label_group.setObjectName("information_group_title")
+            label_group.setFont(QFont("Ubuntu"))
+            label_group.setFixedHeight(23)
+
+            layout_group = QVBoxLayout()
+            layout_group.setContentsMargins(0, 0, 0, 0)
+            layout_group.addWidget(label_group)
+
+            frame = QFrame()
+            frame.setObjectName("information_group")
+            frame.setContentsMargins(0, 0, 0, 0)
+
+            frame_layout = QVBoxLayout()
+            frame_layout.setContentsMargins(0, 0, 0, 0)
+
+            template = QLabel(str(label))
+            template.setObjectName("information_group_template")
+            template.setFont(QFont("Ubuntu"))
+            template.setWordWrap(True)
+
+            frame_layout.addWidget(template)
+            frame.setLayout(frame_layout)
+            layout_group.addWidget(frame)
+            group.setLayout(layout_group)
+
+            return group
+
+        def __block(
+            name: str,
+            template_before: str,
+            template_after: str
+        ) -> QFrame:
+            """
+            Block with DETAILED DESCRIPTION
+
+            ---
+            PARAMETERS:
+            - name: str -> The TITLE for Block
+            - template_before: str -> The TEXT for LEFT CONTENT
+            - template_after: str -> The TEXT for RIGHT CONTENT
+            ---
+            RESULT: BLOCK TEMPLATE
+            """
+
+            frame = QFrame()
+            frame.setObjectName("information_block")
+
+            main_layout = QVBoxLayout()
+            main_layout.setContentsMargins(0, 0, 0, 0)
+
+            second_layout = QHBoxLayout()
+            second_layout.setContentsMargins(0, 0, 0, 0)
+            second_layout.setSpacing(10)
+
+            title = __title(name, "information_second_title")
+            before = __group(text_for_group_before, template_before)
+            after = __group(text_for_group_after, template_after)
+
+            second_layout.addWidget(before)
+            second_layout.addWidget(after)
+            main_layout.addWidget(title)
+            main_layout.addLayout(second_layout)
+
+            frame.setLayout(main_layout)
+            return frame
+
         # STRINGS
         text_for_lost_and_found = self.parent.str_val.string_values(
             "ru_information_lost_and_found"
@@ -306,25 +406,106 @@ class HeaderModal(QWidget):
         text_for_title = self.parent.str_val.string_values(
             "ru_information_title"
         )
+        text_for_main = self.parent.str_val.string_values(
+            "ru_information_main"
+        )
+        text_for_group_before = self.parent.str_val.string_values(
+            "ru_information_group_before"
+        )
+        text_for_group_after = self.parent.str_val.string_values(
+            "ru_information_group_after"
+        )
+        text_for_second_title = self.parent.str_val.string_values(
+            "ru_information_second_title"
+        )
+        text_for_second_title_before = self.parent.str_val.string_values(
+            "ru_information_second_title_before"
+        )
+        text_for_second_title_after = self.parent.str_val.string_values(
+            "ru_information_second_title_after"
+        )
+        text_for_second_list = self.parent.str_val.string_values(
+            "ru_information_second_list"
+        )
+        text_for_second_list_before = self.parent.str_val.string_values(
+            "ru_information_second_list_before"
+        )
+        text_for_second_list_after = self.parent.str_val.string_values(
+            "ru_information_second_list_after"
+        )
+        text_for_second_dash = self.parent.str_val.string_values(
+            "ru_information_second_dash"
+        )
+        text_for_second_dash_before = self.parent.str_val.string_values(
+            "ru_information_second_dash_before"
+        )
+        text_for_second_dash_after = self.parent.str_val.string_values(
+            "ru_information_second_dash_after"
+        )
 
         # MODAL WINDOW
         self.setWindowTitle(text_for_lost_and_found)
-        self.setStyleSheet("background-color: #404040;")
-        self.setFixedSize(720, 540)
+        self.setFixedSize(720, 480)
 
         frame = QFrame()
         frame.setObjectName("header_modal_information")
+        frame.setContentsMargins(0, 0, 0, 0)
+        frame.setFixedWidth(720)
 
         layout = QVBoxLayout()
 
         # TITLE
-        title_information = QLabel(text_for_title)
-        title_information.setObjectName("information_title")
-        title_information.setFont(QFont("Lora"))
+        main_title = __title(text_for_title, "information_title")
 
-        layout.addWidget(
-            title_information, alignment=Qt.AlignmentFlag.AlignTop
+        # SCROLL
+        scroll = QScrollArea()
+        scroll.setContentsMargins(0, 0, 0, 0)
+        scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        scroll.setHorizontalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
         )
+        scroll.setWidgetResizable(True)
+
+        frame_scroll = QFrame()
+        frame_scroll.setObjectName("header_modal_information_scroll")
+        frame_scroll.setContentsMargins(0, 0, 0, 0)
+
+        layout_scroll = QVBoxLayout()
+        layout_scroll.setContentsMargins(0, 0, 0, 0)
+        layout_scroll.setSpacing(0)
+
+        # SCROLL : MAIN
+        main_text = QLabel(text_for_main)
+        main_text.setObjectName("information_main")
+        main_text.setFont(QFont("Ubuntu"))
+        main_text.setWordWrap(True)
+
+        # SCROLL : TITLE && LIST && DASH
+        second_title = __block(
+            text_for_second_title,
+            text_for_second_title_before,
+            text_for_second_title_after
+        )
+        second_list = __block(
+            text_for_second_list,
+            text_for_second_list_before,
+            text_for_second_list_after
+        )
+        second_dash = __block(
+            text_for_second_dash,
+            text_for_second_dash_before,
+            text_for_second_dash_after
+        )
+
+        layout_scroll.addWidget(main_text)
+        layout_scroll.addWidget(second_title)
+        layout_scroll.addWidget(second_list)
+        layout_scroll.addWidget(second_dash)
+        frame_scroll.setLayout(layout_scroll)
+        scroll.setWidget(frame_scroll)
+
+        layout.addWidget(main_title, alignment=Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(scroll)
 
         frame.setLayout(layout)
         return frame
