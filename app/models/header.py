@@ -5,8 +5,8 @@
 # Result: Providing a HEADER TEMPLATE
 #
 # Past Modification: Editing The «HeaderModal» CLASS (MAIN GROUP)
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.11.11, 04:57 PM
+# Last Modification: Adding The «HeaderModal» and The «Header» CLASS (BTN INFO)
+# Modification Date: 2023.11.12, 11:43 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -47,6 +47,8 @@ class Header(QWidget):
     ---
     SLOTS:
     - activate_btn_settings() -> None : Opens 1 MODAL WINDOW for The SETTINGS
+    - activate_btn_information() -> None : Opens 1 MODAL WINDOW for
+    The INFORMATION
     - activate_btn_license() -> None : Opens 1 MODAL WINDOW for The LICENSE
     """
 
@@ -62,6 +64,7 @@ class Header(QWidget):
         self.str_val = StringsValues()
 
         self.__settings = HeaderModal("settings", self)
+        self.__information = HeaderModal("information", self)
         self.__license = HeaderModal("license", self)
 
         template = self.page()
@@ -93,6 +96,12 @@ class Header(QWidget):
         btn_settings.setFixedWidth(40)
         btn_settings.clicked.connect(self.activate_btn_settings)
 
+        btn_information = QPushButton()
+        btn_information.setObjectName("header_btn_information")
+        btn_information.setIcon(QIcon("app/icons/information.svg"))
+        btn_information.setFixedWidth(40)
+        btn_information.clicked.connect(self.activate_btn_information)
+
         btn_license = QPushButton()
         btn_license.setObjectName("header_btn_license")
         btn_license.setIcon(QIcon("app/icons/license.svg"))
@@ -101,6 +110,7 @@ class Header(QWidget):
 
         layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignLeft)
         layout.addWidget(btn_settings, alignment=Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(btn_information)
         layout.addWidget(btn_license)
 
         frame.setLayout(layout)
@@ -112,15 +122,18 @@ class Header(QWidget):
 
         ---
         PARAMETERS:
-        - mode: str -> Mode «settings» or «license»
+        - mode: str -> Mode «settings», «information» or «license»
         """
 
         self.__settings.hide()
+        self.__information.hide()
         self.__license.hide()
 
         match mode:
             case "settings":
                 self.__settings.show()
+            case "information":
+                self.__information.show()
             case "license":
                 self.__license.show()
 
@@ -131,6 +144,14 @@ class Header(QWidget):
         """
 
         self.__activate("settings")
+
+    @Slot()
+    def activate_btn_information(self) -> None:
+        """
+        Opens 1 MODAL WINDOW for The INFORMATION
+        """
+
+        self.__activate("information")
 
     @Slot()
     def activate_btn_license(self) -> None:
@@ -158,6 +179,7 @@ class HeaderModal(QWidget):
     ---
     FUNCTIONS:
     - page_settings() -> QFrame : Create 1 SETTINGS TEMPLATE
+    - page_information() -> QFrame : Create 1 INFORMATION TEMPLATE
     - page_license() -> QFrame : Create 1 LICENSE TEMPLATE
     ---
     SLOTS:
@@ -180,6 +202,8 @@ class HeaderModal(QWidget):
         match(mode):
             case "settings":
                 template = self.page_settings()
+            case "information":
+                template = self.page_information()
             case "license":
                 template = self.page_license()
 
@@ -263,6 +287,44 @@ class HeaderModal(QWidget):
         layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.main_group)
         layout.addWidget(btn_save)
+
+        frame.setLayout(layout)
+        return frame
+
+    def page_information(self) -> QFrame:
+        """
+        Create 1 INFORMATION TEMPLATE
+
+        ---
+        RESULT: INFORMATION TEMPLATE
+        """
+
+        # STRINGS
+        text_for_lost_and_found = self.parent.str_val.string_values(
+            "ru_information_lost_and_found"
+        )
+        text_for_title = self.parent.str_val.string_values(
+            "ru_information_title"
+        )
+
+        # MODAL WINDOW
+        self.setWindowTitle(text_for_lost_and_found)
+        self.setStyleSheet("background-color: #404040;")
+        self.setFixedSize(720, 540)
+
+        frame = QFrame()
+        frame.setObjectName("header_modal_information")
+
+        layout = QVBoxLayout()
+
+        # TITLE
+        title_information = QLabel(text_for_title)
+        title_information.setObjectName("information_title")
+        title_information.setFont(QFont("Lora"))
+
+        layout.addWidget(
+            title_information, alignment=Qt.AlignmentFlag.AlignTop
+        )
 
         frame.setLayout(layout)
         return frame
