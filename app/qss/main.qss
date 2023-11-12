@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Adding The «INFORMATION» STYLE BLOCK
-Last Modification: Editing The «INFORMATION» STYLE BLOCK (ALL)
-Modification Date: 2023.11.13, 03:11 AM
+Past Modification: Editing The «INFORMATION» STYLE BLOCK (ALL)
+Last Modification: Editing The «INFORMATION» STYLE BLOCK (URL)
+Modification Date: 2023.11.13, 04:00 AM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -28,6 +28,7 @@ Text (D)    : #C5C5C5
     FONTS SIZES
 Header Title                        : 32px
 Content Title Progress              : 27px
+Content 2nd Title                   : 21px
 Content Title                       : 17px
 Content Textbox && Content Progress : 15px
 Content Buttons                     : 14px
@@ -62,6 +63,7 @@ QFrame#header QPushButton {
   background-color: #404040;
   border: 1px solid #212121;
   border-radius: 1.08em;
+  outline: none;
 }
 QFrame#header QPushButton:hover {
   background-color: #B71B0F;
@@ -136,6 +138,7 @@ QFrame#content QFrame#content_buttons QPushButton {
   font-size: 14px;
   color: #EEEEEE;
   border-radius: 0.25em;
+  outline: none;
 }
 QFrame#content QFrame#content_buttons QPushButton#content_btn_finish {
   background-color: #B71B0F;
@@ -286,6 +289,23 @@ QFrame#header_modal_information QLabel#information_second_title {
   border-radius: 0px;
 }
 
+/* URL */
+QFrame#header_modal_information QPushButton#information_main_url {
+  padding: 0.1em;
+  font-size: 15px;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #EEEEEE;
+  background-color: none;
+  border: none;
+  border-radius: none;
+  outline: none;
+}
+QFrame#header_modal_information QPushButton#information_main_url:hover {
+  text-decoration: none;
+  color: #B71B0F;
+}
+
 /* SCROLL */
 QFrame#header_modal_information QScrollArea {
   border: 0px;
@@ -324,6 +344,7 @@ QFrame#header_modal_information QFrame#header_modal_information_scroll QFrame#in
 
 QFrame#header_modal_license {
   padding: 1em;
+  background-color: #404040;
 }
 QFrame#header_modal_license QLabel#license_title {
   padding-bottom: 0.65em;
