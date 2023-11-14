@@ -4,9 +4,9 @@
 # Goal: Writing and Reading IMPORTANT FILES
 # Result: AUTOMATED SYSTEM with FILES
 #
-# Past Modification: Editing The «FileSystem» CLASS (EDITING «CHECKING FILE»)
-# Last Modification: Editing The «FileSystem» CLASS (ADDING «_failed_isfile»)
-# Modification Date: 2023.11.13, 05:22 AM
+# Past Modification: Editing The «FileSystem» CLASS («TEMPLATE»)
+# Last Modification: Editing The «FileSystem» CLASS («write_file_settings»)
+# Modification Date: 2023.11.14, 07:15 PM
 #
 # Create Date: 2023.11.01, 10:01 PM
 
@@ -47,7 +47,8 @@ class FileSystem:
         "title": False,
         "list": False,
         "dash": True,
-        "block": [".", "?", "!"]
+        "block": [".", "?", "!"],
+        "language": "Русский"
     }
     TEMPLATE_KEYS = TEMPLATE.keys()
 
@@ -133,7 +134,7 @@ class FileSystem:
         """
 
         with open(self.path_file_settings, "w+") as f:
-            f.write(dumps(data))
+            f.write(dumps(data, ensure_ascii=False))
 
     def read_file_settings(self) -> dict[str, any]:
         """
