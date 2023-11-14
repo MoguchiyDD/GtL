@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Editing The «HeaderModal» CLASS (Adding LANGUAGE GROUP)
-# Modification Date: 2023.11.14, 08:06 PM
+# Past Modification: Editing The «HeaderModal» CLASS (Adding LANGUAGE GROUP)
+# Last Modification: Editing The «Header» and The «HeaderModal» CLASSES (LANG.)
+# Modification Date: 2023.11.14, 12:03 AM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -42,6 +42,8 @@ class Header(QWidget):
 
     ---
     PARAMETER:
+    - language_char: str -> The Characters of LANGUAGE
+    - language_text: str -> The Title of LANGUAGE
     - parent: QWidget | None = None -> Widget PARENT for this CLASS
     (AFTER THAT, THIS CURRENT CLASS WILL BECOME A CHILD OF THE PARENT)
     - f: Qt.WindowType = Qt.WindowType.Widget -> Window-System (Widget)
@@ -58,12 +60,17 @@ class Header(QWidget):
 
     def __init__(
         self,
+        language_char: str,
+        language_text: str,
         parent: QWidget | None = None,
         flags: Qt.WindowType = Qt.WindowType.Widget
     ) -> None:
         super(Header, self).__init__(parent, flags)
         self.setParent(parent)
         self.parent = parent
+
+        self.language_char = language_char.lower() + "_"
+        self.language_text = language_text
 
         self.str_val = StringsValues()
 
@@ -201,6 +208,25 @@ class HeaderModal(QWidget):
         self.setParent(parent)
         self.parent = parent
 
+        # LANGUAGE
+        self.language_char = self.parent.language_char
+        self.language_text = self.parent.language_text
+
+        self.text_for_language_ru = self.parent.str_val.string_values(
+            "ru_lang"
+        )
+        self.text_for_language_en = self.parent.str_val.string_values(
+            "en_lang"
+        )
+        self.dir_language_char = {
+            self.text_for_language_ru: "RU",
+            self.text_for_language_en: "EN"
+        }
+        self.dir_language_text = {
+            "RU": self.text_for_language_ru,
+            "EN": self.text_for_language_en
+        }
+
         self.setWindowFlags(Qt.WindowType.Dialog)
 
         template = QFrame()
@@ -214,7 +240,7 @@ class HeaderModal(QWidget):
 
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.addWidget(template, alignment=Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(template, alignment=Qt.AlignmentFlag.AlignTop)
 
         self.setLayout(layout)
 
@@ -227,9 +253,11 @@ class HeaderModal(QWidget):
         """
 
         # STRINGS
-        text_for_title = self.parent.str_val.string_values("ru_settings_title")
+        text_for_title = self.parent.str_val.string_values(
+            self.language_char + "settings_title"
+        )
         text_for_btn_save = self.parent.str_val.string_values(
-            "ru_settings_btn_save"
+            self.language_char + "settings_btn_save"
         )
 
         # DATA from SETTINGS FILE
@@ -243,10 +271,10 @@ class HeaderModal(QWidget):
 
             # INFO
             text_for_info_msg_data_title = self.parent.str_val.string_values(
-                "ru_info_msg_data_title"
+                self.language_char + "info_msg_data_title"
             )
             text_for_info_msg_data_text = self.parent.str_val.string_values(
-                "ru_info_msg_data_text"
+                self.language_char + "info_msg_data_text"
             )
             MessageBox(
                 "app/icons/info.svg",
@@ -413,49 +441,49 @@ class HeaderModal(QWidget):
 
         # STRINGS
         text_for_lost_and_found = self.parent.str_val.string_values(
-            "ru_information_lost_and_found"
+            self.language_char + "information_lost_and_found"
         )
         text_for_title = self.parent.str_val.string_values(
-            "ru_information_title"
+            self.language_char + "information_title"
         )
         text_for_main = self.parent.str_val.string_values(
-            "ru_information_main"
+            self.language_char + "information_main"
         )
         text_for_main_url = self.parent.str_val.string_values(
-            "ru_information_main_url"
+            self.language_char + "information_main_url"
         )
         text_for_group_before = self.parent.str_val.string_values(
-            "ru_information_group_before"
+            self.language_char + "information_group_before"
         )
         text_for_group_after = self.parent.str_val.string_values(
-            "ru_information_group_after"
+            self.language_char + "information_group_after"
         )
         text_for_second_title = self.parent.str_val.string_values(
-            "ru_information_second_title"
+            self.language_char + "information_second_title"
         )
         text_for_second_title_before = self.parent.str_val.string_values(
-            "ru_information_second_title_before"
+            self.language_char + "information_second_title_before"
         )
         text_for_second_title_after = self.parent.str_val.string_values(
-            "ru_information_second_title_after"
+            self.language_char + "information_second_title_after"
         )
         text_for_second_list = self.parent.str_val.string_values(
-            "ru_information_second_list"
+            self.language_char + "information_second_list"
         )
         text_for_second_list_before = self.parent.str_val.string_values(
-            "ru_information_second_list_before"
+            self.language_char + "information_second_list_before"
         )
         text_for_second_list_after = self.parent.str_val.string_values(
-            "ru_information_second_list_after"
+            self.language_char + "information_second_list_after"
         )
         text_for_second_dash = self.parent.str_val.string_values(
-            "ru_information_second_dash"
+            self.language_char + "information_second_dash"
         )
         text_for_second_dash_before = self.parent.str_val.string_values(
-            "ru_information_second_dash_before"
+            self.language_char + "information_second_dash_before"
         )
         text_for_second_dash_after = self.parent.str_val.string_values(
-            "ru_information_second_dash_after"
+            self.language_char + "information_second_dash_after"
         )
 
         # MODAL WINDOW
@@ -540,30 +568,33 @@ class HeaderModal(QWidget):
         RESULT: LICENSE TEMPLATE
         """
 
+        WIDTH = 675
+        HEIGHT = [500 if self.language_char == "ru_" else 420][0]
+
         # STRINGS
         text_for_title = self.parent.str_val.string_values(
-            "ru_license_part_one"
+            self.language_char + "license_part_one"
         )
         text_for_copyright = self.parent.str_val.string_values(
             "license_part_zero"
         )
         text_for_zero = self.parent.str_val.string_values(
-            "ru_license_part_two"
+            self.language_char + "license_part_two"
         )
         text_for_one = self.parent.str_val.string_values(
-            "ru_license_part_three"
+            self.language_char + "license_part_three"
         )
         text_for_two = self.parent.str_val.string_values(
-            "ru_license_part_four"
+            self.language_char + "license_part_four"
         )
 
         # MODAL WINDOW
         self.setWindowTitle(text_for_title)
-        self.setFixedSize(675, 500)
+        self.setFixedSize(WIDTH, HEIGHT)
 
         frame = QFrame()
         frame.setObjectName("header_modal_license")
-        frame.setFixedHeight(500)
+        frame.setFixedHeight(HEIGHT)
 
         layout = QVBoxLayout()
 
@@ -650,22 +681,23 @@ class HeaderModal(QWidget):
 
         # STRINGS
         text_for_main_group = self.parent.str_val.string_values(
-            "ru_settings_main"
+            self.language_char + "settings_main"
         )
         text_for_main_title = self.parent.str_val.strings_values_idx(
-            "ru_settings_main_title", 2
+            self.language_char + "settings_main_title", 2
         )
         text_for_main_list = self.parent.str_val.strings_values_idx(
-            "ru_settings_main_list", 2, 4
+            self.language_char + "settings_main_list", 2, 4
         )
         text_for_main_dash = self.parent.str_val.strings_values_idx(
-            "ru_settings_main_dash", 1
+            self.language_char + "settings_main_dash",
+            [1 if self.language_char == "ru_" else 2][0]
         )
         text_for_title_punctuations = self.parent.str_val.string_values(
-            "ru_settings_main_title_punctuations"
+            self.language_char + "settings_main_title_punctuations"
         )
         text_for_hint_punctuations = self.parent.str_val.string_values(
-            "ru_settings_main_hint_punctuations"
+            self.language_char + "settings_main_hint_punctuations"
         )
 
         # MAIN GROUP
@@ -743,12 +775,12 @@ class HeaderModal(QWidget):
         RESULT: LANGUAGE GROUP
         """
 
+        __language = self.dir_language_text[language]
+
         # STRINGS
         text_for_language_group = self.parent.str_val.string_values(
-            "ru_settings_language"
+            self.language_char + "settings_language"
         )
-        text_for_language_ru = self.parent.str_val.string_values("ru_lang")
-        text_for_language_en = self.parent.str_val.string_values("en_lang")
 
         # LANGUAGE GROUP
         language_group = QGroupBox()
@@ -766,18 +798,18 @@ class HeaderModal(QWidget):
         language_frame_layout.setContentsMargins(0, 0, 0, 0)
 
         # RADIOBUTTONS : RU
-        ru_lang = QRadioButton(text_for_language_ru, self)
+        ru_lang = QRadioButton(self.text_for_language_ru, self)
         ru_lang.setFont(QFont("Ubuntu"))
         [
-            ru_lang.setChecked(True) if ru_lang.text() == language
+            ru_lang.setChecked(True) if ru_lang.text() == __language
             else ru_lang.setChecked(False)
         ]
 
         # RADIOBUTTONS : EN
-        en_lang = QRadioButton(text_for_language_en, self)
+        en_lang = QRadioButton(self.text_for_language_en, self)
         en_lang.setFont(QFont("Ubuntu"))
         [
-            en_lang.setChecked(True) if en_lang.text() == language
+            en_lang.setChecked(True) if en_lang.text() == __language
             else en_lang.setChecked(False)
         ]
 
@@ -801,10 +833,10 @@ class HeaderModal(QWidget):
 
         # STRINGS
         text_for_success_msg_save_title = self.parent.str_val.string_values(
-            "ru_success_msg_save_settings_title"
+            self.language_char + "success_msg_save_settings_title"
         )
         text_for_success_msg_save_text = self.parent.str_val.string_values(
-            "ru_success_msg_save_settings_text"
+            self.language_char + "success_msg_save_settings_text"
         )
 
         # MAIN GROUP
@@ -820,7 +852,7 @@ class HeaderModal(QWidget):
 
         # LANGUAGE GROUP
         language_frame = self.language_group.findChildren(QRadioButton)
-        language = [
+        language_radio = [
             lang.text() for lang in language_frame if lang.isChecked()
         ][0]
 
@@ -829,7 +861,7 @@ class HeaderModal(QWidget):
             "list": main_list.isChecked(),
             "dash": main_dash.isChecked(),
             "block": main_textbox_set_list,
-            "language": language
+            "language": self.dir_language_char[language_radio]
         }
 
         filesystem = FileSystem(self.parent.parent.basedir)
@@ -855,10 +887,10 @@ class HeaderModal(QWidget):
             open(text_readme)
         except:
             text_error_msg_url_title = self.parent.str_val.string_values(
-                "ru_error_msg_url_title"
+                self.language_char + "error_msg_url_title"
             )
             text_error_msg_url_text = self.parent.str_val.string_values(
-                "ru_error_msg_url_text"
+                self.language_char + "error_msg_url_text"
             )
             MessageBox(  # ERROR
                 "app/icons/error.svg",

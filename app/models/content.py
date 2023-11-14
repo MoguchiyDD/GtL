@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «Content» CLASS («__finish» : TITLE)
-# Last Modification: Editing The «Content» CLASS («__finish» : LIST)
-# Modification Date: 2023.11.11, 08:32 PM
+# Past Modification: Editing The «Content» CLASS («__finish» : LIST)
+# Last Modification: Editing The «Content» CLASS (Adding LANGUAGE)
+# Modification Date: 2023.11.14, 12:05 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -46,6 +46,7 @@ class Content(QWidget):
 
     ---
     PARAMETER:
+    - language_char: str -> The Characters of LANGUAGE
     - parent: QWidget | None = None -> Widget PARENT for this CLASS
     (AFTER THAT, THIS CURRENT CLASS WILL BECOME A CHILD OF THE PARENT)
     - f: Qt.WindowType = Qt.WindowType.Widget -> Window-System (Widget)
@@ -65,6 +66,7 @@ class Content(QWidget):
 
     def __init__(
         self,
+        language_char: str,
         parent: QWidget | None = None,
         flags: Qt.WindowType = Qt.WindowType.Widget
     ) -> None:
@@ -72,6 +74,7 @@ class Content(QWidget):
         self.setParent(parent)
         self.parent = parent
 
+        self.language_char = language_char.lower() + "_"
         self.str_val = StringsValues()
         self.current_percent_progress = 0
         self.text_for_copy = ""
@@ -98,10 +101,14 @@ class Content(QWidget):
 
         # LEFT
         self.textbox_creative_mess = self.box_with_text(
-            "ru_content_textbox_creative_mess", "creative_mess", True
+            self.language_char + "content_textbox_creative_mess",
+            "creative_mess",
+            True
         )
         self.textbox_ready_text = self.box_with_text(
-            "ru_content_textbox_ready_text", "ready_text", False
+            self.language_char + "content_textbox_ready_text",
+            "ready_text",
+            False
         )
         textbox_layout.addWidget(self.textbox_creative_mess)
         textbox_layout.addWidget(self.textbox_ready_text)
@@ -180,12 +187,16 @@ class Content(QWidget):
 
         layout = QVBoxLayout()
 
-        text_for_title = self.str_val.string_values("ru_content_progress")
+        text_for_title = self.str_val.string_values(
+            self.language_char + "content_progress"
+        )
         title = QLabel(text_for_title)
         title.setObjectName("content_title_progress")
         title.setFont(QFont("Lora"))
 
-        text_for_status = self.str_val.string_values("ru_content_ready")
+        text_for_status = self.str_val.string_values(
+            self.language_char + "content_ready"
+        )
         self.status = QLabel(text_for_status.upper())
         self.status.setObjectName("content_status")
         self.status.setFont(QFont("Ubuntu"))
@@ -218,13 +229,15 @@ class Content(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(15)
 
-        text_for_finish = self.str_val.string_values("ru_content_start_app")
+        text_for_finish = self.str_val.string_values(
+            self.language_char + "content_start_app"
+        )
         btn_finish = QPushButton(text_for_finish.upper())
         btn_finish.setObjectName("content_btn_finish")
         btn_finish.clicked.connect(self.activate_btn_finish)
 
         text_for_copy = self.str_val.string_values(
-            "ru_content_copy_two_textbox"
+            self.language_char + "content_copy_two_textbox"
         )
         btn_copy = QPushButton(text_for_copy.upper())
         btn_copy.setObjectName("content_btn_copy")
@@ -465,13 +478,13 @@ class Content(QWidget):
 
         # STRINGS for PROGRESS
         text_for_progress_start = self.str_val.string_values(
-            "ru_content_ready"
+            self.language_char + "content_ready"
         )
         text_for_progress_line_number = self.str_val.string_values(
-            "ru_content_line_number"
+            self.language_char + "content_line_number"
         )
         text_for_progress_end = self.str_val.string_values(
-            "ru_content_end_app"
+            self.language_char + "content_end_app"
         )
 
         # PROGRESS BAR
@@ -493,10 +506,10 @@ class Content(QWidget):
 
             # ERROR
             text_for_error_msg_valid_len_title = self.str_val.string_values(
-                "ru_error_msg_valid_length_title"
+                self.language_char + "error_msg_valid_length_title"
             )
             text_for_error_msg_valid_len_text = self.str_val.string_values(
-                "ru_error_msg_valid_length_text"
+                self.language_char + "error_msg_valid_length_text"
             )
             MessageBox(
                 "app/icons/error.svg",
@@ -519,10 +532,10 @@ class Content(QWidget):
 
                 # INFO
                 text_for_info_msg_data_title = self.str_val.string_values(
-                    "ru_info_msg_data_title"
+                    self.language_char + "info_msg_data_title"
                 )
                 text_for_info_msg_data_text = self.str_val.string_values(
-                    "ru_info_msg_data_text"
+                    self.language_char + "info_msg_data_text"
                 )
                 MessageBox(
                     "app/icons/info.svg",
@@ -556,10 +569,10 @@ class Content(QWidget):
 
             # SUCCESS MESSAGE BOX
             text_for_success_msg_finish_title = self.str_val.string_values(
-                "ru_success_msg_finish_title"
+                self.language_char + "success_msg_finish_title"
             )
             text_for_success_msg_finish_text = self.str_val.string_values(
-                "ru_success_msg_finish_text"
+                self.language_char + "success_msg_finish_text"
             )
             MessageBox(
                 "app/icons/success.svg",
@@ -587,23 +600,27 @@ class Content(QWidget):
             clipboard = QGuiApplication.clipboard()
             clipboard.setText(text, clipboard.Mode.Clipboard)
 
-            mdg_icon = "app/icons/success.svg"
-            mdg_title = "ru_success_msg_copy_second_block_title"
-            mdg_text = "ru_success_msg_copy_second_block_text"
+            msg_icon = "app/icons/success.svg"
+            msg_title = self.language_char
+            msg_title += "success_msg_copy_second_block_title"
+            msg_text = self.language_char
+            msg_text += "success_msg_copy_second_block_text"
         except:
-            mdg_icon = "app/icons/error.svg"
-            mdg_title = "ru_error_msg_copy_second_block_title"
-            mdg_text = "ru_error_msg_copy_second_block_text"
+            msg_icon = "app/icons/error.svg"
+            msg_title = self.language_char
+            msg_title += "error_msg_copy_second_block_title"
+            msg_text = self.language_char
+            msg_text += "error_msg_copy_second_block_text"
 
         # SUCCESS or ERROR MESSAGE BOX
         text_for_msg_copy_2nd_block_title = self.str_val.string_values(
-            mdg_title
+            msg_title
         )
         text_for_msg_copy_2nd_block_text = self.str_val.string_values(
-            mdg_text
+            msg_text
         )
         MessageBox(
-            mdg_icon,
+            msg_icon,
             text_for_msg_copy_2nd_block_title,
             text_for_msg_copy_2nd_block_text,
             self
