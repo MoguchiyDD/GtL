@@ -4,9 +4,9 @@
 # Goal: Writing and Reading IMPORTANT FILES
 # Result: AUTOMATED SYSTEM with FILES
 #
-# Past Modification: Editing The «FileSystem» CLASS («TEMPLATE»)
-# Last Modification: Editing The «FileSystem» CLASS («write_file_settings»)
-# Modification Date: 2023.11.14, 07:15 PM
+# Past Modification: Editing The «FileSystem» CLASS («write_file_settings»)
+# Last Modification: Editing The «FileSystem» CLASS («TEMPLATE»)
+# Modification Date: 2023.11.14, 01:02 AM
 #
 # Create Date: 2023.11.01, 10:01 PM
 
@@ -48,7 +48,7 @@ class FileSystem:
         "list": False,
         "dash": True,
         "block": [".", "?", "!"],
-        "language": "Русский"
+        "language": "RU"
     }
     TEMPLATE_KEYS = TEMPLATE.keys()
 
