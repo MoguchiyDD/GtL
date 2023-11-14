@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Editing The «INFORMATION» STYLE BLOCK (URL)
-Last Modification: Editing The «FOOTER» STYLE BLOCK (BUTTON)
-Modification Date: 2023.11.13, 04:37 AM
+Past Modification: Editing The «FOOTER» STYLE BLOCK (BUTTON)
+Last Modification: Editing The «STRINGS» STYLE BLOCK (GROUP)
+Modification Date: 2023.11.14, 07:40 PM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -205,7 +205,8 @@ QFrame#header_modal_settings QGroupBox {
   color: #EEEEEE;
   border: none;
 }
-QFrame#header_modal_settings QFrame#settings_main_group {
+QFrame#header_modal_settings QFrame#settings_main_group,
+QFrame#header_modal_settings QFrame#settings_language_group {
   padding: 1em;
   color: #EEEEEE;
   background-color: qradialgradient(cx:0, cy:0, radius: 1, fx:0.5, fy:0.5, stop:0 #292929, stop:1 #303030);
@@ -213,18 +214,29 @@ QFrame#header_modal_settings QFrame#settings_main_group {
   border-radius: 0.35em;
 }
 
-/* CHECKBOXES */
+/* CHECKBOXES && RADIOBOXES */
 QFrame#header_modal_settings QCheckBox {
-  padding-right: 0.13em;
+  padding-right: 0.1em;
+}
+QFrame#header_modal_settings QCheckBox::indicator,
+QFrame#header_modal_settings QRadioButton::indicator {
+  width: 0.95em;
+  height: 0.95em;
+  background-color: #212121;
+  border: 1px solid #212121;
 }
 QFrame#header_modal_settings QCheckBox::indicator {
-  width: 1em;
-  height: 1em;
-  background-color: #212121;
   border-radius: 0.1em;
 }
+QFrame#header_modal_settings QRadioButton::indicator {
+  border: 1px solid #212121;
+  border-radius: 0.55em;
+}
 QFrame#header_modal_settings QCheckBox::indicator:checked {
-  image: url(app/icons/checked.svg);
+  image: url(app/icons/c_checked.svg);
+}
+QFrame#header_modal_settings QRadioButton::indicator:checked {
+  image: url(app/icons/r_checked.svg);
 }
 
 /* TEXT */
