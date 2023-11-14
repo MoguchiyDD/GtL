@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «HeaderModal» CLASS (Adding URL)
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.11.13, 03:59 AM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Editing The «HeaderModal» CLASS (Adding LANGUAGE GROUP)
+# Modification Date: 2023.11.14, 08:06 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -23,6 +23,7 @@ from PySide6.QtWidgets import (
     QLabel,
     QTextEdit,
     QCheckBox,
+    QRadioButton,
     QPushButton
 )
 
@@ -259,10 +260,11 @@ class HeaderModal(QWidget):
         main_data_list = data["list"]
         main_data_dash = data["dash"]
         main_data_textbox = data["block"]
+        language_data = data["language"]
 
         # MODAL WINDOW
         self.setWindowTitle(text_for_title)
-        self.setFixedSize(384, 469)
+        self.setFixedSize(568, 469)
 
         frame = QFrame()
         frame.setObjectName("header_modal_settings")
@@ -275,12 +277,19 @@ class HeaderModal(QWidget):
         title.setFont(QFont("Lora"))
 
         # GROUPS
+        group_layout = QHBoxLayout()
+        group_layout.setContentsMargins(0, 0, 0, 0)
+
         self.main_group = self.__settings_main_group(
             main_data_title,
             main_data_list,
             main_data_dash,
             " ".join(main_data_textbox)
         )
+        self.language_group = self.__settings_language_group(language_data)
+
+        group_layout.addWidget(self.main_group)
+        group_layout.addWidget(self.language_group)
 
         # BUTTON
         btn_save = QPushButton(text_for_btn_save.upper())
@@ -289,7 +298,7 @@ class HeaderModal(QWidget):
         btn_save.clicked.connect(self.save_settings)
 
         layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(self.main_group)
+        layout.addLayout(group_layout)
         layout.addWidget(btn_save)
 
         frame.setLayout(layout)
@@ -723,6 +732,67 @@ class HeaderModal(QWidget):
         main_group.setLayout(main_group_layout)
         return main_group
 
+    def __settings_language_group(self, language: str) -> QGroupBox:
+        """
+        CREATE 1 LANGUAGE GROUP for LANGUAGE TEMPLATE
+
+        ---
+        PARAMETERS:
+        - language: str -> The LANGUAGE from RAM with SETTINGS FILE
+        ---
+        RESULT: LANGUAGE GROUP
+        """
+
+        # STRINGS
+        text_for_language_group = self.parent.str_val.string_values(
+            "ru_settings_language"
+        )
+        text_for_language_ru = self.parent.str_val.string_values("ru_lang")
+        text_for_language_en = self.parent.str_val.string_values("en_lang")
+
+        # LANGUAGE GROUP
+        language_group = QGroupBox()
+        language_group.setTitle(text_for_language_group.upper())
+        language_group.setFont(QFont("Lora"))
+
+        language_group_layout = QVBoxLayout()
+        language_group_layout.setContentsMargins(0, 0, 0, 0)
+
+        language_frame = QFrame()
+        language_frame.setObjectName("settings_language_group")
+        language_frame.setFixedWidth(170)
+
+        language_frame_layout = QVBoxLayout()
+        language_frame_layout.setContentsMargins(0, 0, 0, 0)
+
+        # RADIOBUTTONS : RU
+        ru_lang = QRadioButton(text_for_language_ru, self)
+        ru_lang.setFont(QFont("Ubuntu"))
+        [
+            ru_lang.setChecked(True) if ru_lang.text() == language
+            else ru_lang.setChecked(False)
+        ]
+
+        # RADIOBUTTONS : EN
+        en_lang = QRadioButton(text_for_language_en, self)
+        en_lang.setFont(QFont("Ubuntu"))
+        [
+            en_lang.setChecked(True) if en_lang.text() == language
+            else en_lang.setChecked(False)
+        ]
+
+        language_frame_layout.addWidget(ru_lang)
+        language_frame_layout.addWidget(
+            en_lang, alignment=Qt.AlignmentFlag.AlignTop
+        )
+        language_frame.setLayout(language_frame_layout)
+
+        language_group_layout.addWidget(
+            language_frame, alignment=Qt.AlignmentFlag.AlignTop
+        )
+        language_group.setLayout(language_group_layout)
+        return language_group
+
     @Slot()
     def save_settings(self) -> None:
         """
@@ -748,11 +818,18 @@ class HeaderModal(QWidget):
         main_textbox = main_frame.findChild(QTextEdit, "settings_edits")
         main_textbox_set_list = list(set(main_textbox.toPlainText().split()))
 
+        # LANGUAGE GROUP
+        language_frame = self.language_group.findChildren(QRadioButton)
+        language = [
+            lang.text() for lang in language_frame if lang.isChecked()
+        ][0]
+
         new_data = {
             "title": main_title.isChecked(),
             "list": main_list.isChecked(),
             "dash": main_dash.isChecked(),
-            "block": main_textbox_set_list
+            "block": main_textbox_set_list,
+            "language": language
         }
 
         filesystem = FileSystem(self.parent.parent.basedir)
