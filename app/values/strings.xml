@@ -7,9 +7,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Store All STRINGS of The SOFTWARE in 1 PLACE
 Result: Returns 1 Desired STRING via The «name» ATTRIBUTE («string_values» FUN)
 
-Past Modification: Editing The «SOFTWARE» String (RU : «app_git»)
-Last Modification: Editing The «FOOTER» String (RU : ALL)
-Modification Date: 2023.11.13, 04:37 AM
+Past Modification: Adding The «LANGUAGE» String (RU && EN)
+Last Modification: Editing The «SETTINGS» String (RU : LANGUAGE)
+Modification Date: 2023.11.14, 07:45 PM
 
 Create Date: 2023.10.23, 02:49 PM
 -->
@@ -20,6 +20,10 @@ Create Date: 2023.10.23, 02:49 PM
 	<string name="app_title">GTL : Guide to Letters</string>
 	<string name="app_git">https://github.com/MoguchiyDD</string>
 	<string name="app_readme">https://github.com/MoguchiyDD/GtL/blob/main/README.md</string>
+
+    <!-- LANGUAGE -->
+    <string name="ru_lang">Русский</string>
+    <string name="en_lang">English</string>
 
     <!-- HEADER -->
     <string name="header_title">Guide to Letters</string>
@@ -49,6 +53,7 @@ Create Date: 2023.10.23, 02:49 PM
     <string name="ru_settings_main_title_punctuations">Пунктуации</string>
     <string name="settings_main_punctuations">. ? !</string>
     <string name="ru_settings_main_hint_punctuations">Пробелы — разделители между пунктуациями. Пунктуации могут открываться по-разному из-за проверки на уникальность символов</string>
+    <string name="ru_settings_language">Язык</string>
     <string name="ru_settings_btn_save">Сохранить</string>
 
     <!-- INFORMATION -->
