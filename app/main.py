@@ -4,9 +4,9 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Adding The «MainWindow» CLASS (RAM (Settings File))
-# Last Modification: Editing The «MainWindow» CLASS (RAM (Settings File))
-# Modification Date: 2023.11.13, 05:24 AM
+# Past Modification: Editing The «MainWindow» CLASS (RAM (Settings File))
+# Last Modification: Editing The «MainWindow» CLASS (Adding LANGUAGE)
+# Modification Date: 2023.11.14, 11:57 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -96,6 +96,13 @@ class MainWindow(QMainWindow):
                     self
                 )
 
+        # LANGUAGE
+        match self.data_settings_file["language"]:
+            case "RU":
+                self.language = ("RU", "Русский")
+            case "EN":
+                self.language = ("EN", "English")
+
         # TITLE
         window_title = str_val.string_values("app_title")
         self.setWindowTitle(window_title)
@@ -119,8 +126,8 @@ class MainWindow(QMainWindow):
         # CONTENT
         self.main_layout = QVBoxLayout()
         self.main_layout.setContentsMargins(0, 0, 0, 0)
-        Header(self)
-        Content(self)
+        Header(self.language[0], self.language[1], self)
+        Content(self.language[0], self)
         Footer(self)
 
         # INSTALL
