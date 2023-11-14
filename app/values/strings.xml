@@ -7,9 +7,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Store All STRINGS of The SOFTWARE in 1 PLACE
 Result: Returns 1 Desired STRING via The «name» ATTRIBUTE («string_values» FUN)
 
-Past Modification: Adding The «LANGUAGE» String (RU && EN)
-Last Modification: Editing The «SETTINGS» String (RU : LANGUAGE)
-Modification Date: 2023.11.14, 07:45 PM
+Past Modification: Editing The «SETTINGS» String (RU : LANGUAGE)
+Last Modification: Adding English LANGUAGE
+Modification Date: 2023.11.14, 09:24 PM
 
 Create Date: 2023.10.23, 02:49 PM
 -->
@@ -38,6 +38,15 @@ Create Date: 2023.10.23, 02:49 PM
     <string name="ru_content_end_app">Финиш</string>
     <string name="ru_content_start_app">Запуск программы</string>
     <string name="ru_content_copy_two_textbox">Копирование 2-го блока текста</string>
+    <string name="en_content_textbox_creative_mess">Creative Mess</string>
+    <string name="en_content_textbox_ready_text">Ready Text</string>
+    <string name="en_content_progress">Progress</string>
+    <string name="en_content_ready">I'm ready</string>
+    <string name="en_content_line_number">Line #</string>
+    <string name="en_content_translate_two_textbox">Text is being translated</string>
+    <string name="en_content_end_app">Finish</string>
+    <string name="en_content_start_app">Run</string>
+    <string name="en_content_copy_two_textbox">Copy the 2nd block of text</string>
 
     <!-- FOOTER -->
     <string name="footer_title_zero">©</string>
@@ -45,16 +54,25 @@ Create Date: 2023.10.23, 02:49 PM
     <string name="footer_title_two">, 2023</string>
 
     <!-- SETTINGS -->
+    <string name="settings_main_punctuations">. ? !</string>
     <string name="ru_settings_title">Настройки</string>
     <string name="ru_settings_main">Основное</string>
     <string name="ru_settings_main_title">Заголовок из //</string>
     <string name="ru_settings_main_list">Список из : + ;</string>
     <string name="ru_settings_main_dash">Убирать тире в конце каждой строки</string>
     <string name="ru_settings_main_title_punctuations">Пунктуации</string>
-    <string name="settings_main_punctuations">. ? !</string>
     <string name="ru_settings_main_hint_punctuations">Пробелы — разделители между пунктуациями. Пунктуации могут открываться по-разному из-за проверки на уникальность символов</string>
     <string name="ru_settings_language">Язык</string>
     <string name="ru_settings_btn_save">Сохранить</string>
+    <string name="en_settings_title">Settings</string>
+    <string name="en_settings_main">Main</string>
+    <string name="en_settings_main_title">Heading of //</string>
+    <string name="en_settings_main_list">List of : + ;</string>
+    <string name="en_settings_main_dash">Remove the dash at the end of each line</string>
+    <string name="en_settings_main_title_punctuations">Punctuations</string>
+    <string name="en_settings_main_hint_punctuations">Spaces are separators between punctuations. Punctuations may open differently due to checking for unique characters</string>
+    <string name="en_settings_language">Language</string>
+    <string name="en_settings_btn_save">Save</string>
 
     <!-- INFORMATION -->
     <string name="ru_information_lost_and_found">Бюро Находок</string>
@@ -86,6 +104,35 @@ Create Date: 2023.10.23, 02:49 PM
     <string name="ru_information_second_dash_before">Текст текс-
 ту рознь.</string>
     <string name="ru_information_second_dash_after">Текст тексту рознь.</string>
+    <string name="en_information_lost_and_found">Lost and Found</string>
+    <string name="en_information_title">Information</string>
+    <string name="en_information_main">Paste the text into the 1st text block «CREATIVE MESS». Launch the program via the «RUN» button. The program will check each space and line. The lines will be concatenated together until they encounter a character in the last word from the «PUNCTUATIONS» (settings). When the character in the line at the end of the word has been found, the line will end, and the next lines will begin to be added from a new line. Saves paragraphs if the required character in the last word of the line from the «PUNCTUATION» (settings) was not found.</string>
+    <string name="en_information_main_url">More details</string>
+    <string name="en_information_group_before">Before</string>
+    <string name="en_information_group_after">After</string>
+    <string name="en_information_second_title">Heading</string>
+    <string name="en_information_second_title_before">Different text.
+// Heading
+The text is read, not scratched!</string>
+    <string name="en_information_second_title_after">Different text.
+    
+    
+Heading
+    
+The text is read, not scratched!</string>
+    <string name="en_information_second_list">List</string>
+    <string name="en_information_second_list_before">Different text:
+Because it's text #0;
+Because it's text #1;
+The text is read, not scratched!</string>
+    <string name="en_information_second_list_after">Different text:
+    Because it's text #0;
+    Because it's text #1;
+The text is read, not scratched!</string>
+    <string name="en_information_second_dash">Dash</string>
+    <string name="en_information_second_dash_before">Diffe-
+rent text.</string>
+    <string name="en_information_second_dash_after">Different text.</string>
 
     <!-- LICENSE -->
     <string name="license_part_zero">Copyright (c) 2023 MoguchiyDD</string>
@@ -93,6 +140,10 @@ Create Date: 2023.10.23, 02:49 PM
     <string name="ru_license_part_two">Данная лицензия разрешает лицам, получившим копию данного программного обеспечения и сопутствующей документации (в дальнейшем именуемыми «Программное Обеспечение»), безвозмездно использовать Программное Обеспечение без ограничений, включая неограниченное право на использование, копирование, изменение, слияние, публикацию, распространение, сублицензирование и/или продажу копий Программного Обеспечения, а также лицам, которым предоставляется данное Программное Обеспечение, при соблюдении следующих условий:</string>
     <string name="ru_license_part_three">Указанное выше уведомление об авторском праве и данные условия должны быть включены во все копии или значимые части данного Программного Обеспечения.</string>
     <string name="ru_license_part_four">ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ «КАК ЕСТЬ», БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ЯВНО ВЫРАЖЕННЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ ГАРАНТИИ ТОВАРНОЙ ПРИГОДНОСТИ, СООТВЕТСТВИЯ ПО ЕГО КОНКРЕТНОМУ НАЗНАЧЕНИЮ И ОТСУТСТВИЯ НАРУШЕНИЙ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ. НИ В КАКОМ СЛУЧАЕ АВТОРЫ ИЛИ ПРАВООБЛАДАТЕЛИ НЕ НЕСУТ ОТВЕТСТВЕННОСТИ ПО КАКИМ-ЛИБО ИСКАМ, ЗА УЩЕРБ ИЛИ ПО ИНЫМ ТРЕБОВАНИЯМ, В ТОМ ЧИСЛЕ, ПРИ ДЕЙСТВИИ КОНТРАКТА, ДЕЛИКТЕ ИЛИ ИНОЙ СИТУАЦИИ, ВОЗНИКШИМ ИЗ-ЗА ИСПОЛЬЗОВАНИЯ ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ ИЛИ ИНЫХ ДЕЙСТВИЙ С ПРОГРАММНЫМ ОБЕСПЕЧЕНИЕМ.</string>
+    <string name="en_license_part_one">MIT License</string>
+    <string name="en_license_part_two">Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</string>
+    <string name="en_license_part_three">The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</string>
+    <string name="en_license_part_four">THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
 
     <!-- MESSAGE BOX -->
     <string name="ru_success_msg_save_settings_title">Успешное сохранение новых данных</string>
@@ -109,5 +160,19 @@ Create Date: 2023.10.23, 02:49 PM
     <string name="ru_error_msg_valid_length_text">Для соединения текста до нужной пунктуации требуется больше символов в текстовике «ТВОРЧЕСКИЙ БЕСПОРЯДОК»</string>
     <string name="ru_error_msg_copy_second_block_title">Что-то пошло не так..</string>
     <string name="ru_error_msg_copy_second_block_text">Текст из второго блока с итоговым текстом не смог сохранится в буфер обмена. Напечатайте разработчику с какими данными Вы работали, а также само описание Вашей Операционной Системы для рефакторинга кода с буфером обмена</string>
+    <string name="en_success_msg_save_settings_title">Successful saving of new data</string>
+    <string name="en_success_msg_save_settings_text">The changed data was successfully saved to a file containing the program settings</string>
+    <string name="en_success_msg_finish_title">Success and no other way</string>
+    <string name="en_success_msg_finish_text">The program finished working with text</string>
+    <string name="en_success_msg_copy_second_block_title">Successfully saving text to the clipboard</string>
+    <string name="en_success_msg_copy_second_block_text">The text from the second block with the resulting text was successfully saved to the clipboard</string>
+    <string name="en_info_msg_data_title">Correcting the settings file</string>
+    <string name="en_info_msg_data_text">The keys from the settings file were corrupted and therefore the settings file returned to the default settings</string>
+    <string name="en_error_msg_url_title">Something has gone wrong...</string>
+    <string name="en_error_msg_url_text">Apparently the situation has gotten out of control! Therefore, manually open https://github.com/MoguchiyDD in your browser</string>
+    <string name="en_error_msg_valid_length_title">Error checking by number of characters</string>
+    <string name="en_error_msg_valid_length_text">More characters are required to connect the text to the required punctuation in the notebook «CREATIVE MESS»</string>
+    <string name="en_error_msg_copy_second_block_title">Something has gone wrong...</string>
+    <string name="en_error_msg_copy_second_block_text">The text from the second block with the resulting text could not be saved to the clipboard. Print to the developer what data you worked with, as well as the description of your Operating System to refactor the code with the clipboard</string>
 
 </resources>
