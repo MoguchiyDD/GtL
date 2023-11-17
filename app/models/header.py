@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «HeaderModal» CLASS (Adding LANGUAGE GROUP)
-# Last Modification: Editing The «Header» and The «HeaderModal» CLASSES (LANG.)
-# Modification Date: 2023.11.14, 12:03 AM
+# Past Modification: Editing The «Header» and The «HeaderModal» CLASSES (LANG.)
+# Last Modification: Editing The «HeaderModal» CLASSES (REBOOT)
+# Modification Date: 2023.11.17, 11:40 AM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -27,6 +27,7 @@ from PySide6.QtWidgets import (
     QPushButton
 )
 
+from .run import run
 from .filesystem import FileSystem
 from .values import StringsValues
 from .messages import MessageBox
@@ -863,6 +864,7 @@ class HeaderModal(QWidget):
             "block": main_textbox_set_list,
             "language": self.dir_language_char[language_radio]
         }
+        stop_old_language = self.parent.parent.data_settings_file["language"]
 
         filesystem = FileSystem(self.parent.parent.basedir)
         filesystem.write_file_settings(new_data)
@@ -875,6 +877,12 @@ class HeaderModal(QWidget):
             text_for_success_msg_save_text,
             self
         )
+
+        self.hide()
+
+        if stop_old_language != self.dir_language_char[language_radio]:
+            self.parent.parent.close()
+            run()
 
     @Slot()
     def open_url(self) -> None:
