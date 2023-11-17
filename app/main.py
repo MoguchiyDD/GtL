@@ -4,9 +4,9 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Editing The «MainWindow» CLASS (Refactoring CODE)
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.11.17, 11:41 AM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Editing The «MainWindow» CLASS (Update RAM)
+# Modification Date: 2023.11.17, 11:54 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -113,11 +113,11 @@ class MainWindow(QMainWindow):
         RESULT: DICTIONARY from SETTINGS FILE (JSON)
         """
 
-        filesystem = FileSystem(self.basedir)
-        data_settings_file = filesystem.read_file_settings()
+        def __info_message() -> None:
+            """
+            Displaying a MESSAGE about Updating The SETTINGS FILE and RAM
+            """
 
-        is_error_filesystem = filesystem._failed_isfile()
-        if is_error_filesystem is True:  # Error : No FILE
             text_for_info_msg_data_title = self.str_val.string_values(
                 "ru_info_msg_data_title"
             )
@@ -130,27 +130,34 @@ class MainWindow(QMainWindow):
                 text_for_info_msg_data_text,
                 self
             )
+
+        def __update_data() -> dict[str, any]:
+            """
+            Updating The SETTINGS FILE and RAM, as well as Displaying a MESSAGE
+            about DATA Update
+            ---
+            RESULT: The DATA from The SETTINGS FILE
+            """
+
+            filesystem.write_file_settings()
+            data_settings_file = filesystem.TEMPLATE
+            __info_message()  # INFO MESSAGE BOX
+
+            return data_settings_file
+
+        filesystem = FileSystem(self.basedir)
+        data_settings_file = filesystem.read_file_settings()
+
+        is_error_filesystem = filesystem._failed_isfile()
+        if is_error_filesystem is True:  # Error : No FILE
+            __info_message()  # INFO MESSAGE BOX
         else:  # Checking KEYS
             valid_keys = filesystem._valid_true_keys(
                 list(data_settings_file.keys())
             )
-            if valid_keys is False:  # Error : KEYS
-                filesystem.write_file_settings()
-                data_settings_file = filesystem.TEMPLATE
-
-                # INFO MESSAGE BOX
-                text_for_info_msg_data_title = self.str_val.string_values(
-                    "ru_info_msg_data_title"
-                )
-                text_for_info_msg_data_text = self.str_val.string_values(
-                    "ru_info_msg_data_text"
-                )
-                MessageBox(
-                    "app/icons/info.svg",
-                    text_for_info_msg_data_title,
-                    text_for_info_msg_data_text,
-                    self
-                )
+            valid_values = filesystem._valid_true_values(data_settings_file)
+            if (valid_keys is False) or (valid_values is False):  # ErrorS
+                data_settings_file = __update_data()
 
         return data_settings_file
 
