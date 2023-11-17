@@ -4,9 +4,9 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Editing The «MainWindow» CLASS (RAM (Settings File))
-# Last Modification: Editing The «MainWindow» CLASS (Adding LANGUAGE)
-# Modification Date: 2023.11.14, 11:57 PM
+# Past Modification: Editing The «MainWindow» CLASS (Refactoring CODE)
+# Last Modification: Checking CODE The PEP8
+# Modification Date: 2023.11.17, 11:41 AM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -54,57 +54,27 @@ class MainWindow(QMainWindow):
         global basedir
         self.basedir = basedir
 
-        str_val = StringsValues()
+        self.str_val = StringsValues()
 
-        # RAM (Settings File)
-        filesystem = FileSystem(self.basedir)
-        self.data_settings_file = filesystem.read_file_settings()
+        self.data_settings_file = self.__ram_settegins_file()  # RAM
+        self.language = self.__language(  # LANGUAGE
+            self.data_settings_file["language"]
+        )
+        self.__main()  # TITLE, SIZE, CENTER WINDOW && FONTS
+        self.__content()  # CONTENT
 
-        is_error_filesystem = filesystem._failed_isfile()
-        if is_error_filesystem is True:  # INFO
-            text_for_info_msg_data_title = str_val.string_values(
-                "ru_info_msg_data_title"
-            )
-            text_for_info_msg_data_text = str_val.string_values(
-                "ru_info_msg_data_text"
-            )
-            MessageBox(
-                "app/icons/info.svg",
-                text_for_info_msg_data_title,
-                text_for_info_msg_data_text,
-                self
-            )
-        else:
-            valid_keys = filesystem._valid_true_keys(
-                list(self.data_settings_file.keys())
-            )
-            if valid_keys is False:
-                filesystem.write_file_settings()
-                self.data_settings_file = filesystem.TEMPLATE
+        # INSTALL
+        self.widget = QWidget()
+        self.widget.setLayout(self.main_layout)
+        self.setCentralWidget(self.widget)
 
-                # INFO
-                text_for_info_msg_data_title = str_val.string_values(
-                    "ru_info_msg_data_title"
-                )
-                text_for_info_msg_data_text = str_val.string_values(
-                    "ru_info_msg_data_text"
-                )
-                MessageBox(
-                    "app/icons/info.svg",
-                    text_for_info_msg_data_title,
-                    text_for_info_msg_data_text,
-                    self
-                )
-
-        # LANGUAGE
-        match self.data_settings_file["language"]:
-            case "RU":
-                self.language = ("RU", "Русский")
-            case "EN":
-                self.language = ("EN", "English")
+    def __main(self) -> None:
+        """
+        Settings for TITLE, WINDOW SIZE, WINDOW POSITION and FONT
+        """
 
         # TITLE
-        window_title = str_val.string_values("app_title")
+        window_title = self.str_val.string_values("app_title")
         self.setWindowTitle(window_title)
 
         self.setMinimumSize(self.MIN_WIDTH, self.MIN_HEIGHT)  # SIZE
@@ -123,17 +93,85 @@ class MainWindow(QMainWindow):
         QFontDatabase.addApplicationFont("app/fonts/Ubuntu/Ubuntu-B.ttf")
         QFontDatabase.addApplicationFont("app/fonts/Ubuntu/Ubuntu-R.ttf")
 
-        # CONTENT
+    def __content(self) -> None:
+        """
+        Fills LAYOUT within The LAYERS
+        """
+
         self.main_layout = QVBoxLayout()
         self.main_layout.setContentsMargins(0, 0, 0, 0)
+
         Header(self.language[0], self.language[1], self)
         Content(self.language[0], self)
         Footer(self)
 
-        # INSTALL
-        widget = QWidget()
-        widget.setLayout(self.main_layout)
-        self.setCentralWidget(widget)
+    def __ram_settegins_file(self) -> dict[str, any]:
+        """
+        Checks and Gets DATA from 1 SETTINGS FILE (JSON)
+
+        ---
+        RESULT: DICTIONARY from SETTINGS FILE (JSON)
+        """
+
+        filesystem = FileSystem(self.basedir)
+        data_settings_file = filesystem.read_file_settings()
+
+        is_error_filesystem = filesystem._failed_isfile()
+        if is_error_filesystem is True:  # Error : No FILE
+            text_for_info_msg_data_title = self.str_val.string_values(
+                "ru_info_msg_data_title"
+            )
+            text_for_info_msg_data_text = self.str_val.string_values(
+                "ru_info_msg_data_text"
+            )
+            MessageBox(
+                "app/icons/info.svg",
+                text_for_info_msg_data_title,
+                text_for_info_msg_data_text,
+                self
+            )
+        else:  # Checking KEYS
+            valid_keys = filesystem._valid_true_keys(
+                list(data_settings_file.keys())
+            )
+            if valid_keys is False:  # Error : KEYS
+                filesystem.write_file_settings()
+                data_settings_file = filesystem.TEMPLATE
+
+                # INFO MESSAGE BOX
+                text_for_info_msg_data_title = self.str_val.string_values(
+                    "ru_info_msg_data_title"
+                )
+                text_for_info_msg_data_text = self.str_val.string_values(
+                    "ru_info_msg_data_text"
+                )
+                MessageBox(
+                    "app/icons/info.svg",
+                    text_for_info_msg_data_title,
+                    text_for_info_msg_data_text,
+                    self
+                )
+
+        return data_settings_file
+
+    def __language(self, language: str) -> tuple[str]:
+        """
+        Selects The LANGUAGE for The SOFWARE
+
+        ---
+        PARAMETERS:
+        - language: str -> The LANGUAGE (for Select)
+        ---
+        RESULT: ("RU", "Русский") || ("EN", "English")
+        """
+
+        match language:
+            case "RU":
+                result = ("RU", "Русский")
+            case "EN":
+                result = ("EN", "English")
+
+        return result
 
 # ----------------------------------
 
