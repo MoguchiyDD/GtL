@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «Content» CLASS («__finish» : LIST)
-# Last Modification: Editing The «Content» CLASS (Adding LANGUAGE)
-# Modification Date: 2023.11.14, 12:05 PM
+# Past Modification: Editing The «Content» CLASS (Adding LANGUAGE)
+# Last Modification: Editing The «Content» CLASS («__finish» : LINE)
+# Modification Date: 2023.11.17, 11:48 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -384,6 +384,8 @@ class Content(QWidget):
 
         _num_lines = 1
         for line in text:  # Line
+            line = line.strip()
+
             self.status.setText(status + str(_num_lines))
             _num_lines += 1
 
