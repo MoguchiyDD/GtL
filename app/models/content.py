@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «Content» CLASS (Adding LANGUAGE)
-# Last Modification: Editing The «Content» CLASS («__finish» : LINE)
-# Modification Date: 2023.11.17, 11:48 PM
+# Past Modification: Editing The «Content» CLASS («__finish» : LINE)
+# Last Modification: Updating The «Content» CLASS (FINISH)
+# Modification Date: 2023.12.20, 11:06 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -33,9 +33,6 @@ from PySide6.QtWidgets import (
 from .filesystem import FileSystem
 from .values import StringsValues
 from .messages import MessageBox
-
-from re import split
-from time import sleep
 
 
 # ------------------- CONTENT -------------------
@@ -105,13 +102,14 @@ class Content(QWidget):
             "creative_mess",
             True
         )
-        self.textbox_ready_text = self.box_with_text(
+        textbox_ready_text = self.box_with_text(
             self.language_char + "content_textbox_ready_text",
             "ready_text",
             False
         )
+        self.text_ready = textbox_ready_text.findChild(QTextEdit)
         textbox_layout.addWidget(self.textbox_creative_mess)
-        textbox_layout.addWidget(self.textbox_ready_text)
+        textbox_layout.addWidget(textbox_ready_text)
 
         # RIGHT
         self.progressbox = self.box_with_progress()
@@ -251,191 +249,99 @@ class Content(QWidget):
         frame.setLayout(layout)
         return frame
 
-    def __finish(
-        self,
-        data: dict[str, any],
-        percent: float,
-        status: str,
-        text: list[str],
-        text_ready: QTextEdit,
-        progress: QProgressBar
-    ) -> None:
+    def __finish(self, data: dict[str, any], text: list[str]) -> None:
         """
         Builds BEAUTIFUL TEXT from The 1st TEXTBOX into The 2nd TEXTBOX
 
         ---
         PARAMETERS:
         - data: dict[str, any] -> The DATA from The RAM
-        - percent: float -> The Percentage of The Number of LINES
-        - status: str -> The STATUS of The PROGRESS
         - text: list[str] -> The LIST 1st TEXTBOX without NEW LINES
-        - text_ready: QTextEdit -> The TEXT 1nd TEXTBOX
-        - progress: QProgressBar -> The PROGRESS
         """
 
-        def _title(_num_line: int, line: str, is_title: bool) -> bool:
-            """
-            Line to be TESTED with TITLE
+        # text_processing = TextProcessing(data, text, self)
+        # text_processing.start()
 
-            ---
-            PARAMETERS:
-            - _num_line: int -> Number of The LINE
-            - line: str -> Line to CHECK
-            - is_title: bool -> Meeting The TITLE (True || False)
-            ---
-            RESULT: is_title
-            """
+    @Slot()
+    def _update_text_ready(self, text: str) -> None:
+        """
+        Updates The 2nd BLOCK with TEXT
 
-            if line[:2] == "//":
-                is_title = True
+        ---
+        PARAMETERS:
+        - text: str -> The Processed TEXT
+        """
 
-                line = line[2:].strip()
-                if _num_line == 2:
-                    text_ready.setText(text_ready.toPlainText() + line)
-                else:
-                    text_ready.setText(
-                        text_ready.toPlainText() + "\n\n" + line
-                    )
+        self.text_ready.setText(self.text_ready.toPlainText() + text)
 
-                text_ready.setText(text_ready.toPlainText() + "\n\n")
+    @Slot()
+    def _update_status(self, num_line: str) -> None:
+        """
+        Updates The STATUS of TEXT Processing
 
-            return is_title
+        ---
+        PARAMETERS:
+        - num_line: str -> The LINE NUMBER that The TEXT is Currently being
+        Processed
+        """
 
-        def _list(
-            line: list[str], is_list: bool, is_add_text: bool
-        ) -> tuple[bool]:
-            """
-            Line to be TESTED with LIST
+        text_for_progress_line_number = self.str_val.string_values(
+            self.language_char + "content_line_number"
+        )
+        self.status.setText(text_for_progress_line_number + num_line)
 
-            ---
-            PARAMETERS:
-            - line: list[str] -> Line to CHECK
-            - is_list: bool -> Meeting The LIST (True || False)
-            - is_add_text: bool -> The LINE has been Added (True || False)
-            ---
-            RESULT: (is_list, is_add_text)
-            """
+    @Slot()
+    def _update_percent(self, percent: float) -> None:
+        """
+        Updates The PROGRESS of TEXT Processing Performed
 
-            if line[-1][-1] == ";":
-                is_list = True
-                is_add_text = True
-                text_ready.setText(
-                    text_ready.toPlainText() + "\t" + " ".join(line) + "\n"
-                )
-            else:
-                is_list = False
-                is_add_text = False
+        ---
+        PARAMETERS:
+        - percent: float -> The STEP for text Processing
+        """
 
-            result = (is_list, is_add_text)
-            return result
+        progress = self.progressbox.findChild(QProgressBar)
+        self.current_percent_progress += round(percent, 2)
+        if (progress.value() < 100) and (self.current_percent_progress < 100):
+            progress.setValue(int(self.current_percent_progress))
 
-        def _dash(word: str, is_dash: bool, is_add_text: bool) -> tuple[bool]:
-            """
-            Word to be TESTED with DASH
+    @Slot()
+    def _finished_processing(self) -> None:
+        """
+        The TEXT that comes out when The TEXT has Finished Processing
+        """
 
-            ---
-            PARAMETERS:
-            - word: str -> Word to CHECK
-            - is_dash: bool -> Meeting The DASH (True || False)
-            - is_add_text: bool -> The LINE has been Added (True || False)
-            ---
-            RESULT: (is_dash, is_add_text)
-            """
+        # PROGRESS BAR
+        text_for_progress_end = self.str_val.string_values(
+            self.language_char + "content_end_app"
+        )
+        progress = self.progressbox.findChild(QProgressBar)
+        if progress.value() < 100:
+            self.current_percent_progress = 100
+            progress.setValue(self.current_percent_progress)
 
-            if word[-1] in ("-", "–", "—", "‒", "﹘"):
-                is_dash = True
-                is_add_text = True
-                text_ready.setText(text_ready.toPlainText() + word[:-1])
+        self.current_percent_progress = 0
+        self.status.setText(text_for_progress_end)
+        self.text_for_copy = self.text_ready.toPlainText()
 
-            result = (is_dash, is_add_text)
-            return result
+        # SUCCESS MESSAGE BOX
+        text_for_success_msg_finish_title = self.str_val.string_values(
+            self.language_char + "success_msg_finish_title"
+        )
+        text_for_success_msg_finish_text = self.str_val.string_values(
+            self.language_char + "success_msg_finish_text"
+        )
+        MessageBox(
+            "app/icons/success.svg",
+            text_for_success_msg_finish_title,
+            text_for_success_msg_finish_text,
+            self
+        )
 
-        def _block(word: str, is_add_text) -> bool:
-            """
-            Word to be TESTED with PUNCTUATIONS
-
-            ---
-            PARAMETERS:
-            - word: str -> Word to CHECK
-            - is_add_text: bool -> The LINE has been Added (True || False)
-            ---
-            RESULT: is_add_text
-            """
-
-            if word[-1] in block:
-                is_add_text = True
-                text_ready.setText(text_ready.toPlainText() + word)
-                if text[-1] != line:
-                    text_ready.setText(text_ready.toPlainText() + "\n")
-
-            return is_add_text
-
-        # DATA
-        title = data["title"]
-        lists = data["list"]
-        dash = data["dash"]
-        block = data["block"]
-
-        # DOTS
-        is_title = False
-        is_list = False
-        is_dash = False
-        is_add_text = False
-
-        _num_lines = 1
-        for line in text:  # Line
-            line = line.strip()
-
-            self.status.setText(status + str(_num_lines))
-            _num_lines += 1
-
-            if len(line) == 0:
-                continue
-
-            if title is True:  # TITLE
-                is_title = _title(_num_lines, line, is_title)
-                if is_title is True:
-                    is_title = False
-                    continue
-
-            words = split(r"\s", line)
-            if is_list is True:  # LIST
-                def_list = _list(words, is_list, is_add_text)
-                is_list = def_list[0]
-                is_add_text = def_list[1]
-                if is_list is True:
-                    continue
-
-            for word in words[:-1]:  # Word
-                text_ready.setText(text_ready.toPlainText() + word + " ")
-
-            if dash is True:  # DASH
-                def_dash = _dash(words[-1], is_dash, is_add_text)
-                is_dash = def_dash[0]
-                is_add_text = def_dash[1]
-
-            if is_dash is False:  # BLOCK && LIST
-                if (lists is True) and (words[-1][-1] == ":"):  # LIST
-                    is_list = True
-                    is_add_text = True
-                    text_ready.setText(
-                        text_ready.toPlainText() + words[-1] + "\n"
-                    )
-                if (lists is False) or (is_list is False):  # BLOCK
-                    is_add_text = _block(words[-1], is_add_text)
-            else:
-                is_dash = False
-
-            if is_add_text is False:  # OTHER WORDS
-                text_ready.setText(text_ready.toPlainText() + words[-1] + " ")
-            else:
-                is_add_text = False
-
-            if progress.value() < 100:  # PROGRESS
-                self.current_percent_progress += percent
-                progress.setValue(int(self.current_percent_progress))
-
-            sleep(0.1)
+        # Animation 2nd Textbox
+        self.anim_text_ready = AnimationText(self.text_ready)
+        self.anim_text_ready.timer_text.start()
+        self.anim_text_ready.animation()
 
     @Slot()
     def activate_btn_finish(self) -> None:
@@ -460,46 +366,22 @@ class Content(QWidget):
 
             return result
 
-        def __count_percent_progress(lines: list[str]) -> float:
-            """
-            Calculates The Percentage of 1 LINE from a List of LINES
-
-            ---
-            PARAMETERS:
-            - lines: list[str] -> The List of LINES with WORDS
-            ---
-            RESULTS: Percentage of The Number of LINES
-            """
-
-            len_lines = len(lines)
-            percent = 100 / len_lines
-            return percent
-
         _cnt_valid_false = 0
         self.current_percent_progress = 0
 
-        # STRINGS for PROGRESS
+        # PROGRESS BAR
         text_for_progress_start = self.str_val.string_values(
             self.language_char + "content_ready"
         )
-        text_for_progress_line_number = self.str_val.string_values(
-            self.language_char + "content_line_number"
-        )
-        text_for_progress_end = self.str_val.string_values(
-            self.language_char + "content_end_app"
-        )
-
-        # PROGRESS BAR
         progress = self.progressbox.findChild(QProgressBar)
-        progress.setValue(0)
+        progress.setValue(self.current_percent_progress)
         self.status.setText(text_for_progress_start)
 
         # TEXTBOXES
         text_create = self.textbox_creative_mess.findChild(
             QTextEdit
         ).toPlainText().strip()
-        text_ready = self.textbox_ready_text.findChild(QTextEdit)
-        text_ready.setText("")
+        self.text_ready.setText("")
 
         # LENGTH TEXT
         valid_text_create = __validation_length_text(len(text_create))
@@ -549,44 +431,8 @@ class Content(QWidget):
         # FINISH
         if (_cnt_valid_false == 0) and (valid_keys is True):
             text_create_without_new_lines = text_create.split("\n")
-            percent_progress = __count_percent_progress(
-                text_create_without_new_lines
-            )
             data = self.parent.data_settings_file
-
-            self.__finish(
-                data,
-                percent_progress,
-                text_for_progress_line_number,
-                text_create_without_new_lines,
-                text_ready,
-                progress
-            )
-
-            if progress.value() < 100:  # PROGRESS
-                progress.setValue(100)
-
-            self.status.setText(text_for_progress_end)
-            self.text_for_copy = text_ready.toPlainText()
-
-            # SUCCESS MESSAGE BOX
-            text_for_success_msg_finish_title = self.str_val.string_values(
-                self.language_char + "success_msg_finish_title"
-            )
-            text_for_success_msg_finish_text = self.str_val.string_values(
-                self.language_char + "success_msg_finish_text"
-            )
-            MessageBox(
-                "app/icons/success.svg",
-                text_for_success_msg_finish_title,
-                text_for_success_msg_finish_text,
-                self
-            )
-
-            # Animation 2nd Textbox
-            self.anim_text_ready = AnimationText(text_ready)
-            self.anim_text_ready.timer_text.start()
-            self.anim_text_ready.animation()
+            self.__finish(data, text_create_without_new_lines)
 
     @Slot()
     def activate_btn_copy(self, text: str) -> None:
