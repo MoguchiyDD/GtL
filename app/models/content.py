@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Editing The «TextProcessing» CLASS (DASH)
-# Modification Date: 2023.12.21, 01:27 AM
+# Past Modification: Editing The «TextProcessing» CLASS (DASH)
+# Last Modification: Editing The «TextProcessing» CLASS (BLOCK)
+# Modification Date: 2023.12.21, 02:33 AM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -265,6 +265,7 @@ class Content(QWidget):
         - text: list[str] -> The LIST 1st TEXTBOX without NEW LINES
         """
 
+        self.anim_text_ready = None
         text_processing = TextProcessing(data, text, self)
         text_processing.start()
 
@@ -577,7 +578,7 @@ class TextProcessing(QThread):
             """
 
             self.signals.signal_text_ready.emit(text)
-            sleep(0.1)
+            sleep(0.2)
 
             text = ""
             return text
@@ -686,35 +687,28 @@ class TextProcessing(QThread):
 
             return text
 
-        def _block(word: str, is_add_text) -> bool:
+        def _block(word: str) -> bool:
             """
-            Word to be TESTED with PUNCTUATIONS
+            Word to be TESTED with FUNCTUATIONS
 
             ---
             PARAMETERS:
             - word: str -> Word to CHECK
-            - is_add_text: bool -> The LINE has been Added (True || False)
             ---
-            RESULT: (is_add_text, processed text)
+            RESULT: WORD with NEWLINE
             """
 
             text = ""
             if word[-1] in self.block:
-                is_add_text = True
+                text += word + "\n"
 
-                text += word
-                if text[-1] != line:
-                    text += "\n"
-
-            result = (is_add_text, text)
-            return result
+            return text
 
         is_list = False
         is_list_dash = False
         is_dash = False
         _num_lines = 1
         _num_lists = 1
-        dash_word = ""
         ready_text = ""
 
         for line in self.text:  # Line
@@ -761,15 +755,24 @@ class TextProcessing(QThread):
 
             # DASH
             if self.dash is True:
-                res_dash = _dash(words[-1])
-                if res_dash != "":
-                    dash_word += res_dash
+                dash_word = _dash(words[-1])
+                if dash_word != "":
                     is_dash = True
 
-            ready_text += " ".join(words[:-1])
-            if dash_word != "":
-                ready_text += " " + dash_word
-                dash_word = ""
+            # BLOCK
+            if is_dash is False:
+                block_word = _block(words[-1])
+
+            ready_text += " ".join(words[:-1]) + " "
+            match(is_dash):
+                case True:
+                    ready_text += dash_word
+                    is_dash = False
+                case False:
+                    if block_word != "":
+                        ready_text += block_word
+                    else:
+                        ready_text += words[-1] + " "
 
             ready_text = __signal_ready_text(ready_text)
 
