@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «Content» CLASS («__finish» : LINE)
-# Last Modification: Updating The «Content» CLASS (FINISH)
-# Modification Date: 2023.12.20, 11:06 PM
+# Past Modification: Updating The «Content» CLASS (FINISH)
+# Last Modification: Adding The «TextProcessingSignals» CLASS
+# Modification Date: 2023.12.20, 11:08 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -15,6 +15,8 @@ from PySide6.QtCore import (
     Qt,
     Slot,
     QTimer,
+    Signal,
+    QObject,
     QPropertyAnimation,
     QSequentialAnimationGroup
 )
@@ -473,6 +475,28 @@ class Content(QWidget):
             text_for_msg_copy_2nd_block_text,
             self
         )
+
+# -----------------------------------------------
+
+
+# --------------- Text Processing ---------------
+
+class TextProcessingSignals(QObject):
+    """
+    Connection between a GRAPHICAL SOFTWARE and a THREAD
+
+    ---
+    SIGNALS:
+    - signal_text_ready : str -> Signal with TEXT from The 2nd TEXT BLOCK
+    - signal_status : str -> Signal with STATUS of Current Work Location
+    - signal_percent : float -> Signal with PERCENT of Current Work Completed
+    - signal_finished -> Signal Indicating The END of Che Current Job
+    """
+
+    signal_text_ready = Signal(str)
+    signal_status = Signal(str)
+    signal_percent = Signal(float)
+    signal_finished = Signal()
 
 # -----------------------------------------------
 
