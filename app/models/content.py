@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Updating The «Content» CLASS (FINISH)
-# Last Modification: Adding The «TextProcessingSignals» CLASS
-# Modification Date: 2023.12.20, 11:08 PM
+# Past Modification: Adding The «TextProcessingSignals» CLASS
+# Last Modification: Adding The «TextProcessing» CLASS
+# Modification Date: 2023.12.20, 11:13 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -17,6 +17,7 @@ from PySide6.QtCore import (
     QTimer,
     Signal,
     QObject,
+    QThread,
     QPropertyAnimation,
     QSequentialAnimationGroup
 )
@@ -261,8 +262,8 @@ class Content(QWidget):
         - text: list[str] -> The LIST 1st TEXTBOX without NEW LINES
         """
 
-        # text_processing = TextProcessing(data, text, self)
-        # text_processing.start()
+        text_processing = TextProcessing(data, text, self)
+        text_processing.start()
 
     @Slot()
     def _update_text_ready(self, text: str) -> None:
@@ -497,6 +498,56 @@ class TextProcessingSignals(QObject):
     signal_status = Signal(str)
     signal_percent = Signal(float)
     signal_finished = Signal()
+
+
+class TextProcessing(QThread):
+    """
+    The THREAD Responsible for The TEXT PROCESSING Process
+
+    ---
+    PARAMETERS:
+    - data: dict[str, any] -> The DATA from The RAM
+    - text: list[str] -> The LIST 1st TEXTBOX without NEW LINES
+    - parent: QObject | None = None -> Object PARENT for this CLASS
+    (AFTER THAT, THIS CURRENT CLASS WILL BECOME A CHILD OF THE PARENT)
+    ---
+    FUNCTIONS:
+    - run() -> None : Starting a THREAD
+    """
+
+    def __init__(
+        self,
+        data: dict[str, any],
+        text: list[str],
+        parent: QObject | None = None
+    ) -> None:
+        super().__init__(parent)
+        self.text = text
+        self.percent = self.__count_percent_progress(self.text)
+
+        # DATA
+        self.title = data["title"]
+        self.lists = data["list"]
+        self.dash = data["dash"]
+        self.block = data["block"]
+
+        # DOTS
+        self.is_dash = False
+        self.is_add_text = False
+
+        # Signals
+        self.signals = TextProcessingSignals()
+        self.signals.signal_text_ready.connect(parent._update_text_ready)
+        self.signals.signal_status.connect(parent._update_status)
+        self.signals.signal_percent.connect(parent._update_percent)
+        self.signals.signal_finished.connect(parent._finished_processing)
+
+    def run(self) -> None:
+        """
+        Starting a THREAD
+        """
+
+        self.signals.signal_finished.emit()
 
 # -----------------------------------------------
 
