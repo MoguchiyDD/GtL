@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: TESTING The «TextProcessing» CLASS
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.12.21, 12:36 AM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Editing The «TextProcessing» CLASS (DASH)
+# Modification Date: 2023.12.21, 01:27 AM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -629,10 +629,12 @@ class TextProcessing(QThread):
             dash_word = ""  # For -
             text = ""
 
-            res_dash = _dash(words[-1])  # DASH
-            if res_dash != "":
-                is_dash = True
-                dash_word += res_dash
+            # DASH
+            if self.dash is True:
+                res_dash = _dash(words[-1])
+                if res_dash != "":
+                    is_dash = True
+                    dash_word += res_dash
 
             if words[0] == "*":  # *
                 top_word = True
@@ -709,8 +711,10 @@ class TextProcessing(QThread):
 
         is_list = False
         is_list_dash = False
+        is_dash = False
         _num_lines = 1
         _num_lists = 1
+        dash_word = ""
         ready_text = ""
 
         for line in self.text:  # Line
@@ -755,7 +759,19 @@ class TextProcessing(QThread):
                     ready_text = __signal_ready_text(ready_text)
                     continue
 
-            ready_text = ""
+            # DASH
+            if self.dash is True:
+                res_dash = _dash(words[-1])
+                if res_dash != "":
+                    dash_word += res_dash
+                    is_dash = True
+
+            ready_text += " ".join(words[:-1])
+            if dash_word != "":
+                ready_text += " " + dash_word
+                dash_word = ""
+
+            ready_text = __signal_ready_text(ready_text)
 
         self.signals.signal_finished.emit()
 
