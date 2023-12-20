@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «TextProcessing» CLASS (PERCENT && TITLE)
-# Last Modification: Editing The «TextProcessing» CLASS (LIST && DASH)
-# Modification Date: 2023.12.20, 11:20 PM
+# Past Modification: Editing The «TextProcessing» CLASS (LIST && DASH)
+# Last Modification: Editing The «TextProcessing» CLASS (BLOCK)
+# Modification Date: 2023.12.20, 11:22 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -682,6 +682,29 @@ class TextProcessing(QThread):
                 text += word[:-1]
 
             return text
+
+        def _block(word: str, is_add_text) -> bool:
+            """
+            Word to be TESTED with PUNCTUATIONS
+
+            ---
+            PARAMETERS:
+            - word: str -> Word to CHECK
+            - is_add_text: bool -> The LINE has been Added (True || False)
+            ---
+            RESULT: (is_add_text, processed text)
+            """
+
+            text = ""
+            if word[-1] in self.block:
+                is_add_text = True
+
+                text += word
+                if text[-1] != line:
+                    text += "\n"
+
+            result = (is_add_text, text)
+            return result
 
         is_list = False
         is_list_dash = False
