@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Adding The «TextProcessing» CLASS
-# Last Modification: Editing The «TextProcessing» CLASS (PERCENT && TITLE)
-# Modification Date: 2023.12.20, 11:17 PM
+# Past Modification: Editing The «TextProcessing» CLASS (PERCENT && TITLE)
+# Last Modification: Editing The «TextProcessing» CLASS (LIST && DASH)
+# Modification Date: 2023.12.20, 11:20 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -604,7 +604,89 @@ class TextProcessing(QThread):
 
             return text
 
+        def _list(
+            num: int,
+            words: list[str],
+            is_list: bool,
+            is_dash: bool
+        ) -> tuple[str, bool, bool]:
+            """
+            Line to be TESTED with LIST
+
+            ---
+            PARAMETERS:
+            - num: int -> The LINE NUMBER that The TEXT is Currently being
+            - words: list[str] -> Words to CHECK
+            - is_list: bool -> Meeting The LIST (True || False)
+            - is_dash: bool ->  (True || False)
+            ---
+            RESULT: (PROCESSED TEXT, is_list, is_dash)
+            """
+
+            top_word = False  # For *
+            end_word = False  # For |||
+            dash_word = ""  # For -
+            text = ""
+
+            res_dash = _dash(words[-1])  # DASH
+            if res_dash != "":
+                is_dash = True
+                dash_word += res_dash
+            
+            if words[0] == "*":  # *
+                top_word = True
+
+                if num >= 2:  # Count *
+                    text += "\n"
+
+                num += 1
+
+            if words[-1] == "|||":  # End LIST
+                end_word = True
+            
+            match top_word:
+                case True:  # With *
+                    text += "\t" + " ".join(words[1:])
+                    if dash_word != "":  # Have -
+                        text = text[:-1]
+                case False:  # Without *
+                    text += " ".join(words)
+                    if dash_word != "":  # Have -
+                        text = text[:-1]
+
+            if end_word:  # End LIST
+                text = text[:-4]
+                is_list = False
+
+            if is_dash:  # For MERGE TEXT, if have -
+                is_dash = False
+            else:
+                text += " "
+
+            result = (num, text, is_list, is_dash)
+            return result
+
+        def _dash(word: str) -> str:
+            """
+            Word to be TESTED with DASH
+
+            ---
+            PARAMETERS:
+            - word: str -> Word to CHECK
+            ---
+            RESULT: PROCESSED TEXT
+            """
+
+            text = ""
+            if word[-1] in ("-", "–", "—", "‒", "﹘"):
+                text += word[:-1]
+
+            return text
+
+        is_list = False
+        is_list_dash = False
         _num_lines = 1
+        _num_lists = 1
         ready_text = ""
 
         for line in self.text:  # Line
@@ -626,6 +708,25 @@ class TextProcessing(QThread):
                 res_title = _title(_num_lines, current_line)
                 if res_title != "":
                     ready_text += res_title
+                    ready_text = __signal_ready_text(ready_text)
+                    continue
+
+            # LIST
+            if self.lists is True:
+                if is_list is True:
+                    res_list = _list(_num_lists, words, is_list, is_list_dash)
+                    _num_lists = res_list[0]
+                    text = res_list[1]
+                    is_list = res_list[2]
+                    is_list_dash = res_list[3]
+                    if text != "":
+                        ready_text += text
+                        ready_text = __signal_ready_text(ready_text)
+                        continue
+                elif words[-1][-1] == ":":
+                    ready_text += current_line + "\n"
+                    is_list = True
+                if is_list is True:
                     ready_text = __signal_ready_text(ready_text)
                     continue
 
