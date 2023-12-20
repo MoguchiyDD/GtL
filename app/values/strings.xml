@@ -7,9 +7,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Store All STRINGS of The SOFTWARE in 1 PLACE
 Result: Returns 1 Desired STRING via The «name» ATTRIBUTE («string_values» FUN)
 
-Past Modification: Editing The «SETTINGS» String (RU : LANGUAGE)
-Last Modification: Adding English LANGUAGE
-Modification Date: 2023.11.14, 09:24 PM
+Past Modification: Adding English LANGUAGE
+Last Modification: Editing The «SETTINGS» String (RU && EN : LIST)
+Modification Date: 2023.12.20, 11:32 PM
 
 Create Date: 2023.10.23, 02:49 PM
 -->
@@ -93,9 +93,9 @@ Create Date: 2023.10.23, 02:49 PM
 Текст читают, а не карякают!</string>
     <string name="ru_information_second_list">Список</string>
     <string name="ru_information_second_list_before">Текст тексту рознь:
-Потому что это текст #0;
-Потому что это текст #1;
-Текст читают, а не карякают!</string>
+* Потому что это текст #0
+* Потому что это текст #1
+Текст читают, а не карякают! |||</string>
     <string name="ru_information_second_list_after">Текст тексту рознь:
     Потому что это текст #0;
     Потому что это текст #1;
@@ -122,9 +122,9 @@ Heading
 The text is read, not scratched!</string>
     <string name="en_information_second_list">List</string>
     <string name="en_information_second_list_before">Different text:
-Because it's text #0;
-Because it's text #1;
-The text is read, not scratched!</string>
+* Because it's text #0;
+* Because it's text #1;
+The text is read, not scratched! |||</string>
     <string name="en_information_second_list_after">Different text:
     Because it's text #0;
     Because it's text #1;
