@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «TextProcessing» CLASS (LIST && DASH)
-# Last Modification: Editing The «TextProcessing» CLASS (BLOCK)
-# Modification Date: 2023.12.20, 11:22 PM
+# Past Modification: TESTING The «TextProcessing» CLASS
+# Last Modification: Checking CODE The PEP8
+# Modification Date: 2023.12.21, 12:36 AM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -39,6 +39,7 @@ from .messages import MessageBox
 
 from re import split
 from time import sleep
+
 
 # ------------------- CONTENT -------------------
 
@@ -596,7 +597,7 @@ class TextProcessing(QThread):
             line = line[2:].strip()
 
             text = ""
-            if _num_line >= 2:
+            if _num_line == 2:
                 text += line
             else:
                 text += "\n\n" + line
@@ -632,7 +633,7 @@ class TextProcessing(QThread):
             if res_dash != "":
                 is_dash = True
                 dash_word += res_dash
-            
+
             if words[0] == "*":  # *
                 top_word = True
 
@@ -643,7 +644,7 @@ class TextProcessing(QThread):
 
             if words[-1] == "|||":  # End LIST
                 end_word = True
-            
+
             match top_word:
                 case True:  # With *
                     text += "\t" + " ".join(words[1:])
@@ -654,14 +655,14 @@ class TextProcessing(QThread):
                     if dash_word != "":  # Have -
                         text = text[:-1]
 
-            if end_word:  # End LIST
-                text = text[:-4]
-                is_list = False
-
             if is_dash:  # For MERGE TEXT, if have -
                 is_dash = False
             else:
                 text += " "
+
+            if end_word:  # End LIST
+                text = text[:-4] + "\n"
+                is_list = False
 
             result = (num, text, is_list, is_dash)
             return result
@@ -749,9 +750,12 @@ class TextProcessing(QThread):
                 elif words[-1][-1] == ":":
                     ready_text += current_line + "\n"
                     is_list = True
+                    _num_lists = 1
                 if is_list is True:
                     ready_text = __signal_ready_text(ready_text)
                     continue
+
+            ready_text = ""
 
         self.signals.signal_finished.emit()
 
