@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Adding The «TextProcessingSignals» CLASS
-# Last Modification: Adding The «TextProcessing» CLASS
-# Modification Date: 2023.12.20, 11:13 PM
+# Past Modification: Adding The «TextProcessing» CLASS
+# Last Modification: Editing The «TextProcessing» CLASS (PERCENT && TITLE)
+# Modification Date: 2023.12.20, 11:17 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -37,6 +37,8 @@ from .filesystem import FileSystem
 from .values import StringsValues
 from .messages import MessageBox
 
+from re import split
+from time import sleep
 
 # ------------------- CONTENT -------------------
 
@@ -542,10 +544,90 @@ class TextProcessing(QThread):
         self.signals.signal_percent.connect(parent._update_percent)
         self.signals.signal_finished.connect(parent._finished_processing)
 
+    def __count_percent_progress(self, lines: list[str]) -> float:
+        """
+        Calculates The Percentage of 1 LINE from a List of LINES
+
+        ---
+        PARAMETERS:
+        - lines: list[str] -> The List of LINES with WORDS
+        ---
+        RESULTS: Percentage of The Number of LINES
+        """
+
+        len_lines = len(lines)
+        percent = 100 / len_lines
+        return percent
+
     def run(self) -> None:
         """
         Starting a THREAD
         """
+
+        def __signal_ready_text(text: str) -> str:
+            """
+            Send TEXT from a THREAD to a GRAPHICAL SOFTWARE, and SLEEP and
+            CLEAN UP TEXT
+            ---
+            PARAMETERS:
+            - text: str -> The TEXT from The 2nd TEXT BLOCK
+            ---
+            RESULT: ""
+            """
+
+            self.signals.signal_text_ready.emit(text)
+            sleep(0.1)
+
+            text = ""
+            return text
+
+        def _title(_num_line: int, line: str) -> str:
+            """
+            Line to be TESTED with TITLE
+
+            ---
+            PARAMETERS:
+            - _num_line: int -> Number of The LINE
+            - line: str -> Line to CHECK
+            ---
+            RESULT: PROCESSED TEXT
+            """
+
+            line = line[2:].strip()
+
+            text = ""
+            if _num_line >= 2:
+                text += line
+            else:
+                text += "\n\n" + line
+            text += "\n\n"
+
+            return text
+
+        _num_lines = 1
+        ready_text = ""
+
+        for line in self.text:  # Line
+            line = line.strip()
+            replace_words_dash = line.replace("-\xad", "-")
+            words_without_spaces = split(r"\s", replace_words_dash)
+            words = list(filter(lambda w: w != "", words_without_spaces))
+            current_line = " ".join(words)
+
+            self.signals.signal_status.emit(str(_num_lines))  # NEW STATUS
+            self.signals.signal_percent.emit(self.percent)
+            _num_lines += 1
+
+            if len(line) == 0:  # SELF-DEFENSE AGAINST PACIFIERS
+                continue
+
+            # TITLE
+            if (self.title is True) and (line[:3] == "// "):
+                res_title = _title(_num_lines, current_line)
+                if res_title != "":
+                    ready_text += res_title
+                    ready_text = __signal_ready_text(ready_text)
+                    continue
 
         self.signals.signal_finished.emit()
 
