@@ -1,11 +1,10 @@
-# Guide to Letters (1-ая стадия готова)
+# Guide to Letters
+The idea is to help people reduce the time it takes to edit text after copying from a PDF file, for example journalists. The ugly text from the copied PDF splices lines together until certain punctuation occurs. Along the way, it removes extra spaces, and also, if desired, removes the dash at the end of the word at the end of the 1st line.
 
-### Лицензия
-**MIT License**, который расположен в текстовом файле **LICENSE**
-
-## Как работает приложение?
 ![](GtL.gif)
 
-### В каких Операционных Системах запускалась для полного тестирования приложения?
-- **Linux**
-  - Ubuntu 22.04.3 LTS, **X11**
+## License
+**MIT License**, which is located in the **LICENSE** text file
+
+## The application was tested in OS:
+- **Linux** : Ubuntu 22.04.3 LTS (**X11**, **Wayland**)
