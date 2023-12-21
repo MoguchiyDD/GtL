@@ -6,7 +6,7 @@
 #
 # Past Modification: Editing The «TextProcessing» CLASS (BLOCK)
 # Last Modification: Editing The «Content» CLASS (DISABLE BUTTONS)
-# Modification Date: 2023.12.21, 08:19 PM
+# Modification Date: 2023.12.21, 08:29 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -21,7 +21,7 @@ from PySide6.QtCore import (
     QPropertyAnimation,
     QSequentialAnimationGroup
 )
-from PySide6.QtGui import QGuiApplication, QTextCursor, QFont
+from PySide6.QtGui import QGuiApplication, QTextCursor, QFont, QIcon
 from PySide6.QtWidgets import (
     QWidget,
     QFrame,
@@ -272,6 +272,7 @@ class Content(QWidget):
         self.btn_finish.setEnabled(False)
         self.btn_copy.setEnabled(False)
         self.header.btn_settings.setEnabled(False)
+        self.header.btn_settings.setIcon(QIcon("app/icons/d_settings.svg"))
 
         text_processing = TextProcessing(data, text, self)
         text_processing.start()
@@ -360,6 +361,7 @@ class Content(QWidget):
         self.btn_finish.setEnabled(True)
         self.btn_copy.setEnabled(True)
         self.header.btn_settings.setEnabled(True)
+        self.header.btn_settings.setIcon(QIcon("app/icons/settings.svg"))
 
     @Slot()
     def activate_btn_finish(self) -> None:
