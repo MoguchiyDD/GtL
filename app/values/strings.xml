@@ -7,9 +7,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Store All STRINGS of The SOFTWARE in 1 PLACE
 Result: Returns 1 Desired STRING via The «name» ATTRIBUTE («string_values» FUN)
 
-Past Modification: Adding English LANGUAGE
+Past Modification: Editing The «SETTINGS» String (RU && EN : TITLE && LIST)
 Last Modification: Editing The «SETTINGS» String (RU && EN : LIST)
-Modification Date: 2023.12.20, 11:32 PM
+Modification Date: 2023.12.21, 05:41 PM
 
 Create Date: 2023.10.23, 02:49 PM
 -->
@@ -57,8 +57,8 @@ Create Date: 2023.10.23, 02:49 PM
     <string name="settings_main_punctuations">. ? !</string>
     <string name="ru_settings_title">Настройки</string>
     <string name="ru_settings_main">Основное</string>
-    <string name="ru_settings_main_title">Заголовок из //</string>
-    <string name="ru_settings_main_list">Список из : + ;</string>
+    <string name="ru_settings_main_title">Включить шаблон с заголовками</string>
+    <string name="ru_settings_main_list">Включить шаблон со списками</string>
     <string name="ru_settings_main_dash">Убирать тире в конце каждой строки</string>
     <string name="ru_settings_main_title_punctuations">Пунктуации</string>
     <string name="ru_settings_main_hint_punctuations">Пробелы — разделители между пунктуациями. Пунктуации могут открываться по-разному из-за проверки на уникальность символов</string>
@@ -66,8 +66,8 @@ Create Date: 2023.10.23, 02:49 PM
     <string name="ru_settings_btn_save">Сохранить</string>
     <string name="en_settings_title">Settings</string>
     <string name="en_settings_main">Main</string>
-    <string name="en_settings_main_title">Heading of //</string>
-    <string name="en_settings_main_list">List of : + ;</string>
+    <string name="en_settings_main_title">Include template with headings</string>
+    <string name="en_settings_main_list">Include template with lists</string>
     <string name="en_settings_main_dash">Remove the dash at the end of each line</string>
     <string name="en_settings_main_title_punctuations">Punctuations</string>
     <string name="en_settings_main_hint_punctuations">Spaces are separators between punctuations. Punctuations may open differently due to checking for unique characters</string>
@@ -93,13 +93,13 @@ Create Date: 2023.10.23, 02:49 PM
 Текст читают, а не карякают!</string>
     <string name="ru_information_second_list">Список</string>
     <string name="ru_information_second_list_before">Текст тексту рознь:
-* Потому что это текст #0
-* Потому что это текст #1
+* Потому что это текст #0;
+* Потому что это текст #1;
 Текст читают, а не карякают! |||</string>
     <string name="ru_information_second_list_after">Текст тексту рознь:
-    Потому что это текст #0;
-    Потому что это текст #1;
-Текст читают, а не карякают!</string>
+    Потому что это текст #0; 
+    Потому что это текст #1; 
+Текст читают, а не карякают! </string>
     <string name="ru_information_second_dash">Тире</string>
     <string name="ru_information_second_dash_before">Текст текс-
 ту рознь.</string>
@@ -126,9 +126,9 @@ The text is read, not scratched!</string>
 * Because it's text #1;
 The text is read, not scratched! |||</string>
     <string name="en_information_second_list_after">Different text:
-    Because it's text #0;
-    Because it's text #1;
-The text is read, not scratched!</string>
+    Because it's text #0; 
+    Because it's text #1; 
+The text is read, not scratched! </string>
     <string name="en_information_second_dash">Dash</string>
     <string name="en_information_second_dash_before">Diffe-
 rent text.</string>
