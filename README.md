@@ -3,7 +3,7 @@ The idea is to help people reduce the time it takes to edit text after copying f
 
 ![](GtL.gif)
 
-## The application was tested in OS:
+## The software was tested in OS:
 - **Linux** : Ubuntu 22.04.3 LTS (**X11**, **Wayland**)
 
 ## License
