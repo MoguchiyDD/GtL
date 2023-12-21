@@ -7,7 +7,7 @@ Result: Ready to Use STYLE
 
 Past Modification: Editing The «STRINGS» STYLE BLOCK (GROUP)
 Last Modification: Editing The «HEADER» and «CONTENT» STYLE BLOCKS (BUTTONS)
-Modification Date: 2023.12.21, 06:46 PM
+Modification Date: 2023.12.21, 08:26 PM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -69,8 +69,8 @@ QFrame#header QPushButton:hover {
   background-color: #B71B0F;
 }
 QFrame#header QPushButton:disabled {
-  background-color: #353535;
-  border-color: #EEEEEE;
+  background-color: #292929;
+  border-color: #353535;
 }
 
 /* ------------------------------------- */
@@ -145,6 +145,7 @@ QFrame#content QFrame#content_buttons QPushButton {
   outline: none;
 }
 QFrame#content QFrame#content_buttons QPushButton#content_btn_finish {
+  color: #C5C5C5;
   background-color: #B71B0F;
   border: 1px solid #B71B0F;
 }
