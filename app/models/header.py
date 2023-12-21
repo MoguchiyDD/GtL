@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «Header» and The «HeaderModal» CLASSES (LANG.)
-# Last Modification: Editing The «HeaderModal» CLASSES (REBOOT)
-# Modification Date: 2023.11.17, 11:40 AM
+# Past Modification: Editing The «HeaderModal» CLASSES (REBOOT)
+# Last Modification: Editing The «HeaderModal» CLASSES (StringsValues)
+# Modification Date: 2023.12.21, 06:29 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -102,11 +102,11 @@ class Header(QWidget):
         title = QLabel(text)
         title.setFont(QFont("Lora"))
 
-        btn_settings = QPushButton()
-        btn_settings.setObjectName("header_btn_settings")
-        btn_settings.setIcon(QIcon("app/icons/settings.svg"))
-        btn_settings.setFixedWidth(40)
-        btn_settings.clicked.connect(self.activate_btn_settings)
+        self.btn_settings = QPushButton()
+        self.btn_settings.setObjectName("header_btn_settings")
+        self.btn_settings.setIcon(QIcon("app/icons/settings.svg"))
+        self.btn_settings.setFixedWidth(40)
+        self.btn_settings.clicked.connect(self.activate_btn_settings)
 
         btn_information = QPushButton()
         btn_information.setObjectName("header_btn_information")
@@ -121,7 +121,9 @@ class Header(QWidget):
         btn_license.clicked.connect(self.activate_btn_license)
 
         layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignLeft)
-        layout.addWidget(btn_settings, alignment=Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(
+            self.btn_settings, alignment=Qt.AlignmentFlag.AlignRight
+        )
         layout.addWidget(btn_information)
         layout.addWidget(btn_license)
 
@@ -685,10 +687,10 @@ class HeaderModal(QWidget):
             self.language_char + "settings_main"
         )
         text_for_main_title = self.parent.str_val.strings_values_idx(
-            self.language_char + "settings_main_title", 2
+            self.language_char + "settings_main_title", 3
         )
         text_for_main_list = self.parent.str_val.strings_values_idx(
-            self.language_char + "settings_main_list", 2, 4
+            self.language_char + "settings_main_list", 3
         )
         text_for_main_dash = self.parent.str_val.strings_values_idx(
             self.language_char + "settings_main_dash",
@@ -724,9 +726,7 @@ class HeaderModal(QWidget):
         list_checkbox_layout = self.__settings_group_checkboxes(  # LIST
             data[1],  # list
             (text_for_main_list[1], "settings_checkboxes_one_part"),
-            (text_for_main_list[0][0], "settings_checkboxes_find"),
-            (text_for_main_list[2], "settings_checkboxes_two_part"),
-            (text_for_main_list[0][1], "settings_checkboxes_find")
+            (text_for_main_list[0][0], "settings_checkboxes_find")
         )
         dash_checkbox_layout = self.__settings_group_checkboxes(  # DASH
             data[2],  # dash
