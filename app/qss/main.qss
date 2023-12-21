@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Editing The «FOOTER» STYLE BLOCK (BUTTON)
-Last Modification: Editing The «STRINGS» STYLE BLOCK (GROUP)
-Modification Date: 2023.11.14, 07:40 PM
+Past Modification: Editing The «STRINGS» STYLE BLOCK (GROUP)
+Last Modification: Editing The «HEADER» and «CONTENT» STYLE BLOCKS (BUTTONS)
+Modification Date: 2023.12.21, 06:46 PM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -67,6 +67,10 @@ QFrame#header QPushButton {
 }
 QFrame#header QPushButton:hover {
   background-color: #B71B0F;
+}
+QFrame#header QPushButton:disabled {
+  background-color: #353535;
+  border-color: #EEEEEE;
 }
 
 /* ------------------------------------- */
@@ -147,6 +151,11 @@ QFrame#content QFrame#content_buttons QPushButton#content_btn_finish {
 QFrame#content QFrame#content_buttons QPushButton#content_btn_finish:hover {
   background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #313131, stop: 1 #292929);
   border: 1px solid #292929;
+}
+QFrame#content QFrame#content_buttons QPushButton#content_btn_finish:disabled,
+QFrame#content QFrame#content_buttons QPushButton#content_btn_copy:disabled {
+  background-color: #353535;
+  border-color: #212121;
 }
 QFrame#content QFrame#content_buttons QPushButton#content_btn_copy {
   background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #313131, stop: 1 #292929);
