@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «TextProcessing» CLASS (DASH)
-# Last Modification: Editing The «TextProcessing» CLASS (BLOCK)
-# Modification Date: 2023.12.21, 02:33 AM
+# Past Modification: Editing The «TextProcessing» CLASS (BLOCK)
+# Last Modification: Editing The «Content» CLASS (DISABLE BUTTONS)
+# Modification Date: 2023.12.21, 08:19 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -50,6 +50,7 @@ class Content(QWidget):
     ---
     PARAMETER:
     - language_char: str -> The Characters of LANGUAGE
+    - header: QWidget -> Link of HEADER TEMPLATE
     - parent: QWidget | None = None -> Widget PARENT for this CLASS
     (AFTER THAT, THIS CURRENT CLASS WILL BECOME A CHILD OF THE PARENT)
     - f: Qt.WindowType = Qt.WindowType.Widget -> Window-System (Widget)
@@ -70,12 +71,14 @@ class Content(QWidget):
     def __init__(
         self,
         language_char: str,
+        header: QWidget,
         parent: QWidget | None = None,
         flags: Qt.WindowType = Qt.WindowType.Widget
     ) -> None:
         super(Content, self).__init__(parent, flags)
         self.setParent(parent)
         self.parent = parent
+        self.header = header
 
         self.language_char = language_char.lower() + "_"
         self.str_val = StringsValues()
@@ -236,21 +239,21 @@ class Content(QWidget):
         text_for_finish = self.str_val.string_values(
             self.language_char + "content_start_app"
         )
-        btn_finish = QPushButton(text_for_finish.upper())
-        btn_finish.setObjectName("content_btn_finish")
-        btn_finish.clicked.connect(self.activate_btn_finish)
+        self.btn_finish = QPushButton(text_for_finish.upper())
+        self.btn_finish.setObjectName("content_btn_finish")
+        self.btn_finish.clicked.connect(self.activate_btn_finish)
 
         text_for_copy = self.str_val.string_values(
             self.language_char + "content_copy_two_textbox"
         )
-        btn_copy = QPushButton(text_for_copy.upper())
-        btn_copy.setObjectName("content_btn_copy")
-        btn_copy.clicked.connect(
+        self.btn_copy = QPushButton(text_for_copy.upper())
+        self.btn_copy.setObjectName("content_btn_copy")
+        self.btn_copy.clicked.connect(
             lambda clicked: self.activate_btn_copy(self.text_for_copy)
         )
 
-        layout.addWidget(btn_finish)
-        layout.addWidget(btn_copy)
+        layout.addWidget(self.btn_finish)
+        layout.addWidget(self.btn_copy)
 
         frame.setLayout(layout)
         return frame
@@ -266,6 +269,10 @@ class Content(QWidget):
         """
 
         self.anim_text_ready = None
+        self.btn_finish.setEnabled(False)
+        self.btn_copy.setEnabled(False)
+        self.header.btn_settings.setEnabled(False)
+
         text_processing = TextProcessing(data, text, self)
         text_processing.start()
 
@@ -349,6 +356,10 @@ class Content(QWidget):
         self.anim_text_ready = AnimationText(self.text_ready)
         self.anim_text_ready.timer_text.start()
         self.anim_text_ready.animation()
+
+        self.btn_finish.setEnabled(True)
+        self.btn_copy.setEnabled(True)
+        self.header.btn_settings.setEnabled(True)
 
     @Slot()
     def activate_btn_finish(self) -> None:
