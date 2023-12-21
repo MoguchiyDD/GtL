@@ -4,9 +4,9 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Editing The «MainWindow» CLASS (Update RAM)
-# Modification Date: 2023.11.17, 11:54 PM
+# Past Modification: Editing The «MainWindow» CLASS (Update RAM)
+# Last Modification: Editing The «MainWindow» CLASS (CONTENT)
+# Modification Date: 2023.12.21, 06:33 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -101,8 +101,8 @@ class MainWindow(QMainWindow):
         self.main_layout = QVBoxLayout()
         self.main_layout.setContentsMargins(0, 0, 0, 0)
 
-        Header(self.language[0], self.language[1], self)
-        Content(self.language[0], self)
+        header = Header(self.language[0], self.language[1], self)
+        Content(self.language[0], header, self)
         Footer(self)
 
     def __ram_settegins_file(self) -> dict[str, any]:
