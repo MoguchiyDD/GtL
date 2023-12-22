@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «HeaderModal» CLASSES (REBOOT)
-# Last Modification: Editing The «HeaderModal» CLASSES (StringsValues)
-# Modification Date: 2023.12.21, 06:29 PM
+# Past Modification: Editing The «Header» and «HeaderModal» CLASSES (PATH)
+# Last Modification: Editing The «HeaderModal» CLASSES (ICON to BOXES)
+# Modification Date: 2023.12.22, 06:50 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -33,6 +33,7 @@ from .values import StringsValues
 from .messages import MessageBox
 
 from webbrowser import open
+from os import path
 
 
 # --------------- HEADER ---------------
@@ -42,7 +43,7 @@ class Header(QWidget):
     Providing a HEADER TEMPLATE
 
     ---
-    PARAMETER:
+    PARAMETERS:
     - language_char: str -> The Characters of LANGUAGE
     - language_text: str -> The Title of LANGUAGE
     - parent: QWidget | None = None -> Widget PARENT for this CLASS
@@ -73,7 +74,8 @@ class Header(QWidget):
         self.language_char = language_char.lower() + "_"
         self.language_text = language_text
 
-        self.str_val = StringsValues()
+        self.basedir = self.parent.basedir
+        self.str_val = StringsValues(self.basedir)
 
         self.__settings = HeaderModal("settings", self)
         self.__information = HeaderModal("information", self)
@@ -104,19 +106,25 @@ class Header(QWidget):
 
         self.btn_settings = QPushButton()
         self.btn_settings.setObjectName("header_btn_settings")
-        self.btn_settings.setIcon(QIcon("app/icons/settings.svg"))
+        self.btn_settings.setIcon(
+            QIcon(path.join(self.basedir, "icons", "settings.svg"))
+        )
         self.btn_settings.setFixedWidth(40)
         self.btn_settings.clicked.connect(self.activate_btn_settings)
 
         btn_information = QPushButton()
         btn_information.setObjectName("header_btn_information")
-        btn_information.setIcon(QIcon("app/icons/information.svg"))
+        btn_information.setIcon(
+            QIcon(path.join(self.basedir, "icons", "information.svg"))
+        )
         btn_information.setFixedWidth(40)
         btn_information.clicked.connect(self.activate_btn_information)
 
         btn_license = QPushButton()
         btn_license.setObjectName("header_btn_license")
-        btn_license.setIcon(QIcon("app/icons/license.svg"))
+        btn_license.setIcon(
+            QIcon(path.join(self.basedir, "icons", "license.svg"))
+        )
         btn_license.setFixedWidth(40)
         btn_license.clicked.connect(self.activate_btn_license)
 
@@ -264,7 +272,7 @@ class HeaderModal(QWidget):
         )
 
         # DATA from SETTINGS FILE
-        filesystem = FileSystem(self.parent.parent.basedir)
+        filesystem = FileSystem(self.parent.basedir)
         valid_keys = filesystem._valid_true_keys(
             list(self.parent.parent.data_settings_file.keys())
         )
@@ -280,7 +288,7 @@ class HeaderModal(QWidget):
                 self.language_char + "info_msg_data_text"
             )
             MessageBox(
-                "app/icons/info.svg",
+                path.join(self.parent.basedir, "icons", "info.svg"),
                 text_for_info_msg_data_title,
                 text_for_info_msg_data_text,
                 self
@@ -652,6 +660,12 @@ class HeaderModal(QWidget):
         RESULT: HORIZONTAL LAYOUT
         """
 
+        icon_checkbox_path = path.join(
+            self.parent.basedir, "icons", "c_checked.svg"
+        )
+        icon_checkbox = "QFrame#header_modal_settings QCheckBox::indicator"
+        icon_checkbox += ":checked { image: url(%s); }" % icon_checkbox_path
+
         checkbox_layout = QHBoxLayout()
         checkbox_layout.setContentsMargins(0, 0, 0, 0)
         checkbox_layout.setSpacing(0)
@@ -661,6 +675,7 @@ class HeaderModal(QWidget):
         checkbox.setObjectName("settings_checkboxes")
         checkbox.setFont(QFont("Ubuntu"))
         checkbox.setChecked(checked)
+        checkbox.setStyleSheet(icon_checkbox)
         checkbox_layout.addWidget(checkbox)
 
         for tt in text:
@@ -798,6 +813,13 @@ class HeaderModal(QWidget):
         language_frame_layout = QVBoxLayout()
         language_frame_layout.setContentsMargins(0, 0, 0, 0)
 
+        # RU && EN : ICON for QRadioBox
+        icon_radiobox_path = path.join(
+            self.parent.basedir, "icons", "r_checked.svg"
+        )
+        icon_radiobox = "QFrame#header_modal_settings QRadioButton::indicator"
+        icon_radiobox += ":checked { image: url(%s); }" % icon_radiobox_path
+
         # RADIOBUTTONS : RU
         ru_lang = QRadioButton(self.text_for_language_ru, self)
         ru_lang.setFont(QFont("Ubuntu"))
@@ -805,6 +827,7 @@ class HeaderModal(QWidget):
             ru_lang.setChecked(True) if ru_lang.text() == __language
             else ru_lang.setChecked(False)
         ]
+        ru_lang.setStyleSheet(icon_radiobox)
 
         # RADIOBUTTONS : EN
         en_lang = QRadioButton(self.text_for_language_en, self)
@@ -813,6 +836,7 @@ class HeaderModal(QWidget):
             en_lang.setChecked(True) if en_lang.text() == __language
             else en_lang.setChecked(False)
         ]
+        en_lang.setStyleSheet(icon_radiobox)
 
         language_frame_layout.addWidget(ru_lang)
         language_frame_layout.addWidget(
@@ -866,13 +890,13 @@ class HeaderModal(QWidget):
         }
         stop_old_language = self.parent.parent.data_settings_file["language"]
 
-        filesystem = FileSystem(self.parent.parent.basedir)
+        filesystem = FileSystem(self.parent.basedir)
         filesystem.write_file_settings(new_data)
         self.parent.parent.data_settings_file = new_data
         self.punctuations.setText(" ".join(main_textbox_set_list))
 
         MessageBox(  # SUCCESS
-            "app/icons/success.svg",
+            path.join(self.parent.basedir, "icons", "success.svg"),
             text_for_success_msg_save_title,
             text_for_success_msg_save_text,
             self
@@ -901,7 +925,7 @@ class HeaderModal(QWidget):
                 self.language_char + "error_msg_url_text"
             )
             MessageBox(  # ERROR
-                "app/icons/error.svg",
+                path.join(self.parent.basedir, "icons", "error.svg"),
                 text_error_msg_url_title,
                 text_error_msg_url_text,
                 self
