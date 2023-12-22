@@ -6,7 +6,7 @@
 #
 # Past Modification: Editing The «MainWindow» CLASS (RAM)
 # Last Modification: Editing The «MainWindow» CLASS (MessageBox)
-# Modification Date: 2023.12.22, 04:35 PM
+# Modification Date: 2023.12.22, 06:55 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -26,7 +26,6 @@ from sys import argv, exit
 from os import path
 
 basedir = path.dirname(__file__)
-print(basedir)
 
 
 # ------------ SOFTWARE ------------
