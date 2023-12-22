@@ -4,9 +4,9 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Editing The «MainWindow» CLASS (Update RAM)
-# Last Modification: Editing The «MainWindow» CLASS (CONTENT)
-# Modification Date: 2023.12.21, 06:33 PM
+# Past Modification: Editing The «MainWindow» CLASS (RAM)
+# Last Modification: Editing The «MainWindow» CLASS (MessageBox)
+# Modification Date: 2023.12.22, 04:35 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -26,6 +26,7 @@ from sys import argv, exit
 from os import path
 
 basedir = path.dirname(__file__)
+print(basedir)
 
 
 # ------------ SOFTWARE ------------
@@ -35,7 +36,7 @@ class MainWindow(QMainWindow):
     The MAIN CLASS that Runs The All SOFTWARE
 
     ---
-    PARAMETER:
+    PARAMETERS:
     - parent: QWidget | None = None -> Widget PARENT for this CLASS
     (AFTER THAT, THIS CURRENT CLASS WILL BECOME A CHILD OF THE PARENT)
     - f: Qt.WindowType = Qt.WindowType.Window -> Window-System (Window)
@@ -54,7 +55,7 @@ class MainWindow(QMainWindow):
         global basedir
         self.basedir = basedir
 
-        self.str_val = StringsValues()
+        self.str_val = StringsValues(self.basedir)
 
         self.data_settings_file = self.__ram_settegins_file()  # RAM
         self.language = self.__language(  # LANGUAGE
@@ -88,10 +89,18 @@ class MainWindow(QMainWindow):
         self.move(geo.topLeft())
 
         # FONTS
-        QFontDatabase.addApplicationFont("app/fonts/Lora/Lora-Bold.ttf")
-        QFontDatabase.addApplicationFont("app/fonts/Lora/Lora-Regular.ttf")
-        QFontDatabase.addApplicationFont("app/fonts/Ubuntu/Ubuntu-B.ttf")
-        QFontDatabase.addApplicationFont("app/fonts/Ubuntu/Ubuntu-R.ttf")
+        QFontDatabase.addApplicationFont(
+            path.join(basedir, "fonts/Lora", "Lora-Bold.ttf")
+        )
+        QFontDatabase.addApplicationFont(
+            path.join(basedir, "fonts/Lora", "Lora-Regular.ttf")
+        )
+        QFontDatabase.addApplicationFont(
+            path.join(basedir, "fonts/Ubuntu", "Ubuntu-B.ttf")
+        )
+        QFontDatabase.addApplicationFont(
+            path.join(basedir, "fonts/Ubuntu", "Ubuntu-R.ttf")
+        )
 
     def __content(self) -> None:
         """
@@ -125,7 +134,7 @@ class MainWindow(QMainWindow):
                 "ru_info_msg_data_text"
             )
             MessageBox(
-                "app/icons/info.svg",
+                path.join(self.basedir, "icons", "info.svg"),
                 text_for_info_msg_data_title,
                 text_for_info_msg_data_text,
                 self
