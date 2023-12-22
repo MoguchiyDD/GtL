@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «TextProcessing» CLASS (BLOCK)
-# Last Modification: Editing The «Content» CLASS (DISABLE BUTTONS)
-# Modification Date: 2023.12.21, 08:29 PM
+# Past Modification: Editing The «Content» CLASS (DISABLE BUTTONS)
+# Last Modification: Editing The «Content» CLASS (PATH)
+# Modification Date: 2023.12.22, 04:59 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -40,6 +40,8 @@ from .messages import MessageBox
 from re import split
 from time import sleep
 
+from os import path
+
 
 # ------------------- CONTENT -------------------
 
@@ -48,7 +50,7 @@ class Content(QWidget):
     Providing a CONTENT TEMPLATE
 
     ---
-    PARAMETER:
+    PARAMETERS:
     - language_char: str -> The Characters of LANGUAGE
     - header: QWidget -> Link of HEADER TEMPLATE
     - parent: QWidget | None = None -> Widget PARENT for this CLASS
@@ -81,7 +83,8 @@ class Content(QWidget):
         self.header = header
 
         self.language_char = language_char.lower() + "_"
-        self.str_val = StringsValues()
+        self.basedir = self.parent.basedir
+        self.str_val = StringsValues(self.basedir)
         self.current_percent_progress = 0
         self.text_for_copy = ""
 
@@ -272,7 +275,9 @@ class Content(QWidget):
         self.btn_finish.setEnabled(False)
         self.btn_copy.setEnabled(False)
         self.header.btn_settings.setEnabled(False)
-        self.header.btn_settings.setIcon(QIcon("app/icons/d_settings.svg"))
+        self.header.btn_settings.setIcon(
+            QIcon(path.join(self.basedir, "icons", "d_settings.svg"))
+        )
 
         text_processing = TextProcessing(data, text, self)
         text_processing.start()
@@ -347,7 +352,7 @@ class Content(QWidget):
             self.language_char + "success_msg_finish_text"
         )
         MessageBox(
-            "app/icons/success.svg",
+            path.join(self.basedir, "icons", "success.svg"),
             text_for_success_msg_finish_title,
             text_for_success_msg_finish_text,
             self
@@ -361,7 +366,9 @@ class Content(QWidget):
         self.btn_finish.setEnabled(True)
         self.btn_copy.setEnabled(True)
         self.header.btn_settings.setEnabled(True)
-        self.header.btn_settings.setIcon(QIcon("app/icons/settings.svg"))
+        self.header.btn_settings.setIcon(
+            QIcon(path.join(self.basedir, "icons", "settings.svg"))
+        )
 
     @Slot()
     def activate_btn_finish(self) -> None:
@@ -416,7 +423,7 @@ class Content(QWidget):
                 self.language_char + "error_msg_valid_length_text"
             )
             MessageBox(
-                "app/icons/error.svg",
+                path.join(self.basedir, "icons", "error.svg"),
                 text_for_error_msg_valid_len_title,
                 text_for_error_msg_valid_len_text,
                 self
@@ -442,7 +449,7 @@ class Content(QWidget):
                     self.language_char + "info_msg_data_text"
                 )
                 MessageBox(
-                    "app/icons/info.svg",
+                    path.join(self.basedir, "icons", "info.svg"),
                     text_for_info_msg_data_title,
                     text_for_info_msg_data_text,
                     self
@@ -468,13 +475,13 @@ class Content(QWidget):
             clipboard = QGuiApplication.clipboard()
             clipboard.setText(text, clipboard.Mode.Clipboard)
 
-            msg_icon = "app/icons/success.svg"
+            msg_icon = path.join(self.basedir, "icons", "success.svg")
             msg_title = self.language_char
             msg_title += "success_msg_copy_second_block_title"
             msg_text = self.language_char
             msg_text += "success_msg_copy_second_block_text"
         except:
-            msg_icon = "app/icons/error.svg"
+            msg_icon = path.join(self.basedir, "icons", "error.svg")
             msg_title = self.language_char
             msg_title += "error_msg_copy_second_block_title"
             msg_text = self.language_char
