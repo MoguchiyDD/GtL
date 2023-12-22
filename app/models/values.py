@@ -4,14 +4,15 @@
 # Goal: Parse XML Files
 # Result: Returning The RESULT through an ATTRIBUTE with The NAME
 #
-# Past Modification: Adding The «StringsValues» CLASS («strings_values_idx»)
-# Last Modification: Editing The «StringsValues» CLASS («strings_values_idx»)
-# Modification Date: 2023.11.11, 04:53 PM
+# Past Modification: Editing The «StringsValues» CLASS («strings_values_idx»)
+# Last Modification: Correction of CODE from LOGICAL ERRORS
+# Modification Date: 2023.12.22, 06:54 PM
 #
 # Create Date: 2023.10.23, 03:23 PM
 
 
 from xml.etree.ElementTree import parse
+from os import path
 
 
 # ------------ STRINGS ------------
@@ -21,17 +22,20 @@ class StringsValues:
     Responsible for Taking STRINGS from The «app/values/strings.xml» FILE
 
     ---
+    PARAMETERS:
+    - basedir: str -> Directory COMPONENT of a PATHNAME
+    ---
     FUNCTIONS:
     - string_values(attribute_name: str) -> str : From The FILE
     "app/values/string.sml" it produces The RESULT through The ATTRIBUTE "name"
-    - strings_values_idx(attribute_name: str, idx: int) -> str : From The FILE
-    "app/values/string.sml" it produces The RESULT through The ATTRIBUTE "name"
-    + Finds The Search WORD
+    - strings_values_idx(attribute_name: str, idx: int) ->
+    tuple[tuple[str], str, str] : From The FILE "app/values/string.sml"
+    it produces The RESULT through The ATTRIBUTE "name" + Finds The Search WORD
     """
 
-    def __init__(self) -> None:
+    def __init__(self, basedir: str) -> None:
         try:
-            self.xml = parse(str("app/values/strings.xml"))
+            self.xml = parse(path.join(basedir, "values", "strings.xml"))
         except FileNotFoundError:
             self.xml = None
         except TypeError:
@@ -62,7 +66,9 @@ class StringsValues:
 
         return result
 
-    def strings_values_idx(self, attribute_name: str, *idx: int) -> str:
+    def strings_values_idx(
+        self, attribute_name: str, *idx: int
+    ) -> tuple[tuple[str], str, str]:
         """
         From The FILE "app/values/string.sml" it produces The RESULT through
         The ATTRIBUTE "name" + Finds The Search WORD
@@ -71,10 +77,10 @@ class StringsValues:
         - attribute_name: str -> ATTRIBUTE with The NAME
         - idx: int -> INDEX of The Search WORD
         ---
-        RESULT: ("", "", "") || (("FIND WORD"), "1 PART", "2 PART")
+        RESULT: ((""), "", "") || (("FIND WORD"), "1 PART", "2 PART")
         """
 
-        result = ("", "", "")
+        result = ((""), "", "")
 
         val = self.string_values(attribute_name)
         len_val = len(val)
