@@ -4,9 +4,9 @@
 # Goal: Create a FOOTER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a FOOTER TEMPLATE
 #
-# Past Modification: Update TEXT
-# Last Modification: Editing The «Footer» CLASS (TEXT + URL)
-# Modification Date: 2023.11.13, 04:44 AM
+# Past Modification: Editing The «Footer» CLASS (TEXT + URL)
+# Last Modification: Editing The «Footer» CLASS (PATH)
+# Modification Date: 2023.12.22, 05:09 PM
 #
 # Create Date: 2023.10.24, 05:17 PM
 
@@ -19,6 +19,7 @@ from .values import StringsValues
 from .messages import MessageBox
 
 from webbrowser import open
+from os import path
 
 
 # ------------ FOOTER ------------
@@ -28,7 +29,7 @@ class Footer(QWidget):
     Providing a FOOTER TEMPLATE
 
     ---
-    PARAMETER:
+    PARAMETERS:
     - parent: QWidget | None = None -> Widget PARENT for this CLASS
     (AFTER THAT, THIS CURRENT CLASS WILL BECOME A CHILD OF THE PARENT)
     - f: Qt.WindowType = Qt.WindowType.Widget -> Window-System (Widget)
@@ -48,7 +49,8 @@ class Footer(QWidget):
         super(Footer, self).__init__(parent, flags)
         self.setParent(parent)
 
-        self.str_val = StringsValues()
+        self.basedir = parent.basedir
+        self.str_val = StringsValues(self.basedir)
 
         template = self.page()
         parent.main_layout.addWidget(
@@ -109,7 +111,7 @@ class Footer(QWidget):
                 "ru_error_msg_url_text"
             )
             MessageBox(  # ERROR
-                "app/icons/error.svg",
+                path.join(self.basedir, "icons", "error.svg"),
                 text_error_msg_url_title,
                 text_error_msg_url_text,
                 self
