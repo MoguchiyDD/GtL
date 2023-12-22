@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Editing The «STRINGS» STYLE BLOCK (GROUP)
-Last Modification: Editing The «HEADER» and «CONTENT» STYLE BLOCKS (BUTTONS)
-Modification Date: 2023.12.21, 08:26 PM
+Past Modification: Editing The «HEADER» and «CONTENT» STYLE BLOCKS (BUTTONS)
+Last Modification: Editing The «STRINGS» STYLE BLOCK (BOXES)
+Modification Date: 2023.12.22, 06:54 PM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -241,12 +241,6 @@ QFrame#header_modal_settings QCheckBox::indicator {
 QFrame#header_modal_settings QRadioButton::indicator {
   border: 1px solid #212121;
   border-radius: 0.55em;
-}
-QFrame#header_modal_settings QCheckBox::indicator:checked {
-  image: url(app/icons/c_checked.svg);
-}
-QFrame#header_modal_settings QRadioButton::indicator:checked {
-  image: url(app/icons/r_checked.svg);
 }
 
 /* TEXT */
