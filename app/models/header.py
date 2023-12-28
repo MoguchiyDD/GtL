@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «Header» and «HeaderModal» CLASSES (PATH)
-# Last Modification: Editing The «HeaderModal» CLASSES (ICON to BOXES)
-# Modification Date: 2023.12.22, 06:50 PM
+# Past Modification: Editing The «Header» CLASS (Size LICENSE)
+# Last Modification: Adding «Qt.AlignmentFlag»
+# Modification Date: 2023.12.27, 11:21 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -404,7 +404,10 @@ class HeaderModal(QWidget):
             template.setFont(QFont("Ubuntu"))
             template.setWordWrap(True)
 
-            frame_layout.addWidget(template)
+            frame_layout.addWidget(
+                template,
+                alignment=Qt.AlignmentFlag.AlignTop
+            )
             frame.setLayout(frame_layout)
             layout_group.addWidget(frame)
             group.setLayout(layout_group)
@@ -532,6 +535,7 @@ class HeaderModal(QWidget):
         main_text = QLabel(text_for_main)
         main_text.setObjectName("information_main")
         main_text.setFont(QFont("Ubuntu"))
+        main_text.setAlignment(Qt.AlignmentFlag.AlignJustify)
         main_text.setWordWrap(True)
 
         # SCROLL : MAIN URL
@@ -580,7 +584,7 @@ class HeaderModal(QWidget):
         """
 
         WIDTH = 675
-        HEIGHT = [500 if self.language_char == "ru_" else 420][0]
+        HEIGHT = [520 if self.language_char == "ru_" else 440][0]
 
         # STRINGS
         text_for_title = self.parent.str_val.string_values(
@@ -622,20 +626,23 @@ class HeaderModal(QWidget):
         # TEXT #0
         text_zero_license = QLabel(text_for_zero)
         text_zero_license.setObjectName("license_text_zero")
-        text_zero_license.setWordWrap(True)
         text_zero_license.setFont(QFont("Ubuntu"))
+        text_zero_license.setAlignment(Qt.AlignmentFlag.AlignJustify)
+        text_zero_license.setWordWrap(True)
 
         # TEXT #1
         text_one_license = QLabel(text_for_one)
         text_one_license.setObjectName("license_text_one")
-        text_one_license.setWordWrap(True)
         text_one_license.setFont(QFont("Ubuntu"))
+        text_one_license.setAlignment(Qt.AlignmentFlag.AlignJustify)
+        text_one_license.setWordWrap(True)
 
         # TEXT #2
         text_two_license = QLabel(text_for_two)
         text_two_license.setObjectName("license_text_two")
-        text_two_license.setWordWrap(True)
         text_two_license.setFont(QFont("Ubuntu"))
+        text_two_license.setAlignment(Qt.AlignmentFlag.AlignJustify)
+        text_two_license.setWordWrap(True)
 
         layout.addWidget(title_license, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(copyright_license)
@@ -660,12 +667,6 @@ class HeaderModal(QWidget):
         RESULT: HORIZONTAL LAYOUT
         """
 
-        icon_checkbox_path = path.join(
-            self.parent.basedir, "icons", "c_checked.svg"
-        )
-        icon_checkbox = "QFrame#header_modal_settings QCheckBox::indicator"
-        icon_checkbox += ":checked { image: url(%s); }" % icon_checkbox_path
-
         checkbox_layout = QHBoxLayout()
         checkbox_layout.setContentsMargins(0, 0, 0, 0)
         checkbox_layout.setSpacing(0)
@@ -675,7 +676,6 @@ class HeaderModal(QWidget):
         checkbox.setObjectName("settings_checkboxes")
         checkbox.setFont(QFont("Ubuntu"))
         checkbox.setChecked(checked)
-        checkbox.setStyleSheet(icon_checkbox)
         checkbox_layout.addWidget(checkbox)
 
         for tt in text:
@@ -813,13 +813,6 @@ class HeaderModal(QWidget):
         language_frame_layout = QVBoxLayout()
         language_frame_layout.setContentsMargins(0, 0, 0, 0)
 
-        # RU && EN : ICON for QRadioBox
-        icon_radiobox_path = path.join(
-            self.parent.basedir, "icons", "r_checked.svg"
-        )
-        icon_radiobox = "QFrame#header_modal_settings QRadioButton::indicator"
-        icon_radiobox += ":checked { image: url(%s); }" % icon_radiobox_path
-
         # RADIOBUTTONS : RU
         ru_lang = QRadioButton(self.text_for_language_ru, self)
         ru_lang.setFont(QFont("Ubuntu"))
@@ -827,7 +820,6 @@ class HeaderModal(QWidget):
             ru_lang.setChecked(True) if ru_lang.text() == __language
             else ru_lang.setChecked(False)
         ]
-        ru_lang.setStyleSheet(icon_radiobox)
 
         # RADIOBUTTONS : EN
         en_lang = QRadioButton(self.text_for_language_en, self)
@@ -836,7 +828,6 @@ class HeaderModal(QWidget):
             en_lang.setChecked(True) if en_lang.text() == __language
             else en_lang.setChecked(False)
         ]
-        en_lang.setStyleSheet(icon_radiobox)
 
         language_frame_layout.addWidget(ru_lang)
         language_frame_layout.addWidget(
