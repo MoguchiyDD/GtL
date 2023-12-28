@@ -4,15 +4,15 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Editing The «MainWindow» CLASS (RAM)
-# Last Modification: Editing The «MainWindow» CLASS (MessageBox)
-# Modification Date: 2023.12.22, 06:55 PM
+# Past Modification: Editing The «MainWindow» CLASS (ICON)
+# Last Modification: Checking CODE The PEP8
+# Modification Date: 2023.12.27, 11:23 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QScreen, QFontDatabase
+from PySide6.QtGui import QScreen, QFontDatabase, QIcon
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
 
 from models.filesystem import FileSystem
@@ -193,6 +193,9 @@ class MainWindow(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(argv)
+    app.setWindowIcon(
+        QIcon(path.join(basedir, "icons/favicons", "favicon_256x256.ico"))
+    )
 
     with open(path.join(basedir, "qss", "main.qss"), "r") as qss_file:
         app.setStyleSheet(qss_file.read())
