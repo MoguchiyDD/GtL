@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Editing The «HEADER» and «CONTENT» STYLE BLOCKS (BUTTONS)
-Last Modification: Editing The «STRINGS» STYLE BLOCK (BOXES)
-Modification Date: 2023.12.22, 06:54 PM
+Past Modification: Editing The «STRINGS» STYLE BLOCK (BOXES)
+Last Modification: Removing «qproperty-alignment»
+Modification Date: 2023.12.27, 11:11 PM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -123,6 +123,7 @@ QFrame#content QFrame#content_progress QLabel {
 QFrame#content QFrame#content_progress QProgressBar {
   font-size: 15px;
   text-align: center;
+  color: #EEEEEE;
   background-color: #212121;
   border: 1px solid #212121;
   border-radius: 0.15em;
@@ -130,7 +131,6 @@ QFrame#content QFrame#content_progress QProgressBar {
 QFrame#content QFrame#content_progress QProgressBar:chunk {
   width: 0.9em;
   padding: 0.25em;
-  color: #EEEEEE;
   background-color: #B71B0F;
   border: 1px solid #B71B0F;
   border-radius: 0.15em;
@@ -228,6 +228,9 @@ QFrame#header_modal_settings QFrame#settings_language_group {
 QFrame#header_modal_settings QCheckBox {
   padding-right: 0.1em;
 }
+QFrame#header_modal_settings QRadioButton {
+  color: #EEEEEE;
+}
 QFrame#header_modal_settings QCheckBox::indicator,
 QFrame#header_modal_settings QRadioButton::indicator {
   width: 0.95em;
@@ -240,7 +243,13 @@ QFrame#header_modal_settings QCheckBox::indicator {
 }
 QFrame#header_modal_settings QRadioButton::indicator {
   border: 1px solid #212121;
-  border-radius: 0.55em;
+  border-radius: 0.52em;
+}
+QFrame#header_modal_settings QCheckBox::indicator:checked {
+  image: url("icons/c_checked");
+}
+QFrame#header_modal_settings QRadioButton::indicator:checked {
+  image: url("icons/r_checked");
 }
 
 /* TEXT */
@@ -297,13 +306,12 @@ QFrame#header_modal_information {
   padding: 1em;
 }
 QFrame#header_modal_information,
-QFrame#header_modal_information QScrollArea QFrame#header_modal_information_scroll{
+QFrame#header_modal_information QScrollArea QFrame#header_modal_information_scroll {
   background-color: #404040;
 }
 
 /* TITLE */
 QFrame#header_modal_information QLabel {
-  qproperty-alignment: AlignJustify;
   font-size: 15px;
   color: #EEEEEE;
 }
@@ -385,7 +393,6 @@ QFrame#header_modal_license QLabel#license_copyright {
   font-weight: bold;
 }
 QFrame#header_modal_license QLabel {
-  qproperty-alignment: AlignJustify;
   padding-bottom: 0.35em;
   font-size: 15px;
   color: #EEEEEE;
@@ -402,7 +409,6 @@ QFrame#message {
   border-radius: 0.22em;
 }
 QFrame#message QLabel#message_text {
-  qproperty-alignment: AlignJustify;
   font-size: 15px;
   color: #EEEEEE;
 }
