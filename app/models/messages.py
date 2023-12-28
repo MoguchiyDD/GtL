@@ -4,9 +4,9 @@
 # Goal: Message DIALOG BOX
 # Result: Shows The Generated Message DIALOG BOX
 #
-# Past Modification: Editing The «MessageBox» CLASS (TEMPLATE)
-# Last Modification: Editing The «MessageBox» CLASS (SIZE)
-# Modification Date: 2023.11.10, 10:59 PM
+# Past Modification: Editing The «MessageBox» CLASS (SIZE)
+# Last Modification: Adding «Qt.AlignmentFlags»
+# Modification Date: 2023.12.27, 11:12 PM
 #
 # Create Date: 2023.11.04, 01:11 PM
 
@@ -107,6 +107,7 @@ class MessageBox(QDialog):
         w_text.setObjectName("message_text")
         w_text.setFont(QFont("Ubuntu"))
         w_text.setWordWrap(True)
+        w_text.setAlignment(Qt.AlignmentFlag.AlignJustify)
         w_text.setFixedWidth(self.WIDTH_TEXT)
 
         layout.addWidget(w_icon, alignment=Qt.AlignmentFlag.AlignRight)
