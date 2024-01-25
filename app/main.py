@@ -4,9 +4,9 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Editing The «MainWindow» CLASS (ICON)
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.12.27, 11:23 PM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Editing The «MainWindow» CLASS (VERSION)
+# Modification Date: 2024.01.25, 10:56 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -15,6 +15,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QScreen, QFontDatabase, QIcon
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
 
+from models.releases import GetVersion
 from models.filesystem import FileSystem
 from models.values import StringsValues
 from models.messages import MessageBox
@@ -22,10 +23,13 @@ from models.header import Header
 from models.content import Content
 from models.footer import Footer
 
+from dotenv import load_dotenv
+
 from sys import argv, exit
-from os import path
+from os import getenv, path
 
 basedir = path.dirname(__file__)
+load_dotenv()
 
 
 # ------------ SOFTWARE ------------
@@ -60,22 +64,41 @@ class MainWindow(QMainWindow):
         self.language = self.__language(  # LANGUAGE
             self.data_settings_file["language"]
         )
-        self.__main()  # TITLE, SIZE, CENTER WINDOW && FONTS
-        self.__content()  # CONTENT
+        version = GetVersion(self.language[0], self).get_version()
+        self.__main(  # TITLE, SIZE, CENTER WINDOW && FONTS
+            version[0], version[1]
+        )
+        self.__content(version[2])  # CONTENT
 
         # INSTALL
         self.widget = QWidget()
         self.widget.setLayout(self.main_layout)
         self.setCentralWidget(self.widget)
 
-    def __main(self) -> None:
+
+    def __main(self, is_version: bool, number_version: str) -> None:
         """
         Settings for TITLE, WINDOW SIZE, WINDOW POSITION and FONT
+
+        ---
+        PARAMETERS:
+        - is_version: bool -> New Version (True) | Current Version (False)
+        - number_version: str -> Short NAME of VERSION | ""
         """
 
         # TITLE
         window_title = self.str_val.string_values("app_title")
-        self.setWindowTitle(window_title)
+        title = window_title + " — " + getenv("VERSION")
+
+        # VERSION
+        if is_version:
+            text_version = self.str_val.string_values(
+                self.language[0].lower() + "_" + "version_title"
+            ).upper()
+            window_title_version = f"({ text_version }: { number_version })"
+            self.setWindowTitle(title + " " + window_title_version)
+        else:
+            self.setWindowTitle(title)
 
         self.setMinimumSize(self.MIN_WIDTH, self.MIN_HEIGHT)  # SIZE
 
@@ -101,15 +124,21 @@ class MainWindow(QMainWindow):
             path.join(basedir, "fonts/Ubuntu", "Ubuntu-R.ttf")
         )
 
-    def __content(self) -> None:
+    def __content(self, number_version: str) -> None:
         """
         Fills LAYOUT within The LAYERS
+
+        ---
+        PARAMETERS:
+        - number_version -> Full NAME of VERSION | ""
         """
 
         self.main_layout = QVBoxLayout()
         self.main_layout.setContentsMargins(0, 0, 0, 0)
 
-        header = Header(self.language[0], self.language[1], self)
+        header = Header(
+            self.language[0], self.language[1], number_version, self
+        )
         Content(self.language[0], header, self)
         Footer(self)
 
