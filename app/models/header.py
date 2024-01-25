@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «Header» CLASS (Size LICENSE)
-# Last Modification: Adding «Qt.AlignmentFlag»
-# Modification Date: 2023.12.27, 11:21 PM
+# Past Modification: Editing The «Header» and «HeaderModal» CLASS (URL)
+# Last Modification: Editing The «Header» CLASS (VERSION)
+# Modification Date: 2024.01.25, 10:22 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -46,6 +46,7 @@ class Header(QWidget):
     PARAMETERS:
     - language_char: str -> The Characters of LANGUAGE
     - language_text: str -> The Title of LANGUAGE
+    - version: str -> New VERSION Number of The SOFTWARE
     - parent: QWidget | None = None -> Widget PARENT for this CLASS
     (AFTER THAT, THIS CURRENT CLASS WILL BECOME A CHILD OF THE PARENT)
     - f: Qt.WindowType = Qt.WindowType.Widget -> Window-System (Widget)
@@ -58,12 +59,14 @@ class Header(QWidget):
     - activate_btn_information() -> None : Opens 1 MODAL WINDOW for
     The INFORMATION
     - activate_btn_license() -> None : Opens 1 MODAL WINDOW for The LICENSE
+    - open_url() -> None : Opens The URL in The BROWSER
     """
 
     def __init__(
         self,
         language_char: str,
         language_text: str,
+        version: str,
         parent: QWidget | None = None,
         flags: Qt.WindowType = Qt.WindowType.Widget
     ) -> None:
@@ -73,6 +76,7 @@ class Header(QWidget):
 
         self.language_char = language_char.lower() + "_"
         self.language_text = language_text
+        self.version = version
 
         self.basedir = self.parent.basedir
         self.str_val = StringsValues(self.basedir)
@@ -104,6 +108,21 @@ class Header(QWidget):
         title = QLabel(text)
         title.setFont(QFont("Lora"))
 
+        if len(self.version) != 0:
+            text_version = self.str_val.string_values("app_version")
+            text_version += "/" + self.version
+            self.btn_updates = QPushButton()
+            self.btn_updates.setObjectName("header_btn_updates")
+            self.btn_updates.setIcon(
+                QIcon(path.join(self.basedir, "icons", "updates.svg"))
+            )
+            self.btn_updates.setFixedWidth(40)
+            self.btn_updates.clicked.connect(
+                lambda btn: self.open_url(
+                    text_version, "error_msg_url_text_version"
+                )
+            )
+
         self.btn_settings = QPushButton()
         self.btn_settings.setObjectName("header_btn_settings")
         self.btn_settings.setIcon(
@@ -129,9 +148,17 @@ class Header(QWidget):
         btn_license.clicked.connect(self.activate_btn_license)
 
         layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignLeft)
-        layout.addWidget(
-            self.btn_settings, alignment=Qt.AlignmentFlag.AlignRight
-        )
+
+        if len(self.version) != 0:
+            layout.addWidget(
+                self.btn_updates, alignment=Qt.AlignmentFlag.AlignRight
+            )
+            layout.addWidget(self.btn_settings)
+        else:
+            layout.addWidget(
+                self.btn_settings, alignment=Qt.AlignmentFlag.AlignRight
+            )
+
         layout.addWidget(btn_information)
         layout.addWidget(btn_license)
 
@@ -183,6 +210,33 @@ class Header(QWidget):
 
         self.__activate("license")
 
+    @Slot()
+    def open_url(self, url: str, text_url: str) -> None:
+        """
+        Opens The URL in The BROWSER
+
+        ---
+        PARAMETERS:
+        - url: str -> URL-Address
+        - text_url: str -> Text from The «strings.xml» File
+        """
+
+        try:
+            open(url)
+        except:
+            text_error_msg_url_title = self.str_val.string_values(
+                self.language_char + "error_msg_url_title"
+            )
+            text_error_msg_url_text = self.str_val.string_values(
+                self.language_char + text_url
+            )
+            MessageBox(  # ERROR
+                path.join(self.basedir, "icons", "error.svg"),
+                text_error_msg_url_title,
+                text_error_msg_url_text,
+                self
+            )
+
 # --------------------------------------
 
 
@@ -206,7 +260,6 @@ class HeaderModal(QWidget):
     ---
     SLOTS:
     - save_settings() -> None : Saving NEW DATA to 1 SETTINGS FILE
-    - open_url() -> None : Opens The URL in The BROWSER
     """
 
     def __init__(
@@ -539,10 +592,15 @@ class HeaderModal(QWidget):
         main_text.setWordWrap(True)
 
         # SCROLL : MAIN URL
+        text_readme = self.parent.str_val.string_values("app_readme")
         btn_url = QPushButton(text_for_main_url)
         btn_url.setObjectName("information_main_url")
         btn_url.setFont(QFont("Ubuntu"))
-        btn_url.clicked.connect(self.open_url)
+        btn_url.clicked.connect(
+            lambda btn: self.parent.open_url(
+                text_readme, "error_msg_url_text_gtl"
+            )
+        )
 
         # SCROLL : TITLE && LIST && DASH
         second_title = __block(
@@ -898,28 +956,5 @@ class HeaderModal(QWidget):
         if stop_old_language != self.dir_language_char[language_radio]:
             self.parent.parent.close()
             run()
-
-    @Slot()
-    def open_url(self) -> None:
-        """
-        Opens The URL in The BROWSER
-        """
-
-        try:
-            text_readme = self.parent.str_val.string_values("app_readme")
-            open(text_readme)
-        except:
-            text_error_msg_url_title = self.parent.str_val.string_values(
-                self.language_char + "error_msg_url_title"
-            )
-            text_error_msg_url_text = self.parent.str_val.string_values(
-                self.language_char + "error_msg_url_text"
-            )
-            MessageBox(  # ERROR
-                path.join(self.parent.basedir, "icons", "error.svg"),
-                text_error_msg_url_title,
-                text_error_msg_url_text,
-                self
-            )
 
 # --------------------------------------
