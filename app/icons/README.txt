@@ -2,6 +2,8 @@
 MIT License, который расположен в текстовом файле LICENSE
 
 
+version.svg + updates.svg       : https://www.svgrepo.com/svg/282965/lotus-yoga
+net.svg                         : https://www.svgrepo.com/svg/363386/broadcast-duotone?edit=true
 license.svg                     : https://www.svgrepo.com/svg/507759/license
 information.svg                 : https://www.svgrepo.com/svg/449110/information
 settings.svg + d_settings.svg   : https://www.svgrepo.com/svg/512820/settings-1491
