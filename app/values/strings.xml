@@ -7,9 +7,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Store All STRINGS of The SOFTWARE in 1 PLACE
 Result: Returns 1 Desired STRING via The «name» ATTRIBUTE («string_values» FUN)
 
-Past Modification: Editing The «SETTINGS» String (RU && EN : TITLE && LIST)
-Last Modification: Editing The «SETTINGS» String (RU && EN : LIST)
-Modification Date: 2023.12.21, 05:41 PM
+Past Modification: Editing The «SOFTWARE» String (VERSION)
+Last Modification: Editing The «VERSION» String (VERSION)
+Modification Date: 2024.01.25, 10:33 PM
 
 Create Date: 2023.10.23, 02:49 PM
 -->
@@ -20,6 +20,21 @@ Create Date: 2023.10.23, 02:49 PM
 	<string name="app_title">GTL : Guide to Letters</string>
 	<string name="app_git">https://github.com/MoguchiyDD</string>
 	<string name="app_readme">https://github.com/MoguchiyDD/GtL/blob/main/README.md</string>
+	<string name="app_version">https://github.com/MoguchiyDD/GtL/releases/tag</string>
+	<string name="app_version_tags">https://github.com/MoguchiyDD/GtL/tags</string>
+	<string name="app_version_find">/MoguchiyDD/GtL/releases/tag</string>
+
+    <!-- VERSION -->
+    <string name="ru_version_title">Новая версия</string>
+    <string name="ru_success_version_title">Новая версия</string>
+    <string name="ru_success_version_text">Появилась новая версия программы «GtL». Если желаете, то можете скачать более новее версию.</string>
+    <string name="ru_error_version_title">Ух.. Крабы-Поросяты</string>
+    <string name="ru_error_version_text">Упс.. Я не могу связаться и узнать появилась ли новая версия приложения или нет. Пожалуйста, включите интернет, если отключен!</string>
+    <string name="en_version_title">New version</string>
+    <string name="en_success_version_title">New version</string>
+    <string name="en_success_version_text">A new version of the «GtL» program has been released. If you wish, you can download a newer version.</string>
+    <string name="en_error_version_title">Uh.. Crabs and Piggies</string>
+    <string name="en_error_version_text">Oops.. I can't contact you and find out if there is a new version of the application or not. Please turn on the Internet if it is disabled!</string>
 
     <!-- LANGUAGE -->
     <string name="ru_lang">Русский</string>
@@ -156,6 +171,8 @@ rent text.</string>
     <string name="ru_info_msg_data_text">Ключи из файла настроек были повреждены в связи с этим файл настроек вернулся к настройкам по умолчанию</string>
     <string name="ru_error_msg_url_title">Что-то пошло не так..</string>
     <string name="ru_error_msg_url_text">Видимо ситуация вышла из под контроля! В связи с этим вручную откройте в браузере https://github.com/MoguchiyDD</string>
+    <string name="ru_error_msg_url_text_gtl">Видимо ситуация вышла из под контроля! В связи с этим вручную откройте в браузере https://github.com/MoguchiyDD/GtL</string>
+    <string name="ru_error_msg_url_text_version">Видимо ситуация вышла из под контроля! В связи с этим вручную откройте в браузере https://github.com/MoguchiyDD/GtL/releases</string>
     <string name="ru_error_msg_valid_length_title">Ошибка проверки по количеству символов</string>
     <string name="ru_error_msg_valid_length_text">Для соединения текста до нужной пунктуации требуется больше символов в текстовике «ТВОРЧЕСКИЙ БЕСПОРЯДОК»</string>
     <string name="ru_error_msg_copy_second_block_title">Что-то пошло не так..</string>
@@ -168,11 +185,13 @@ rent text.</string>
     <string name="en_success_msg_copy_second_block_text">The text from the second block with the resulting text was successfully saved to the clipboard</string>
     <string name="en_info_msg_data_title">Correcting the settings file</string>
     <string name="en_info_msg_data_text">The keys from the settings file were corrupted and therefore the settings file returned to the default settings</string>
-    <string name="en_error_msg_url_title">Something has gone wrong...</string>
+    <string name="en_error_msg_url_title">Something has gone wrong..</string>
     <string name="en_error_msg_url_text">Apparently the situation has gotten out of control! Therefore, manually open https://github.com/MoguchiyDD in your browser</string>
+    <string name="en_error_msg_url_text_gtl">Apparently the situation has gotten out of control! Therefore, manually open https://github.com/MoguchiyDD/GtL in your browser</string>
+    <string name="en_error_msg_url_text_version">Apparently the situation has gotten out of control! Therefore, manually open https://github.com/MoguchiyDD/GtL/releases in your browser</string>
     <string name="en_error_msg_valid_length_title">Error checking by number of characters</string>
     <string name="en_error_msg_valid_length_text">More characters are required to connect the text to the required punctuation in the notebook «CREATIVE MESS»</string>
-    <string name="en_error_msg_copy_second_block_title">Something has gone wrong...</string>
+    <string name="en_error_msg_copy_second_block_title">Something has gone wrong..</string>
     <string name="en_error_msg_copy_second_block_text">The text from the second block with the resulting text could not be saved to the clipboard. Print to the developer what data you worked with, as well as the description of your Operating System to refactor the code with the clipboard</string>
 
 </resources>
