@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «Header» CLASS (TEMPLATE)
-# Last Modification: Editing The «HeaderModal» CLASS (SAVE SETTINGS)
-# Modification Date: 2024.01.30, 07:06 PM
+# Past Modification: Editing The «HeaderModal» CLASS (TEMPLATE SETTINGS)
+# Last Modification: Checking CODE The PEP8
+# Modification Date: 2024.01.31, 12:10 AM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -325,6 +325,88 @@ class HeaderModal(QWidget):
         RESULT: SETTINGS TEMPLATE
         """
 
+        def data_from_settings() -> None:
+            """
+            Checks ALL KEYS for their Existence in The FILE SYSTEM
+            """
+
+            filesystem = FileSystem(self.parent.basedir)
+            valid_keys = filesystem._valid_true_keys(
+                list(self.parent.parent.data_settings_file.keys())
+            )
+            if valid_keys is False:
+                filesystem.write_file_settings()
+                self.parent.parent.data_settings_file = filesystem.TEMPLATE
+
+                # INFO
+                text_for_info_msg_title = self.parent.str_val.string_values(
+                    self.language_char + "info_msg_data_title"
+                )
+                text_for_info_msg_text = self.parent.str_val.string_values(
+                    self.language_char + "info_msg_data_text"
+                )
+                MessageBox(
+                    path.join(self.parent.basedir, "icons", "info.svg"),
+                    text_for_info_msg_title,
+                    text_for_info_msg_text,
+                    self
+                )
+
+        def main_group(data: dict[any]) -> QGroupBox:
+            """
+            CREATE 1 MAIN GROUP for SETTINGS TEMPLATE
+
+            ---
+            PARAMETERS:
+            - *data: dict[any] -> The DATA from RAM with SETTINGS FILE
+            ---
+            RESULT: MAIN GROUP
+            """
+
+            data_title = data["title"]
+            data_list = data["list"]
+            data_dash = data["dash"]
+            data_textbox = data["block"]
+
+            group = self.__settings_main_group(
+                data_title, data_list, data_dash, " ".join(data_textbox)
+            )
+            return group
+
+        def language_group(data: dict[any]) -> QGroupBox:
+            """
+            CREATE 1 LANGUAGE GROUP for SETTINGS TEMPLATE
+
+            ---
+            PARAMETERS:
+            - *data: dict[any] -> The DATA from RAM with SETTINGS FILE
+            ---
+            RESULT: LANGUAGE GROUP
+            """
+
+            data_language = data["language"]
+            group = self.__settings_language_group(data_language)
+            return group
+
+        def other_group(data: dict[any]) -> QGroupBox:
+            """
+            CREATE 1 OTHER GROUP for SETTINGS TEMPLATE
+
+            ---
+            PARAMETERS:
+            - *data: dict[any] -> The DATA from RAM with SETTINGS FILE
+            ---
+            RESULT: OTHER GROUP
+            """
+
+            data_notification = data["notification"]
+            data_animation = data["animation"]
+
+            group = self.__settings_other_group(
+                data_notification, data_animation
+            )
+            return group
+
         # STRINGS
         text_for_title = self.parent.str_val.string_values(
             self.language_char + "settings_title"
@@ -334,38 +416,17 @@ class HeaderModal(QWidget):
         )
 
         # DATA from SETTINGS FILE
-        filesystem = FileSystem(self.parent.basedir)
-        valid_keys = filesystem._valid_true_keys(
-            list(self.parent.parent.data_settings_file.keys())
-        )
-        if valid_keys is False:
-            filesystem.write_file_settings()
-            self.parent.parent.data_settings_file = filesystem.TEMPLATE
-
-            # INFO
-            text_for_info_msg_data_title = self.parent.str_val.string_values(
-                self.language_char + "info_msg_data_title"
-            )
-            text_for_info_msg_data_text = self.parent.str_val.string_values(
-                self.language_char + "info_msg_data_text"
-            )
-            MessageBox(
-                path.join(self.parent.basedir, "icons", "info.svg"),
-                text_for_info_msg_data_title,
-                text_for_info_msg_data_text,
-                self
-            )
-
+        data_from_settings()  # Checking
         data = self.parent.parent.data_settings_file
-        main_data_title = data["title"]
-        main_data_list = data["list"]
-        main_data_dash = data["dash"]
-        main_data_textbox = data["block"]
-        language_data = data["language"]
+
+        # CREATE GROUPS
+        self.main_group = main_group(data)  # MAIN
+        self.language_group = language_group(data)  # LANGUAGE
+        self.other_group = other_group(data)  # OTHER
 
         # MODAL WINDOW
         self.setWindowTitle(text_for_title)
-        self.setFixedSize(568, 469)
+        self.setFixedSize(688, 469)
 
         frame = QFrame()
         frame.setObjectName("header_modal_settings")
@@ -377,20 +438,17 @@ class HeaderModal(QWidget):
         title.setObjectName("settings_title")
         title.setFont(QFont("Lora"))
 
-        # GROUPS
-        group_layout = QHBoxLayout()
-        group_layout.setContentsMargins(0, 0, 0, 0)
+        # LAYOUT VERTICAL GROUP
+        vgroup_layout = QVBoxLayout()
+        vgroup_layout.setContentsMargins(0, 0, 0, 0)
+        vgroup_layout.addWidget(self.language_group)
+        vgroup_layout.addWidget(self.other_group)
 
-        self.main_group = self.__settings_main_group(
-            main_data_title,
-            main_data_list,
-            main_data_dash,
-            " ".join(main_data_textbox)
-        )
-        self.language_group = self.__settings_language_group(language_data)
-
-        group_layout.addWidget(self.main_group)
-        group_layout.addWidget(self.language_group)
+        # LAYOUT HORIZONTAL GROUP
+        hgroup_layout = QHBoxLayout()
+        hgroup_layout.setContentsMargins(0, 0, 0, 0)
+        hgroup_layout.addWidget(self.main_group)
+        hgroup_layout.addLayout(vgroup_layout)
 
         # BUTTON
         btn_save = QPushButton(text_for_btn_save.upper())
@@ -399,7 +457,7 @@ class HeaderModal(QWidget):
         btn_save.clicked.connect(self.save_settings)
 
         layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignCenter)
-        layout.addLayout(group_layout)
+        layout.addLayout(hgroup_layout)
         layout.addWidget(btn_save)
 
         frame.setLayout(layout)
@@ -743,12 +801,17 @@ class HeaderModal(QWidget):
         checkbox.setObjectName("settings_checkboxes")
         checkbox.setFont(QFont("Ubuntu"))
         checkbox.setChecked(checked)
-        checkbox_layout.addWidget(checkbox)
+        checkbox_layout.addWidget(
+            checkbox, alignment=Qt.AlignmentFlag.AlignTop
+        )
 
-        for tt in text:
-            part = QLabel(tt[0])
-            part.setObjectName(tt[1])
+        len_text = len(text)
+        for tt in range(len_text):
+            part = QLabel(text[tt][0])
+            part.setObjectName(text[tt][1])
             part.setFont(QFont("Ubuntu"))
+            if (len_text - 1) == 0:
+                part.setWordWrap(True)
             checkbox_layout.addWidget(part)
 
         return checkbox_layout
@@ -875,7 +938,7 @@ class HeaderModal(QWidget):
 
         language_frame = QFrame()
         language_frame.setObjectName("settings_language_group")
-        language_frame.setFixedWidth(170)
+        language_frame.setFixedHeight(102)
 
         language_frame_layout = QVBoxLayout()
         language_frame_layout.setContentsMargins(0, 0, 0, 0)
@@ -908,11 +971,125 @@ class HeaderModal(QWidget):
         language_group.setLayout(language_group_layout)
         return language_group
 
+    def __settings_other_group(self, *data: any) -> QGroupBox:
+        """
+        CREATE 1 OTHER GROUP for SETTINGS TEMPLATE
+
+        ---
+        PARAMETERS:
+        - *data: any -> The DATA from RAM with SETTINGS FILE
+        ---
+        RESULT: OTHER GROUP
+        """
+
+        # STRINGS
+        text_for_other_group = self.parent.str_val.string_values(
+            self.language_char + "settings_other"
+        )
+        text_for_other_notification = self.parent.str_val.string_values(
+            self.language_char + "settings_other_notification"
+        )
+        text_for_other_animation = self.parent.str_val.string_values(
+            self.language_char + "settings_other_animation"
+        )
+
+        # OTHER GROUP
+        other_group = QGroupBox()
+        other_group.setTitle(text_for_other_group.upper())
+        other_group.setFont(QFont("Lora"))
+
+        other_group_layout = QVBoxLayout()
+        other_group_layout.setContentsMargins(0, 0, 0, 0)
+
+        other_frame = QFrame()
+        other_frame.setObjectName("settings_other_group")
+
+        other_frame_layout = QVBoxLayout()
+        other_frame_layout.setContentsMargins(0, 0, 0, 0)
+
+        # CHECKBOXES
+        notification_checkbox_layout = self.__settings_group_checkboxes(
+            data[0],  # notification
+            (text_for_other_notification, "settings_checkboxes_one_part")
+        )
+        animation_checkbox_layout = self.__settings_group_checkboxes(
+            data[1],  # animation
+            (text_for_other_animation, "settings_checkboxes_one_part")
+        )
+
+        other_frame_layout.addLayout(notification_checkbox_layout)
+        other_frame_layout.addLayout(animation_checkbox_layout)
+        other_frame.setLayout(other_frame_layout)
+
+        other_group_layout.addWidget(other_frame)
+        other_group.setLayout(other_group_layout)
+        return other_group
+
     @Slot()
     def save_settings(self) -> None:
         """
         Saving NEW DATA to 1 SETTINGS FILE
         """
+
+        def main_group() -> None:
+            """
+            Receives DATA from The MAIN GROUP
+
+            ---
+            RESULT: {"title": bool, "list": bool, "dash": bool,
+            "textbox_set_list": list[set]}
+            """
+
+            frame = self.main_group.findChild(QFrame, "settings_main_group")
+            checkboxes = frame.findChildren(QCheckBox, "settings_checkboxes")
+
+            title = checkboxes[0]
+            _list = checkboxes[1]
+            dash = checkboxes[2]
+            textbox = frame.findChild(QTextEdit, "settings_edits")
+            textbox_set_list = list(set(textbox.toPlainText().split()))
+
+            result = {
+                "title": title,
+                "list": _list,
+                "dash": dash,
+                "textbox_set_list": textbox_set_list,
+            }
+            return result
+
+        def language_group() -> None:
+            """
+            Receives DATA from The LANGUAGE GROUP
+
+            ---
+            RESULT: {"language": "RU" || "EN"}
+            """
+
+            frame = self.language_group.findChildren(QRadioButton)
+            radio = [lang.text() for lang in frame if lang.isChecked()][0]
+
+            result = {"language": self.dir_language_char[radio]}
+            return result
+
+        def other_group() -> None:
+            """
+            Receives DATA from The OTHER GROUP
+
+            ---
+            RESULT: {"notification": bool, "animation": bool}
+            """
+
+            frame = self.other_group.findChild(QFrame, "settings_other_group")
+            checkboxes = frame.findChildren(QCheckBox, "settings_checkboxes")
+
+            notification = checkboxes[0]
+            animation = checkboxes[1]
+
+            result = {
+                "notification": notification,
+                "animation": animation
+            }
+            return result
 
         # STRINGS
         text_for_success_msg_save_title = self.parent.str_val.string_values(
@@ -922,36 +1099,29 @@ class HeaderModal(QWidget):
             self.language_char + "success_msg_save_settings_text"
         )
 
-        # MAIN GROUP
-        main_frame = self.main_group.findChild(QFrame, "settings_main_group")
-        main_checkboxes = main_frame.findChildren(
-            QCheckBox, "settings_checkboxes"
-        )
-        main_title = main_checkboxes[0]
-        main_list = main_checkboxes[1]
-        main_dash = main_checkboxes[2]
-        main_textbox = main_frame.findChild(QTextEdit, "settings_edits")
-        main_textbox_set_list = list(set(main_textbox.toPlainText().split()))
-
-        # LANGUAGE GROUP
-        language_frame = self.language_group.findChildren(QRadioButton)
-        language_radio = [
-            lang.text() for lang in language_frame if lang.isChecked()
-        ][0]
+        # GROUPS
+        main_group_data = main_group()  # MAIN
+        language_group_data = language_group()  # LANGUAGE
+        other_group_data = other_group()  # OTHER
 
         new_data = {
-            "title": main_title.isChecked(),
-            "list": main_list.isChecked(),
-            "dash": main_dash.isChecked(),
-            "block": main_textbox_set_list,
-            "language": self.dir_language_char[language_radio]
+            "title": main_group_data["title"].isChecked(),
+            "list": main_group_data["list"].isChecked(),
+            "dash": main_group_data["dash"].isChecked(),
+            "block": main_group_data["textbox_set_list"],
+            "language": language_group_data["language"],
+            "notification": other_group_data["notification"].isChecked(),
+            "animation": other_group_data["animation"].isChecked()
         }
         stop_old_language = self.parent.parent.data_settings_file["language"]
 
+        # SAVING
         filesystem = FileSystem(self.parent.basedir)
         filesystem.write_file_settings(new_data)
         self.parent.parent.data_settings_file = new_data
-        self.punctuations.setText(" ".join(main_textbox_set_list))
+        self.punctuations.setText(
+            " ".join(main_group_data["textbox_set_list"])
+        )
 
         MessageBox(  # SUCCESS
             path.join(self.parent.basedir, "icons", "success.svg"),
@@ -959,10 +1129,9 @@ class HeaderModal(QWidget):
             text_for_success_msg_save_text,
             self
         )
-
         self.hide()
 
-        if stop_old_language != self.dir_language_char[language_radio]:
+        if stop_old_language != language_group_data["language"]:
             self.parent.parent.close()  # Window
             try:  # Schedule
                 self.parent.parent.schedule.is_activate = False
