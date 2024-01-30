@@ -5,13 +5,13 @@
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
 # Past Modification: Checking CODE The PEP8
-# Last Modification: Editing The «MainWindow» CLASS (VERSION)
-# Modification Date: 2024.01.25, 10:56 PM
+# Last Modification: Adding The «SCHEDULE» BLOCK
+# Modification Date: 2024.01.30, 07:13 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QObject, Qt, Slot, Signal
 from PySide6.QtGui import QScreen, QFontDatabase, QIcon
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
 
@@ -23,10 +23,13 @@ from models.header import Header
 from models.content import Content
 from models.footer import Footer
 
+from threading import Thread
+from schedule import every, run_pending, cancel_job
 from dotenv import load_dotenv
+from time import sleep
 
 from sys import argv, exit
-from os import getenv, path
+from os import getenv, path, environ
 
 basedir = path.dirname(__file__)
 load_dotenv()
@@ -75,6 +78,12 @@ class MainWindow(QMainWindow):
         self.widget.setLayout(self.main_layout)
         self.setCentralWidget(self.widget)
 
+        # For New VERSION
+        if version[0] is False:
+            self.schedule = RunSchedule(self.language[0], self)
+            self.schedule.signal_checking_release.connect(
+                self.__check_and_activate_release
+            )
 
     def __main(self, is_version: bool, number_version: str) -> None:
         """
@@ -135,11 +144,10 @@ class MainWindow(QMainWindow):
 
         self.main_layout = QVBoxLayout()
         self.main_layout.setContentsMargins(0, 0, 0, 0)
-
-        header = Header(
+        self.header = Header(
             self.language[0], self.language[1], number_version, self
         )
-        Content(self.language[0], header, self)
+        Content(self.language[0], self.header, self)
         Footer(self)
 
     def __ram_settegins_file(self) -> dict[str, any]:
@@ -216,6 +224,126 @@ class MainWindow(QMainWindow):
                 result = ("EN", "English")
 
         return result
+
+    @Slot()
+    def __check_and_activate_release(
+        self, language: str, parent: QWidget
+    ) -> None:
+        """
+        Check and Activate The New VERSION (GUI)
+
+        ---
+        PARAMETERS:
+        - language: str -> The «RU» or The «EN»
+        - parent: MainWindow -> Reference to The CLASS «MainWindow»
+        """
+
+        def rename_window_title(short_name_version: str) -> None:
+            """
+            Renames The TITLE of The MAIN WINDOW
+
+            ---
+            PARAMETERS:
+            - short_name_version: str -> For Example, 1.1.0
+            """
+
+            window_title = self.str_val.string_values("app_title")
+            title = window_title + " — " + getenv("VERSION")
+            text_version = self.str_val.string_values(
+                self.language[0].lower() + "_" + "version_title"
+            ).upper()
+            title_version = f"({ text_version }: { short_name_version })"
+            self.setWindowTitle(title + " " + title_version)
+
+        def show_button_header(full_name_version: str) -> None:
+            """
+            Shows and Overrides The ACTION of a BUTTON in The HEADER
+
+            ---
+            PARAMETERS:
+            - full_name_version: str -> For Example, v1.1.0-stable
+            """
+
+            # Update URL
+            self.header.version = full_name_version
+            text_version = self.str_val.string_values("app_version")
+            text_version += "/" + self.header.version
+
+            # Shows and Overrides The ACTION of a BUTTON
+            self.header.btn_updates.clicked.disconnect()
+            self.header.btn_updates.clicked.connect(
+                lambda _: self.header.open_url(
+                    text_version, "error_msg_url_text_version"
+                )
+            )
+            self.header.btn_updates.show()
+
+        version = GetVersion(language, parent).get_version()
+        is_new_version = version[0]
+        if is_new_version:
+            short_name_version = version[1]
+            full_name_version = version[2]
+
+            rename_window_title(short_name_version)  # Title
+            show_button_header(full_name_version)  # Header
+
+            self.schedule.is_activate = False
+
+# ----------------------------------
+
+
+# ------------ SCHEDULE ------------
+
+class RunSchedule(QObject):
+    """
+    Every 10 HOURS, Checks through The THREAD for The RELEASE of a New VERSION.
+    If a New VERSION is RELEASED, then The THREAD will Close After The SIGNAL
+    has been Fully Processed.
+    ---
+    PARAMETERS:
+    - language: str -> The «RU» or The «EN»
+    - parent: MainWindow -> Reference to The CLASS «MainWindow»
+    """
+
+    signal_checking_release = Signal(str, QWidget)
+
+    def __init__(self, language: str, parent: MainWindow) -> None:
+        super().__init__()
+
+        self.is_activate = True
+
+        self.thread = Thread(
+            target=self.run,
+            name="THREAD_RELEASE",
+            args=(language, parent),
+            daemon=True
+        )
+        self.thread.start()
+
+    def run(self, language: str, parent: MainWindow) -> None:
+        """
+        Runs a THREAD
+
+        ---
+        PARAMETERS:
+        - language: str -> The «RU» or The «EN»
+        - parent: MainWindow -> Reference to The CLASS «MainWindow»
+        """
+
+        def release() -> None:
+            """
+            Checking for a New VERSION
+            """
+
+            self.signal_checking_release.emit(language, parent)
+
+        job = every(10).hours.do(release)
+        while self.is_activate:
+            run_pending()
+            sleep(1)
+
+            if self.is_activate is False:
+                cancel_job(job)
 
 # ----------------------------------
 
