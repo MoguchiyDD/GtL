@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «Header» and «HeaderModal» CLASS (URL)
-# Last Modification: Editing The «Header» CLASS (VERSION)
-# Modification Date: 2024.01.25, 10:22 PM
+# Past Modification: Editing The «Header» CLASS (TEMPLATE)
+# Last Modification: Editing The «HeaderModal» CLASS (SAVE SETTINGS)
+# Modification Date: 2024.01.30, 07:06 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -98,6 +98,32 @@ class Header(QWidget):
         RESULT: HEADER TEMPLATE
         """
 
+        def btn(
+            object_name: str, icon_name: str, connect: object
+        ) -> QPushButton:
+            """
+            Creates and Returns 1 QPushButton
+
+            ---
+            PARAMETERS:
+            - object_name: str -> ID for The QPushButton
+            - icon_name: str -> NAME of The ICON for The QPushButton
+            - connect: object -> Function that will Work After ACTIVATING
+            The QPushButton
+            ---
+            RESULT: QPushButton
+            """
+
+            btn = QPushButton()
+            btn.setObjectName(object_name)
+            btn.setIcon(
+                QIcon(path.join(self.basedir, "icons", icon_name))
+            )
+            btn.setFixedWidth(40)
+            btn.clicked.connect(connect)
+
+            return btn
+
         frame = QFrame()
         frame.setObjectName("header")
 
@@ -106,59 +132,42 @@ class Header(QWidget):
 
         text = self.str_val.string_values("header_title")
         title = QLabel(text)
+        title.setObjectName("header_title")
         title.setFont(QFont("Lora"))
 
-        if len(self.version) != 0:
-            text_version = self.str_val.string_values("app_version")
-            text_version += "/" + self.version
-            self.btn_updates = QPushButton()
-            self.btn_updates.setObjectName("header_btn_updates")
-            self.btn_updates.setIcon(
-                QIcon(path.join(self.basedir, "icons", "updates.svg"))
+        text_version = self.str_val.string_values("app_version")
+        text_version += "/" + self.version
+        self.btn_updates = btn(
+            "header_btn_updates",
+            "updates.svg",
+            lambda _: self.open_url(
+                text_version, "error_msg_url_text_version"
             )
-            self.btn_updates.setFixedWidth(40)
-            self.btn_updates.clicked.connect(
-                lambda btn: self.open_url(
-                    text_version, "error_msg_url_text_version"
-                )
-            )
-
-        self.btn_settings = QPushButton()
-        self.btn_settings.setObjectName("header_btn_settings")
-        self.btn_settings.setIcon(
-            QIcon(path.join(self.basedir, "icons", "settings.svg"))
         )
-        self.btn_settings.setFixedWidth(40)
-        self.btn_settings.clicked.connect(self.activate_btn_settings)
+        if len(self.version) == 0:
+            self.btn_updates.hide()
 
-        btn_information = QPushButton()
-        btn_information.setObjectName("header_btn_information")
-        btn_information.setIcon(
-            QIcon(path.join(self.basedir, "icons", "information.svg"))
+        self.btn_settings = btn(
+            "header_btn_settings",
+            "settings.svg",
+            self.activate_btn_settings
         )
-        btn_information.setFixedWidth(40)
-        btn_information.clicked.connect(self.activate_btn_information)
-
-        btn_license = QPushButton()
-        btn_license.setObjectName("header_btn_license")
-        btn_license.setIcon(
-            QIcon(path.join(self.basedir, "icons", "license.svg"))
+        btn_information = btn(
+            "header_btn_information",
+            "information.svg",
+            self.activate_btn_information
         )
-        btn_license.setFixedWidth(40)
-        btn_license.clicked.connect(self.activate_btn_license)
+        btn_license = btn(
+            "header_btn_license",
+            "license.svg",
+            self.activate_btn_license
+        )
 
         layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignLeft)
-
-        if len(self.version) != 0:
-            layout.addWidget(
-                self.btn_updates, alignment=Qt.AlignmentFlag.AlignRight
-            )
-            layout.addWidget(self.btn_settings)
-        else:
-            layout.addWidget(
-                self.btn_settings, alignment=Qt.AlignmentFlag.AlignRight
-            )
-
+        layout.addWidget(
+            self.btn_updates, alignment=Qt.AlignmentFlag.AlignRight
+        )
+        layout.addWidget(self.btn_settings)
         layout.addWidget(btn_information)
         layout.addWidget(btn_license)
 
@@ -954,7 +963,11 @@ class HeaderModal(QWidget):
         self.hide()
 
         if stop_old_language != self.dir_language_char[language_radio]:
-            self.parent.parent.close()
-            run()
+            self.parent.parent.close()  # Window
+            try:  # Schedule
+                self.parent.parent.schedule.is_activate = False
+            except AttributeError:
+                pass
+            run()  # New Window
 
 # --------------------------------------
