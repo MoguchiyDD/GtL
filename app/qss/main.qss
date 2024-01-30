@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Editing The «STRINGS» STYLE BLOCK (BOXES)
-Last Modification: Removing «qproperty-alignment»
-Modification Date: 2023.12.27, 11:11 PM
+Past Modification: Removing «qproperty-alignment»
+Last Modification: Editing The «SETTINGS» STYLE BLOCK (GROUPS)
+Modification Date: 2023.01.31, 12:11 AM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -199,7 +199,7 @@ QFrame#footer QPushButton:hover {
 /* ------------------------------------- */
 
 
-/* -------------- STRINGS -------------- */
+/* ------------- SETTINGS -------------- */
 
 QFrame#header_modal_settings {
   padding: 1em;
@@ -216,7 +216,8 @@ QFrame#header_modal_settings QGroupBox {
   border: none;
 }
 QFrame#header_modal_settings QFrame#settings_main_group,
-QFrame#header_modal_settings QFrame#settings_language_group {
+QFrame#header_modal_settings QFrame#settings_language_group,
+QFrame#header_modal_settings QFrame#settings_other_group {
   padding: 1em;
   color: #EEEEEE;
   background-color: qradialgradient(cx:0, cy:0, radius: 1, fx:0.5, fy:0.5, stop:0 #292929, stop:1 #303030);
