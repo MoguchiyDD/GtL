@@ -4,9 +4,9 @@
 # Goal: Writing and Reading IMPORTANT FILES
 # Result: AUTOMATED SYSTEM with FILES
 #
-# Past Modification: Editing The «FileSystem» CLASS («_valid_true_values»)
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2023.11.17, 11:47 PM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Editing The «FileSystem» CLASS (TEMPLATE: KEYS && VALUES)
+# Modification Date: 2024.01.30, 09:33 PM
 #
 # Create Date: 2023.11.01, 10:01 PM
 
@@ -53,6 +53,8 @@ class FileSystem:
     TEMPLATE_DASH_KEY = "dash"
     TEMPLATE_BLOCK_KEY = "block"
     TEMPLATE_LANGUAGE_KEY = "language"
+    TEMPLATE_NOTIFICATION_KEY = "notification"
+    TEMPLATE_ANIMATION_KEY = "animation"
 
     # VALUES
     TEMPLATE_TITLE_VALUE = False
@@ -60,6 +62,8 @@ class FileSystem:
     TEMPLATE_DASH_VALUE = True
     TEMPLATE_BLOCK_VALUE = [".", "?", "!"]
     TEMPLATE_LANGUAGE_VALUE = "RU"
+    TEMPLATE_NOTIFICATION_VALUE = False
+    TEMPLATE_ANIMATION_VALUE = False
 
     # TEMPLATE
     TEMPLATE = {
@@ -67,7 +71,9 @@ class FileSystem:
         TEMPLATE_LIST_KEY: TEMPLATE_LIST_VALUE,
         TEMPLATE_DASH_KEY: TEMPLATE_DASH_VALUE,
         TEMPLATE_BLOCK_KEY: TEMPLATE_BLOCK_VALUE,
-        TEMPLATE_LANGUAGE_KEY: TEMPLATE_LANGUAGE_VALUE
+        TEMPLATE_LANGUAGE_KEY: TEMPLATE_LANGUAGE_VALUE,
+        TEMPLATE_NOTIFICATION_KEY: TEMPLATE_NOTIFICATION_VALUE,
+        TEMPLATE_ANIMATION_KEY: TEMPLATE_ANIMATION_VALUE
     }
     TEMPLATE_KEYS = TEMPLATE.keys()
 
@@ -197,6 +203,10 @@ class FileSystem:
                 _cnt_result = __block(value, _cnt_result)
             elif key == self.TEMPLATE_LANGUAGE_KEY:  # language
                 _cnt_result = __language(value, _cnt_result)
+            elif key == self.TEMPLATE_NOTIFICATION_KEY:  # notification
+                _cnt_result = __bool(value, _cnt_result)
+            elif key == self.TEMPLATE_ANIMATION_KEY:  # animation
+                _cnt_result = __bool(value, _cnt_result)
 
         if _cnt_result >= 1:
             result = False
