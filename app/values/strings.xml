@@ -7,9 +7,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Store All STRINGS of The SOFTWARE in 1 PLACE
 Result: Returns 1 Desired STRING via The «name» ATTRIBUTE («string_values» FUN)
 
-Past Modification: Editing The «SOFTWARE» String (VERSION)
-Last Modification: Editing The «VERSION» String (VERSION)
-Modification Date: 2024.01.25, 10:33 PM
+Past Modification: Editing The «VERSION» String (VERSION)
+Last Modification: Editing The «SETTINGS» String (RU && EN : OTHER)
+Modification Date: 2024.01.30, 11:50 PM
 
 Create Date: 2023.10.23, 02:49 PM
 -->
@@ -78,6 +78,9 @@ Create Date: 2023.10.23, 02:49 PM
     <string name="ru_settings_main_title_punctuations">Пунктуации</string>
     <string name="ru_settings_main_hint_punctuations">Пробелы — разделители между пунктуациями. Пунктуации могут открываться по-разному из-за проверки на уникальность символов</string>
     <string name="ru_settings_language">Язык</string>
+    <string name="ru_settings_other">Плюшки</string>
+    <string name="ru_settings_other_notification">Заменить сообщение об окончании обработки текста на звук</string>
+    <string name="ru_settings_other_animation">Отключить анимацию во 2-ом блоке</string>
     <string name="ru_settings_btn_save">Сохранить</string>
     <string name="en_settings_title">Settings</string>
     <string name="en_settings_main">Main</string>
@@ -87,6 +90,9 @@ Create Date: 2023.10.23, 02:49 PM
     <string name="en_settings_main_title_punctuations">Punctuations</string>
     <string name="en_settings_main_hint_punctuations">Spaces are separators between punctuations. Punctuations may open differently due to checking for unique characters</string>
     <string name="en_settings_language">Language</string>
+    <string name="en_settings_other">Other</string>
+    <string name="en_settings_other_notification">Replace the message about the end of text processing with sound</string>
+    <string name="en_settings_other_animation">Disable animation in the 2nd block</string>
     <string name="en_settings_btn_save">Save</string>
 
     <!-- INFORMATION -->
