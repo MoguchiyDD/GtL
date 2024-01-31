@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «HeaderModal» CLASS (TEMPLATE SETTINGS)
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2024.01.31, 12:10 AM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Editing The «HeaderModal» CLASS (TEXTBOX ANIMATION)
+# Modification Date: 2024.01.31, 07:05 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -1130,6 +1130,26 @@ class HeaderModal(QWidget):
             self
         )
         self.hide()
+
+        # Animation 2nd Textbox
+        data_animation = self.parent.parent.data_settings_file["animation"]
+        content = self.parent.parent.content
+        if data_animation is False:  # Turn On
+            if len(content.text_ready.toPlainText()) >= 1:
+                content.anim_text_ready.timer_text.start()
+                content.anim_text_ready.timer_text.timeout.connect(
+                    content.anim_text_ready.animation
+                )
+                content.anim_text_ready.animations_group.start()
+        else:  # Turn Off
+            try:
+                content.anim_text_ready.timer_text.stop()
+                content.anim_text_ready.timer_text.timeout.disconnect()
+                content.anim_text_ready.animations_group.stop()
+            except AttributeError:
+                pass
+            except RuntimeError:
+                pass
 
         if stop_old_language != language_group_data["language"]:
             self.parent.parent.close()  # Window
