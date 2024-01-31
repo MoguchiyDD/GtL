@@ -4,9 +4,9 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Adding The «SCHEDULE» BLOCK
-# Modification Date: 2024.01.30, 07:13 PM
+# Past Modification: Adding The «SCHEDULE» BLOCK
+# Last Modification: Editing The «MainWindow» BLOCK (CONTENT)
+# Modification Date: 2024.01.31, 12:49 AM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -29,7 +29,7 @@ from dotenv import load_dotenv
 from time import sleep
 
 from sys import argv, exit
-from os import getenv, path, environ
+from os import getenv, path
 
 basedir = path.dirname(__file__)
 load_dotenv()
@@ -147,7 +147,7 @@ class MainWindow(QMainWindow):
         self.header = Header(
             self.language[0], self.language[1], number_version, self
         )
-        Content(self.language[0], self.header, self)
+        self.content = Content(self.language[0], self.header, self)
         Footer(self)
 
     def __ram_settegins_file(self) -> dict[str, any]:
