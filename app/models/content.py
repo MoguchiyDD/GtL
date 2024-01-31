@@ -4,24 +4,15 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «Content» CLASS (DISABLE BUTTONS)
-# Last Modification: Editing The «Content» CLASS (PATH)
-# Modification Date: 2023.12.22, 04:59 PM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Editing The «Content» CLASS (FINISH)
+# Modification Date: 2023.01.31, 07:01 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
 
-from PySide6.QtCore import (
-    Qt,
-    Slot,
-    QTimer,
-    Signal,
-    QObject,
-    QThread,
-    QPropertyAnimation,
-    QSequentialAnimationGroup
-)
-from PySide6.QtGui import QGuiApplication, QTextCursor, QFont, QIcon
+from PySide6.QtCore import Qt, Slot, Signal, QObject, QThread
+from PySide6.QtGui import QGuiApplication, QFont, QIcon
 from PySide6.QtWidgets import (
     QWidget,
     QFrame,
@@ -36,6 +27,7 @@ from PySide6.QtWidgets import (
 from .filesystem import FileSystem
 from .values import StringsValues
 from .messages import MessageBox
+from .animations import AnimationTextEdit
 
 from re import split
 from time import sleep
@@ -359,9 +351,15 @@ class Content(QWidget):
         )
 
         # Animation 2nd Textbox
-        self.anim_text_ready = AnimationText(self.text_ready)
-        self.anim_text_ready.timer_text.start()
-        self.anim_text_ready.animation()
+        data_animation = self.parent.data_settings_file["animation"]
+        self.anim_text_ready = AnimationTextEdit(self.text_ready)
+        if data_animation is False:  # Turn On
+            if len(self.text_ready.toPlainText()) >= 1:
+                self.anim_text_ready.timer_text.start()
+        else:  # Turn Off
+            self.anim_text_ready.timer_text.stop()
+            self.anim_text_ready.timer_text.timeout.disconnect()
+            self.anim_text_ready.animations_group.stop()
 
         self.btn_finish.setEnabled(True)
         self.btn_copy.setEnabled(True)
@@ -376,22 +374,84 @@ class Content(QWidget):
         Runs PROCESSING TEXT
         """
 
-        def __validation_length_text(length: int) -> bool:
+        def valid_length_text(len_errors: int, text: str) -> tuple[bool, int]:
             """
             Checks that The TEXT has been Given
 
             ---
             PARAMETERS:
-            - length: int -> Length of TEXT
+            - len_errors: int -> The Number of The ERRORS
+            - text: str -> The TEXT from The 1st TEXTBOX
             ---
-            RESULT: True (length >= 1) || False (length == 0)
+            RESULT: (True (LENGTH >= 1) || False (LENGTH <= 0),
+            The Number of The ERRORS)
             """
 
-            result = False
-            if length >= 1:
-                result = True
+            result = True
 
-            return result
+            len_text = len(text)
+            if len_text <= 0:  # ERROR
+                len_errors += 1
+                result = False
+
+                text_for_error_msg_len_title = self.str_val.string_values(
+                    self.language_char + "error_msg_valid_length_title"
+                )
+                text_for_error_msg_len_text = self.str_val.string_values(
+                    self.language_char + "error_msg_valid_length_text"
+                )
+                MessageBox(
+                    path.join(self.basedir, "icons", "error.svg"),
+                    text_for_error_msg_len_text,
+                    text_for_error_msg_len_title,
+                    self
+                )
+
+            return (result, len_errors)
+
+        def data_from_settings(
+            len_errors: int, valid_text: bool
+        ) -> tuple[bool, int]:
+            """
+            Checks ALL KEYS for their Existence in The FILE SYSTEM
+
+            ---
+            PARAMETERS:
+            - len_errors: int -> The Number of The ERRORS
+            - valid_text: bool -> Reply from The «valid_length_text» FUNCTION
+            ---
+            RESULT: (True (OK with KEYS from FILE SYSTEM) ||
+            False (not OK with KEYS  from FILE SYSTEM),
+            The Number of The ERRORS)
+            """
+
+            valid_keys = False
+            if (len_errors == 0) and (valid_text is True):
+                filesystem = FileSystem(self.parent.basedir)
+                valid_keys = filesystem._valid_true_keys(
+                    list(self.parent.data_settings_file.keys())
+                )
+                if valid_keys is False:  # ERROR
+                    len_errors += 1
+
+                    filesystem.write_file_settings()
+                    self.parent.data_settings_file = filesystem.TEMPLATE
+
+                    # INFO
+                    text_for_info_msg_data_title = self.str_val.string_values(
+                        self.language_char + "info_msg_data_title"
+                    )
+                    text_for_info_msg_data_text = self.str_val.string_values(
+                        self.language_char + "info_msg_data_text"
+                    )
+                    MessageBox(
+                        path.join(self.basedir, "icons", "info.svg"),
+                        text_for_info_msg_data_title,
+                        text_for_info_msg_data_text,
+                        self
+                    )
+
+            return (valid_keys, len_errors)
 
         _cnt_valid_false = 0
         self.current_percent_progress = 0
@@ -410,53 +470,16 @@ class Content(QWidget):
         ).toPlainText().strip()
         self.text_ready.setText("")
 
-        # LENGTH TEXT
-        valid_text_create = __validation_length_text(len(text_create))
-        if valid_text_create is False:
-            _cnt_valid_false += 1
-
-            # ERROR
-            text_for_error_msg_valid_len_title = self.str_val.string_values(
-                self.language_char + "error_msg_valid_length_title"
-            )
-            text_for_error_msg_valid_len_text = self.str_val.string_values(
-                self.language_char + "error_msg_valid_length_text"
-            )
-            MessageBox(
-                path.join(self.basedir, "icons", "error.svg"),
-                text_for_error_msg_valid_len_title,
-                text_for_error_msg_valid_len_text,
-                self
-            )
-
-        # SETTINGS FILE
-        if (_cnt_valid_false == 0) and (valid_text_create is True):
-            filesystem = FileSystem(self.parent.basedir)
-            valid_keys = filesystem._valid_true_keys(
-                list(self.parent.data_settings_file.keys())
-            )
-            if valid_keys is False:
-                _cnt_valid_false += 1
-
-                filesystem.write_file_settings()
-                self.parent.data_settings_file = filesystem.TEMPLATE
-
-                # INFO
-                text_for_info_msg_data_title = self.str_val.string_values(
-                    self.language_char + "info_msg_data_title"
-                )
-                text_for_info_msg_data_text = self.str_val.string_values(
-                    self.language_char + "info_msg_data_text"
-                )
-                MessageBox(
-                    path.join(self.basedir, "icons", "info.svg"),
-                    text_for_info_msg_data_title,
-                    text_for_info_msg_data_text,
-                    self
-                )
+        valid_text_create = valid_length_text(  # LENGTH TEXT
+            _cnt_valid_false, text_create
+        )
+        valid_keys = data_from_settings(  # SETTINGS FILE
+            valid_text_create[1], valid_text_create[0]
+        )
+        _cnt_valid_false = valid_keys[1]
 
         # FINISH
-        if (_cnt_valid_false == 0) and (valid_keys is True):
+        if (_cnt_valid_false == 0) and (valid_keys[0] is True):
             text_create_without_new_lines = text_create.split("\n")
             data = self.parent.data_settings_file
             self.__finish(data, text_create_without_new_lines)
@@ -797,105 +820,5 @@ class TextProcessing(QThread):
             ready_text = __signal_ready_text(ready_text)
 
         self.signals.signal_finished.emit()
-
-# -----------------------------------------------
-
-
-# ------------ ANIMATION 2ND TEXTBOX ------------
-
-class AnimationText(QWidget):
-    """
-    Responsible for The ANIMATION of TEXT in 1 TEXTBOX
-
-    ---
-    PARAMETERS:
-    - textbox: QTextEdit -> The TEXTBOX
-    ---
-    FUNCTIONS:
-    - animation(self) -> None : RUNS to an ANIMATION
-    """
-
-    def __init__(self, textbox: QTextEdit) -> None:
-        super(AnimationText, self).__init__()
-
-        self.textbox = textbox
-        self.doc_textbox = textbox.document()
-
-        # START ANIMATION
-        self.s_anim_text = QPropertyAnimation(
-            self.textbox, b"move_start_to_end", self
-        )
-        self.s_anim_text.valueChanged.connect(self.__move)
-        self.s_anim_text = self.__start_animation()
-
-        # END ANIMATION
-        self.e_anim_text = QPropertyAnimation(
-            self.textbox, b"move_end_to_start", self
-        )
-        self.e_anim_text.valueChanged.connect(self.__move)
-        self.e_anim_text = self.__end_animation()
-
-        # TOTAL ANIMATIONS
-        self.animations_group = QSequentialAnimationGroup()
-        self.animations_group.addAnimation(self.s_anim_text)
-        self.animations_group.addAnimation(self.e_anim_text)
-
-        # DURATION : START && END
-        durations = self.s_duration_anim_text + self.e_duration_anim_text
-
-        self.timer_text = QTimer()
-        self.timer_text.setInterval(durations)
-        self.timer_text.timeout.connect(self.animation)
-
-    def __start_animation(self) -> None:
-        """
-        An ANIMATION that goes from TEXT POSITION 0 to The LAST POSITION
-        """
-
-        self.s_anim_text.stop()
-
-        self.s_duration_anim_text = self.doc_textbox.blockCount() * 1000 / 2
-
-        self.s_anim_text.setStartValue(0)
-        self.s_anim_text.setEndValue(self.doc_textbox.blockCount())
-        self.s_anim_text.setDuration(self.s_duration_anim_text)
-
-        return self.s_anim_text
-
-    def __end_animation(self) -> None:
-        """
-        An ANIMATION that goes from TEXT POSITION The LAST POSITION to 0
-        """
-
-        self.e_anim_text.stop()
-
-        self.e_duration_anim_text = self.doc_textbox.blockCount() * 10 / 2
-
-        self.e_anim_text.setStartValue(self.doc_textbox.blockCount())
-        self.e_anim_text.setEndValue(0)
-        self.e_anim_text.setDuration(self.e_duration_anim_text)
-
-        return self.e_anim_text
-
-    def animation(self) -> None:
-        """
-        RUNS to an ANIMATION
-        """
-
-        self.animations_group.stop()
-        self.animations_group.start()
-
-    @Slot()
-    def __move(self, pos: int) -> None:
-        """
-        Moves TEXT According to POSITION NUMBER
-
-        ---
-        PARAMETERS:
-        - pos: int -> The POSITION NUMBER
-        """
-
-        cursor = QTextCursor(self.doc_textbox.findBlockByLineNumber(pos))
-        self.textbox.setTextCursor(cursor)
 
 # -----------------------------------------------
