@@ -7,9 +7,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Store All STRINGS of The SOFTWARE in 1 PLACE
 Result: Returns 1 Desired STRING via The «name» ATTRIBUTE («string_values» FUN)
 
-Past Modification: Editing The «VERSION» String (VERSION)
-Last Modification: Editing The «SETTINGS» String (RU && EN : OTHER)
-Modification Date: 2024.01.30, 11:50 PM
+Past Modification: Editing The «SETTINGS» String (RU && EN : OTHER)
+Last Modification: Editing The «MESSAGE BOX» String (RU && EN : RINGTONE)
+Modification Date: 2024.02.01, 04:59 PM
 
 Create Date: 2023.10.23, 02:49 PM
 -->
@@ -183,6 +183,8 @@ rent text.</string>
     <string name="ru_error_msg_valid_length_text">Для соединения текста до нужной пунктуации требуется больше символов в текстовике «ТВОРЧЕСКИЙ БЕСПОРЯДОК»</string>
     <string name="ru_error_msg_copy_second_block_title">Что-то пошло не так..</string>
     <string name="ru_error_msg_copy_second_block_text">Текст из второго блока с итоговым текстом не смог сохранится в буфер обмена. Напечатайте разработчику с какими данными Вы работали, а также само описание Вашей Операционной Системы для рефакторинга кода с буфером обмена</string>
+    <string name="ru_error_msg_ringtone_title">Рингтонский сбой</string>
+    <string name="ru_error_msg_ringtone_text">Если решили заменить рингтон у меня в файловой системе, тогда переназовите файл «success» с форматом «wav»</string>
     <string name="en_success_msg_save_settings_title">Successful saving of new data</string>
     <string name="en_success_msg_save_settings_text">The changed data was successfully saved to a file containing the program settings</string>
     <string name="en_success_msg_finish_title">Success and no other way</string>
@@ -199,5 +201,7 @@ rent text.</string>
     <string name="en_error_msg_valid_length_text">More characters are required to connect the text to the required punctuation in the notebook «CREATIVE MESS»</string>
     <string name="en_error_msg_copy_second_block_title">Something has gone wrong..</string>
     <string name="en_error_msg_copy_second_block_text">The text from the second block with the resulting text could not be saved to the clipboard. Print to the developer what data you worked with, as well as the description of your Operating System to refactor the code with the clipboard</string>
+    <string name="en_error_msg_ringtone_title">Ringtone failure</string>
+    <string name="en_error_msg_ringtone_text">If you decide to replace the ringtone in my file system, then rename the «success» file with the «wav» format</string>
 
 </resources>
