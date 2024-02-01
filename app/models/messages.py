@@ -4,9 +4,9 @@
 # Goal: Message DIALOG BOX
 # Result: Shows The Generated Message DIALOG BOX
 #
-# Past Modification: Editing The «MessageBox» CLASS (SIZE)
-# Last Modification: Adding «Qt.AlignmentFlags»
-# Modification Date: 2023.12.27, 11:12 PM
+# Past Modification: Adding The «activate_message_box» FUNCTION («MESSAGE BOX»)
+# Last Modification: Editing The «MessageBox» CLASS (PRIVATE)
+# Modification Date: 2024.02.01, 01:56 PM
 #
 # Create Date: 2023.11.04, 01:11 PM
 
@@ -23,10 +23,14 @@ from PySide6.QtWidgets import (
     QLabel
 )
 
+from .values import StringsValues
+
+from os import path
+
 
 # ------------ MESSAGE BOX ------------
 
-class MessageBox(QDialog):
+class __MessageBox(QDialog):
     """
     Generates 1 MODAL WINDOW with 1 MESSAGE
 
@@ -54,7 +58,7 @@ class MessageBox(QDialog):
         parent: QWidget | None = None,
         f: Qt.WindowType = Qt.WindowType.Widget
     ) -> None:
-        super(MessageBox, self).__init__(parent, f)
+        super(__MessageBox, self).__init__(parent, f)
         self.setParent(parent)
 
         self.setWindowFlags(Qt.WindowType.Dialog)
@@ -115,5 +119,27 @@ class MessageBox(QDialog):
 
         frame.setLayout(layout)
         return frame
+
+
+def activate_message_box(
+    basedir: str, title: str, text: str, icon: str, parent: QWidget
+) -> None:
+    """
+    ---
+    PARAMETERS:
+    - basedir: str -> Link to CODE HOME DIRECTORY
+    - title: str -> FULL NAME of The ARGUMENT from The XML FILE with STRINGS
+    (HEADER)
+    - text: str -> FULL NAME of The ARGUMENT from The XML FILE with STRINGS
+    (CONTENT)
+    - icon: str -> NAME of The ICON with FORMAT
+    - parent: QWidget -> Widget PARENT for this MESSAGES
+    """
+
+    msg_title = StringsValues(basedir).string_values(title)
+    msg_text = StringsValues(basedir).string_values(text)
+    __MessageBox(
+        path.join(basedir, "icons", icon), msg_title, msg_text, parent
+    )
 
 # -------------------------------------
