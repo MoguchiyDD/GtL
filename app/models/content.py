@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Update MESSAGE BOX
-# Last Modification: Editing The «Content» CLASS (NOTIFICATION && ANIMATION)
-# Modification Date: 2024.02.01, 05:20 PM
+# Past Modification: Editing The «Content» CLASS (NOTIFICATION && ANIMATION)
+# Last Modification: Editing The «Content» CLASS (THREADS)
+# Modification Date: 2024.02.01, 08:44 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -29,7 +29,9 @@ from .values import StringsValues
 from .messages import activate_message_box
 from .animations import AnimationTextEdit
 
+from threading import Thread
 from playsound import playsound, PlaysoundException
+from mutagen.mp3 import MP3, MutagenError
 
 from re import split
 from time import sleep
@@ -37,7 +39,7 @@ from time import sleep
 from os import path
 
 
-# ------------------- CONTENT -------------------
+# ---------------- CONTENT ----------------
 
 class Content(QWidget):
     """
@@ -268,13 +270,20 @@ class Content(QWidget):
         self.anim_text_ready = None
         self.btn_finish.setEnabled(False)
         self.btn_copy.setEnabled(False)
+        self.header._Header__settings.hide()
         self.header.btn_settings.setEnabled(False)
         self.header.btn_settings.setIcon(
             QIcon(path.join(self.basedir, "icons", "d_settings.svg"))
         )
 
         text_processing = TextProcessing(data, text, self)
-        text_processing.start()
+        self.thread_text_processing = Thread(
+            target=text_processing.run,
+            name="THREAD_TEXT_PROCESSING",
+            args=(),
+            daemon=True
+        )
+        self.thread_text_processing.start()
 
     @Slot()
     def _update_text_ready(self, text: str) -> None:
@@ -344,17 +353,14 @@ class Content(QWidget):
                     self
                 )
             else:  # RINGTONE
-                url = path.join(self.basedir, "ringtone", "success.wav")
-                try:
-                    playsound(url)
-                except PlaysoundException:
-                    activate_message_box(
-                        self.basedir,
-                        self.language_char + "error_msg_ringtone_title",
-                        self.language_char + "error_msg_ringtone_text",
-                        "ringtone.svg",
-                        self
-                    )
+                ringtone = RingtoneThread(self)
+                self.thread_text_processing = Thread(
+                    target=ringtone.run,
+                    name="THREAD_RINGTONE",
+                    args=(),
+                    daemon=True
+                )
+                self.thread_text_processing.start()
 
         def set_animation(animation: bool) -> None:
             """
@@ -539,30 +545,63 @@ class Content(QWidget):
             self
         )
 
-# -----------------------------------------------
+    @Slot()
+    def activate_ringtone(self) -> None:
+        """
+        Launches 1 RINGTONE if Found, Otherwise Opens 1 MESSAGE BOX
+        with an ERROR for The USER
+        """
+
+        url = path.join(self.basedir, "ringtone", "success.mp3")
+        try:
+            if int(MP3(url).info.length) == 1:
+                playsound(url)
+            else:  # ERROR
+                activate_message_box(
+                    self.basedir,
+                    self.language_char + "error_msg_ringtone_time_title",
+                    self.language_char + "error_msg_ringtone_time_text",
+                    "ringtone.svg",
+                    self
+                )
+        except PlaysoundException and MutagenError:
+            activate_message_box(
+                self.basedir,
+                self.language_char + "error_msg_ringtone_title",
+                self.language_char + "error_msg_ringtone_text",
+                "ringtone.svg",
+                self
+            )
+
+# -----------------------------------------
 
 
-# --------------- Text Processing ---------------
+# --------------- Ringtone ----------------
 
-class TextProcessingSignals(QObject):
+class RingtoneThread(QObject):
     """
-    Connection between a GRAPHICAL SOFTWARE and a THREAD
-
-    ---
-    SIGNALS:
-    - signal_text_ready : str -> Signal with TEXT from The 2nd TEXT BLOCK
-    - signal_status : str -> Signal with STATUS of Current Work Location
-    - signal_percent : float -> Signal with PERCENT of Current Work Completed
-    - signal_finished -> Signal Indicating The END of Che Current Job
+    Responsible for The RINGTONE through The THREAM
     """
 
-    signal_text_ready = Signal(str)
-    signal_status = Signal(str)
-    signal_percent = Signal(float)
-    signal_finished = Signal()
+    signal_play = Signal()
+
+    def __init__(self, parent: QWidget) -> None:
+        super().__init__(parent)
+        self.signal_play.connect(parent.activate_ringtone)
+
+    def run(self) -> None:
+        """
+        Sends 1 SIGNAL to Start 1 RINGTONE
+        """
+
+        self.signal_play.emit()
+
+# -----------------------------------------
 
 
-class TextProcessing(QThread):
+# ------------ Text Processing ------------
+
+class TextProcessing(QObject):
     """
     The THREAD Responsible for The TEXT PROCESSING Process
 
@@ -576,6 +615,11 @@ class TextProcessing(QThread):
     FUNCTIONS:
     - run() -> None : Starting a THREAD
     """
+
+    signal_text_ready = Signal(str)
+    signal_status = Signal(str)
+    signal_percent = Signal(float)
+    signal_finished = Signal()
 
     def __init__(
         self,
@@ -598,11 +642,10 @@ class TextProcessing(QThread):
         self.is_add_text = False
 
         # Signals
-        self.signals = TextProcessingSignals()
-        self.signals.signal_text_ready.connect(parent._update_text_ready)
-        self.signals.signal_status.connect(parent._update_status)
-        self.signals.signal_percent.connect(parent._update_percent)
-        self.signals.signal_finished.connect(parent._finished_processing)
+        self.signal_text_ready.connect(parent._update_text_ready)
+        self.signal_status.connect(parent._update_status)
+        self.signal_percent.connect(parent._update_percent)
+        self.signal_finished.connect(parent._finished_processing)
 
     def __count_percent_progress(self, lines: list[str]) -> float:
         """
@@ -635,7 +678,7 @@ class TextProcessing(QThread):
             RESULT: ""
             """
 
-            self.signals.signal_text_ready.emit(text)
+            self.signal_text_ready.emit(text)
             sleep(0.2)
 
             text = ""
@@ -776,8 +819,8 @@ class TextProcessing(QThread):
             words = list(filter(lambda w: w != "", words_without_spaces))
             current_line = " ".join(words)
 
-            self.signals.signal_status.emit(str(_num_lines))  # NEW STATUS
-            self.signals.signal_percent.emit(self.percent)
+            self.signal_status.emit(str(_num_lines))  # NEW STATUS
+            self.signal_percent.emit(self.percent)
             _num_lines += 1
 
             if len(line) == 0:  # SELF-DEFENSE AGAINST PACIFIERS
@@ -834,6 +877,6 @@ class TextProcessing(QThread):
 
             ready_text = __signal_ready_text(ready_text)
 
-        self.signals.signal_finished.emit()
+        self.signal_finished.emit()
 
-# -----------------------------------------------
+# -----------------------------------------
