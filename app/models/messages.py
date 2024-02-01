@@ -6,7 +6,7 @@
 #
 # Past Modification: Adding The «activate_message_box» FUNCTION («MESSAGE BOX»)
 # Last Modification: Editing The «MessageBox» CLASS (PRIVATE)
-# Modification Date: 2024.02.01, 01:56 PM
+# Modification Date: 2024.02.01, 04:24 PM
 #
 # Create Date: 2023.11.04, 01:11 PM
 
@@ -30,7 +30,7 @@ from os import path
 
 # ------------ MESSAGE BOX ------------
 
-class __MessageBox(QDialog):
+class _MessageBox(QDialog):
     """
     Generates 1 MODAL WINDOW with 1 MESSAGE
 
@@ -58,7 +58,7 @@ class __MessageBox(QDialog):
         parent: QWidget | None = None,
         f: Qt.WindowType = Qt.WindowType.Widget
     ) -> None:
-        super(__MessageBox, self).__init__(parent, f)
+        super(_MessageBox, self).__init__(parent, f)
         self.setParent(parent)
 
         self.setWindowFlags(Qt.WindowType.Dialog)
@@ -138,7 +138,7 @@ def activate_message_box(
 
     msg_title = StringsValues(basedir).string_values(title)
     msg_text = StringsValues(basedir).string_values(text)
-    __MessageBox(
+    _MessageBox(
         path.join(basedir, "icons", icon), msg_title, msg_text, parent
     )
 
