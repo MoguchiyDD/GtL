@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «Content» CLASS (FINISH)
-# Last Modification: Update MESSAGE BOX
-# Modification Date: 2024.02.01, 02:13 PM
+# Past Modification: Update MESSAGE BOX
+# Last Modification: Editing The «Content» CLASS (NOTIFICATION && ANIMATION)
+# Modification Date: 2024.02.01, 05:20 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -28,6 +28,8 @@ from .filesystem import FileSystem
 from .values import StringsValues
 from .messages import activate_message_box
 from .animations import AnimationTextEdit
+
+from playsound import playsound, PlaysoundException
 
 from re import split
 from time import sleep
@@ -323,6 +325,56 @@ class Content(QWidget):
         The TEXT that comes out when The TEXT has Finished Processing
         """
 
+        def set_notification(notification: bool) -> None:
+            """
+            Displays 1 MESSAGE BOX or Starts 1 RINGTONE
+
+            ---
+            PARAMETERS:
+            - notification: bool -> The DATA from RAM with SETTINGS FILE from
+            «notification» KEY
+            """
+
+            if notification is False:  # MESSAGE BOX
+                activate_message_box(  # SUCCESS
+                    self.basedir,
+                    self.language_char + "success_msg_finish_title",
+                    self.language_char + "success_msg_finish_text",
+                    "success.svg",
+                    self
+                )
+            else:  # RINGTONE
+                url = path.join(self.basedir, "ringtone", "success.wav")
+                try:
+                    playsound(url)
+                except PlaysoundException:
+                    activate_message_box(
+                        self.basedir,
+                        self.language_char + "error_msg_ringtone_title",
+                        self.language_char + "error_msg_ringtone_text",
+                        "ringtone.svg",
+                        self
+                    )
+
+        def set_animation(animation: bool) -> None:
+            """
+            Enables or disables The ANIMATION of The 2nd TEXT BLOCK
+
+            ---
+            PARAMETERS:
+            - animation: bool -> The DATA from RAM with SETTINGS FILE from
+            «animation» KEY
+            """
+
+            self.anim_text_ready = AnimationTextEdit(self.text_ready)
+            if animation is False:  # Turn On
+                if len(self.text_ready.toPlainText()) >= 1:
+                    self.anim_text_ready.timer_text.start()
+            else:  # Turn Off
+                self.anim_text_ready.timer_text.stop()
+                self.anim_text_ready.timer_text.timeout.disconnect()
+                self.anim_text_ready.animations_group.stop()
+
         # PROGRESS BAR
         text_for_progress_end = self.str_val.string_values(
             self.language_char + "content_end_app"
@@ -336,24 +388,15 @@ class Content(QWidget):
         self.status.setText(text_for_progress_end)
         self.text_for_copy = self.text_ready.toPlainText()
 
-        activate_message_box(  # SUCCESS
-            self.basedir,
-            self.language_char + "success_msg_finish_title",
-            self.language_char + "success_msg_finish_text",
-            "success.svg",
-            self
-        )
+        data = self.parent.data_settings_file  # DATA
+
+        # Notification
+        notification = data["notification"]
+        set_notification(notification)
 
         # Animation 2nd Textbox
-        data_animation = self.parent.data_settings_file["animation"]
-        self.anim_text_ready = AnimationTextEdit(self.text_ready)
-        if data_animation is False:  # Turn On
-            if len(self.text_ready.toPlainText()) >= 1:
-                self.anim_text_ready.timer_text.start()
-        else:  # Turn Off
-            self.anim_text_ready.timer_text.stop()
-            self.anim_text_ready.timer_text.timeout.disconnect()
-            self.anim_text_ready.animations_group.stop()
+        animation = data["animation"]
+        set_animation(animation)
 
         self.btn_finish.setEnabled(True)
         self.btn_copy.setEnabled(True)
