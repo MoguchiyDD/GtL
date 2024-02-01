@@ -4,9 +4,9 @@
 # Goal: Check for a New VERSION of The SOFTWARE
 # Result: The VERSION of The Released SOFTWARE
 #
-# Past Modification: Adding «Web Parsing» BLOCK
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2024.01.25, 10:31 PM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Update MESSAGE BOX
+# Modification Date: 2024.02.01, 01:59 PM
 #
 # Create Date: 2024.01.25, 02:27 PM
 
@@ -15,14 +15,14 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget
 
 from .values import StringsValues
-from .messages import MessageBox
+from .messages import activate_message_box
 
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
 from re import findall
 
-from os import getenv, path
+from os import getenv
 
 
 # ------------ Web Parsing ------------
@@ -57,16 +57,11 @@ class GetVersion(QWidget):
             html = page.read().decode("utf-8")
             self.soup = BeautifulSoup(html, "html.parser")
         except:  # ERROR
-            text_version_title = self.str_val.string_values(
-                self.language_char + "error_version_title"
-            )
-            text_version_text = self.str_val.string_values(
-                self.language_char + "error_version_text"
-            )
-            MessageBox(
-                path.join(self.basedir, "icons", "net.svg"),
-                text_version_title,
-                text_version_text,
+            activate_message_box(
+                self.basedir,
+                self.language_char + "error_version_title",
+                self.language_char + "error_version_text",
+                "net.svg",
                 self
             )
 
@@ -95,16 +90,11 @@ class GetVersion(QWidget):
             int_env_version = int("".join(findall(r"[\d]+", env_version)))
 
             if (int_tag_version > int_env_version):  # New Version
-                text_version_title = self.str_val.string_values(
-                    self.language_char + "success_version_title"
-                )
-                text_version_text = self.str_val.string_values(
-                    self.language_char + "success_version_text"
-                )
-                MessageBox(
-                    path.join(self.basedir, "icons", "version.svg"),
-                    text_version_title,
-                    text_version_text,
+                activate_message_box(  # SUCCESS
+                    self.basedir,
+                    self.language_char + "success_version_title",
+                    self.language_char + "success_version_text",
+                    "version.svg",
                     self
                 )
 

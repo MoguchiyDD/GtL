@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Editing The «Content» CLASS (FINISH)
-# Modification Date: 2023.01.31, 07:01 PM
+# Past Modification: Editing The «Content» CLASS (FINISH)
+# Last Modification: Update MESSAGE BOX
+# Modification Date: 2024.02.01, 02:13 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -26,7 +26,7 @@ from PySide6.QtWidgets import (
 
 from .filesystem import FileSystem
 from .values import StringsValues
-from .messages import MessageBox
+from .messages import activate_message_box
 from .animations import AnimationTextEdit
 
 from re import split
@@ -336,17 +336,11 @@ class Content(QWidget):
         self.status.setText(text_for_progress_end)
         self.text_for_copy = self.text_ready.toPlainText()
 
-        # SUCCESS MESSAGE BOX
-        text_for_success_msg_finish_title = self.str_val.string_values(
-            self.language_char + "success_msg_finish_title"
-        )
-        text_for_success_msg_finish_text = self.str_val.string_values(
-            self.language_char + "success_msg_finish_text"
-        )
-        MessageBox(
-            path.join(self.basedir, "icons", "success.svg"),
-            text_for_success_msg_finish_title,
-            text_for_success_msg_finish_text,
+        activate_message_box(  # SUCCESS
+            self.basedir,
+            self.language_char + "success_msg_finish_title",
+            self.language_char + "success_msg_finish_text",
+            "success.svg",
             self
         )
 
@@ -394,16 +388,11 @@ class Content(QWidget):
                 len_errors += 1
                 result = False
 
-                text_for_error_msg_len_title = self.str_val.string_values(
-                    self.language_char + "error_msg_valid_length_title"
-                )
-                text_for_error_msg_len_text = self.str_val.string_values(
-                    self.language_char + "error_msg_valid_length_text"
-                )
-                MessageBox(
-                    path.join(self.basedir, "icons", "error.svg"),
-                    text_for_error_msg_len_text,
-                    text_for_error_msg_len_title,
+                activate_message_box(
+                    self.basedir,
+                    self.language_char + "error_msg_valid_length_title",
+                    self.language_char + "error_msg_valid_length_text",
+                    "error.svg",
                     self
                 )
 
@@ -436,18 +425,11 @@ class Content(QWidget):
 
                     filesystem.write_file_settings()
                     self.parent.data_settings_file = filesystem.TEMPLATE
-
-                    # INFO
-                    text_for_info_msg_data_title = self.str_val.string_values(
-                        self.language_char + "info_msg_data_title"
-                    )
-                    text_for_info_msg_data_text = self.str_val.string_values(
-                        self.language_char + "info_msg_data_text"
-                    )
-                    MessageBox(
-                        path.join(self.basedir, "icons", "info.svg"),
-                        text_for_info_msg_data_title,
-                        text_for_info_msg_data_text,
+                    activate_message_box(  # INFO
+                        self.basedir,
+                        self.language_char + "info_msg_data_title",
+                        self.language_char + "info_msg_data_text",
+                        "info.svg",
                         self
                     )
 
@@ -498,29 +480,19 @@ class Content(QWidget):
             clipboard = QGuiApplication.clipboard()
             clipboard.setText(text, clipboard.Mode.Clipboard)
 
-            msg_icon = path.join(self.basedir, "icons", "success.svg")
-            msg_title = self.language_char
-            msg_title += "success_msg_copy_second_block_title"
-            msg_text = self.language_char
-            msg_text += "success_msg_copy_second_block_text"
+            msg_icon = "success.svg"
+            msg_title = "success_msg_copy_second_block_title"
+            msg_text = "success_msg_copy_second_block_text"
         except:
-            msg_icon = path.join(self.basedir, "icons", "error.svg")
-            msg_title = self.language_char
-            msg_title += "error_msg_copy_second_block_title"
-            msg_text = self.language_char
-            msg_text += "error_msg_copy_second_block_text"
+            msg_icon = "error.svg"
+            msg_title = "error_msg_copy_second_block_title"
+            msg_text = "error_msg_copy_second_block_text"
 
-        # SUCCESS or ERROR MESSAGE BOX
-        text_for_msg_copy_2nd_block_title = self.str_val.string_values(
-            msg_title
-        )
-        text_for_msg_copy_2nd_block_text = self.str_val.string_values(
-            msg_text
-        )
-        MessageBox(
+        activate_message_box(  # SUCCESS || ERROR
+            self.basedir,
+            self.language_char + msg_title,
+            self.language_char + msg_text,
             msg_icon,
-            text_for_msg_copy_2nd_block_title,
-            text_for_msg_copy_2nd_block_text,
             self
         )
 

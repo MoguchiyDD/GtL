@@ -4,9 +4,9 @@
 # Goal: Create a FOOTER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a FOOTER TEMPLATE
 #
-# Past Modification: Editing The «Footer» CLASS (TEXT + URL)
-# Last Modification: Editing The «Footer» CLASS (PATH)
-# Modification Date: 2023.12.22, 05:09 PM
+# Past Modification: Editing The «Footer» CLASS (PATH)
+# Last Modification: Update MESSAGE BOX
+# Modification Date: 2024.02.01, 02:15 PM
 #
 # Create Date: 2023.10.24, 05:17 PM
 
@@ -16,10 +16,9 @@ from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QFrame, QHBoxLayout, QLabel, QPushButton
 
 from .values import StringsValues
-from .messages import MessageBox
+from .messages import activate_message_box
 
 from webbrowser import open
-from os import path
 
 
 # ------------ FOOTER ------------
@@ -30,6 +29,7 @@ class Footer(QWidget):
 
     ---
     PARAMETERS:
+    - language_char: str -> The Characters of LANGUAGE
     - parent: QWidget | None = None -> Widget PARENT for this CLASS
     (AFTER THAT, THIS CURRENT CLASS WILL BECOME A CHILD OF THE PARENT)
     - f: Qt.WindowType = Qt.WindowType.Widget -> Window-System (Widget)
@@ -43,12 +43,14 @@ class Footer(QWidget):
 
     def __init__(
         self,
+        language_char: str,
         parent: QWidget | None = None,
         flags: Qt.WindowType = Qt.WindowType.Widget
     ) -> None:
         super(Footer, self).__init__(parent, flags)
         self.setParent(parent)
 
+        self.language_char = language_char.lower() + "_"
         self.basedir = parent.basedir
         self.str_val = StringsValues(self.basedir)
 
@@ -104,16 +106,11 @@ class Footer(QWidget):
             text_git = self.str_val.string_values("app_git")
             open(text_git)
         except:
-            text_error_msg_url_title = self.str_val.string_values(
-                "ru_error_msg_url_title"
-            )
-            text_error_msg_url_text = self.str_val.string_values(
-                "ru_error_msg_url_text"
-            )
-            MessageBox(  # ERROR
-                path.join(self.basedir, "icons", "error.svg"),
-                text_error_msg_url_title,
-                text_error_msg_url_text,
+            activate_message_box(  # ERROR
+                self.basedir,
+                self.language_char + "error_msg_url_title",
+                self.language_char + "error_msg_url_text",
+                "error.svg",
                 self
             )
 

@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Editing The «HeaderModal» CLASS (TEXTBOX ANIMATION)
-# Modification Date: 2024.01.31, 07:05 PM
+# Past Modification: Editing The «HeaderModal» CLASS (TEXTBOX ANIMATION)
+# Last Modification: Update MESSAGE BOX
+# Modification Date: 2024.02.01, 02:02 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -30,7 +30,7 @@ from PySide6.QtWidgets import (
 from .run import run
 from .filesystem import FileSystem
 from .values import StringsValues
-from .messages import MessageBox
+from .messages import activate_message_box
 
 from webbrowser import open
 from os import path
@@ -233,16 +233,11 @@ class Header(QWidget):
         try:
             open(url)
         except:
-            text_error_msg_url_title = self.str_val.string_values(
-                self.language_char + "error_msg_url_title"
-            )
-            text_error_msg_url_text = self.str_val.string_values(
-                self.language_char + text_url
-            )
-            MessageBox(  # ERROR
-                path.join(self.basedir, "icons", "error.svg"),
-                text_error_msg_url_title,
-                text_error_msg_url_text,
+            activate_message_box(  # ERROR
+                self.basedir,
+                self.language_char + "error_msg_url_title",
+                self.language_char + text_url,
+                "error.svg",
                 self
             )
 
@@ -337,18 +332,11 @@ class HeaderModal(QWidget):
             if valid_keys is False:
                 filesystem.write_file_settings()
                 self.parent.parent.data_settings_file = filesystem.TEMPLATE
-
-                # INFO
-                text_for_info_msg_title = self.parent.str_val.string_values(
-                    self.language_char + "info_msg_data_title"
-                )
-                text_for_info_msg_text = self.parent.str_val.string_values(
-                    self.language_char + "info_msg_data_text"
-                )
-                MessageBox(
-                    path.join(self.parent.basedir, "icons", "info.svg"),
-                    text_for_info_msg_title,
-                    text_for_info_msg_text,
+                activate_message_box(  # INFO
+                    self.parent.basedir,
+                    self.language_char + "info_msg_data_title",
+                    self.language_char + "info_msg_data_text",
+                    "info.svg",
                     self
                 )
 
@@ -1091,14 +1079,6 @@ class HeaderModal(QWidget):
             }
             return result
 
-        # STRINGS
-        text_for_success_msg_save_title = self.parent.str_val.string_values(
-            self.language_char + "success_msg_save_settings_title"
-        )
-        text_for_success_msg_save_text = self.parent.str_val.string_values(
-            self.language_char + "success_msg_save_settings_text"
-        )
-
         # GROUPS
         main_group_data = main_group()  # MAIN
         language_group_data = language_group()  # LANGUAGE
@@ -1123,10 +1103,11 @@ class HeaderModal(QWidget):
             " ".join(main_group_data["textbox_set_list"])
         )
 
-        MessageBox(  # SUCCESS
-            path.join(self.parent.basedir, "icons", "success.svg"),
-            text_for_success_msg_save_title,
-            text_for_success_msg_save_text,
+        activate_message_box(  # SUCCESS
+            self.parent.basedir,
+            self.language_char + "success_msg_save_settings_title",
+            self.language_char + "success_msg_save_settings_text",
+            "success.svg",
             self
         )
         self.hide()
