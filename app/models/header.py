@@ -5,8 +5,8 @@
 # Result: Providing a HEADER TEMPLATE
 #
 # Past Modification: Editing The «HeaderModal» CLASS (TEXTBOX ANIMATION)
-# Last Modification: Update MESSAGE BOX
-# Modification Date: 2024.02.01, 02:02 PM
+# Last Modification: Checking CODE The PEP8
+# Modification Date: 2024.02.01, 05:20 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -1079,6 +1079,34 @@ class HeaderModal(QWidget):
             }
             return result
 
+        def set_animation(animation: bool) -> None:
+            """
+            Enables or disables The ANIMATION of The 2nd TEXT BLOCK
+
+            ---
+            PARAMETERS:
+            - animation: bool -> The DATA from RAM with SETTINGS FILE from
+            «animation» KEY
+            """
+
+            content = self.parent.parent.content
+            if animation is False:  # Turn On
+                if len(content.text_ready.toPlainText()) >= 1:
+                    content.anim_text_ready.timer_text.start()
+                    content.anim_text_ready.timer_text.timeout.connect(
+                        content.anim_text_ready.animation
+                    )
+                    content.anim_text_ready.animations_group.start()
+            else:  # Turn Off
+                try:
+                    content.anim_text_ready.timer_text.stop()
+                    content.anim_text_ready.timer_text.timeout.disconnect()
+                    content.anim_text_ready.animations_group.stop()
+                except AttributeError:
+                    pass
+                except RuntimeError:
+                    pass
+
         # GROUPS
         main_group_data = main_group()  # MAIN
         language_group_data = language_group()  # LANGUAGE
@@ -1114,23 +1142,7 @@ class HeaderModal(QWidget):
 
         # Animation 2nd Textbox
         data_animation = self.parent.parent.data_settings_file["animation"]
-        content = self.parent.parent.content
-        if data_animation is False:  # Turn On
-            if len(content.text_ready.toPlainText()) >= 1:
-                content.anim_text_ready.timer_text.start()
-                content.anim_text_ready.timer_text.timeout.connect(
-                    content.anim_text_ready.animation
-                )
-                content.anim_text_ready.animations_group.start()
-        else:  # Turn Off
-            try:
-                content.anim_text_ready.timer_text.stop()
-                content.anim_text_ready.timer_text.timeout.disconnect()
-                content.anim_text_ready.animations_group.stop()
-            except AttributeError:
-                pass
-            except RuntimeError:
-                pass
+        set_animation(data_animation)
 
         if stop_old_language != language_group_data["language"]:
             self.parent.parent.close()  # Window
