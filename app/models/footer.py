@@ -6,7 +6,7 @@
 #
 # Past Modification: Update MESSAGE BOX
 # Last Modification: Editing The «Footer» CLASS (LOGGER)
-# Modification Date: 2024.02.02, 04:46 PM
+# Modification Date: 2024.02.02, 08:36 PM
 #
 # Create Date: 2023.10.24, 05:17 PM
 
@@ -54,7 +54,7 @@ class Footer(QWidget):
         self.language_char = language_char.lower() + "_"
         self.basedir = parent.basedir
         self.str_val = StringsValues(self.basedir)
-        self.logs = Logger()
+        self.logs = Logger(self.basedir)
 
         template = self.page()
         parent.main_layout.addWidget(
@@ -107,6 +107,11 @@ class Footer(QWidget):
         try:
             text_git = self.str_val.string_values("app_git")
             open(text_git)
+
+            self.logs.write_logger(
+                self.logs.LoggerLevel.LOGGER_SUCCESS,
+                "URL opened: " + text_git
+            )
         except:
             activate_message_box(  # ERROR
                 self.basedir,

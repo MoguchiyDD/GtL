@@ -6,7 +6,7 @@
 #
 # Past Modification: Update MESSAGE BOX
 # Last Modification: Editing The «GetVersion» CLASS (LOGGER)
-# Modification Date: 2024.02.02, 04:44 PM
+# Modification Date: 2024.02.02, 06:45 PM
 #
 # Create Date: 2024.01.25, 02:27 PM
 
@@ -50,7 +50,7 @@ class GetVersion(QWidget):
         self.language_char = language_char.lower() + "_"
         self.basedir = parent.basedir
         self.str_val = StringsValues(self.basedir)
-        self.logs = Logger()
+        self.logs = Logger(self.basedir)
 
         self.soup = None
         try:
