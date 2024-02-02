@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Removing «qproperty-alignment»
-Last Modification: Editing The «SETTINGS» STYLE BLOCK (GROUPS)
-Modification Date: 2023.01.31, 12:11 AM
+Past Modification: Editing The «SETTINGS» STYLE BLOCK (GROUPS)
+Last Modification: Editing The «SCROLL BAR» STYLE BLOCK (HORIZONTAL)
+Modification Date: 2024.01.02, 02:03 PM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -419,37 +419,53 @@ QFrame#message QLabel#message_text {
 
 /* ------------ SCROLL BAR ------------- */
 
-QScrollBar::handle:vertical {
+QScrollBar::handle:vertical,
+QScrollBar::handle:horizontal {
   background-color: #B71B0F;
 }
-QScrollBar::handle:vertical:disabled {
+QScrollBar::handle:vertical:disabled,
+QScrollBar::handle:horizontal:disabled {
   background-color: #C5C5C5;
 }
 QScrollBar:vertical,
 QScrollBar::add-line:vertical,
-QScrollBar::sub-line:vertical {
+QScrollBar::sub-line:vertical,
+QScrollBar:horizontal,
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
   background-color: #353535;
 }
 QScrollBar:vertical:disabled,
 QScrollBar::add-line:vertical:disabled,
-QScrollBar::sub-line:vertical:disabled {
+QScrollBar::sub-line:vertical:disabled,
+QScrollBar:horizontal:disabled,
+QScrollBar::add-line:horizontal:disabled,
+QScrollBar::sub-line:horizontal:disabled {
   background-color: #272727;
 }
 QScrollBar:vertical,
 QScrollBar::add-line:vertical,
-QScrollBar::sub-line:vertical {
+QScrollBar::sub-line:vertical,
+QScrollBar:horizontal,
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
   border-left: 1px solid #353535;
 }
 QScrollBar:vertical:disabled,
 QScrollBar::add-line:vertical:disabled,
-QScrollBar::sub-line:vertical:disabled {
+QScrollBar::sub-line:vertical:disabled,
+QScrollBar:horizontal:disabled,
+QScrollBar::add-line:horizontal:disabled,
+QScrollBar::sub-line:horizontal:disabled {
   border-left: 1px solid #272727;
 }
-QScrollBar::add-line:vertical {
+QScrollBar::add-line:vertical,
+QScrollBar::add-line:horizontal {
   border-left: 1px solid #353535;
   border-right: 1px solid #353535;
 }
-QScrollBar::add-line:vertical:disabled {
+QScrollBar::add-line:vertical:disabled,
+QScrollBar::add-line:horizontal:disabled {
   border-left: 1px solid #272727;
   border-right: 1px solid #272727;
 }
