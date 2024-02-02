@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Editing The «Header» and The «HeaderModal» CLASS (LOGGER)
-# Modification Date: 2024.02.02, 04:31 PM
+# Past Modification: Editing The «Header» CLASS (LOGGER)
+# Last Modification: Editing The «HeaderModal» CLASS (DATA RAM && LOGGER)
+# Modification Date: 2024.02.02, 08:36 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -80,7 +80,7 @@ class Header(QWidget):
 
         self.basedir = self.parent.basedir
         self.str_val = StringsValues(self.basedir)
-        self.logs = Logger()
+        self.logs = Logger(self.basedir)
 
         self.__settings = HeaderModal("settings", self)
         self.__information = HeaderModal("information", self)
@@ -233,6 +233,11 @@ class Header(QWidget):
 
         try:
             open(url)
+
+            self.logs.write_logger(
+                self.logs.LoggerLevel.LOGGER_SUCCESS,
+                "URL opened: " + url
+            )
         except:
             activate_message_box(  # ERROR
                 self.basedir,
@@ -337,6 +342,10 @@ class HeaderModal(QWidget):
             if valid_keys is False:
                 filesystem.write_file_settings()
                 self.parent.parent.data_settings_file = filesystem.TEMPLATE
+                filesystem.write_file_language(
+                    self.parent.parent.data_settings_file["language"]
+                )
+
                 activate_message_box(  # INFO
                     self.parent.basedir,
                     self.language_char + "info_msg_data_title",
@@ -1138,6 +1147,9 @@ class HeaderModal(QWidget):
         self.parent.parent.data_settings_file = new_data
         self.punctuations.setText(
             " ".join(main_group_data["textbox_set_list"])
+        )
+        filesystem.write_file_language(
+            self.parent.parent.data_settings_file["language"]
         )
 
         activate_message_box(  # SUCCESS
