@@ -4,9 +4,9 @@
 # Goal: Writing and Reading IMPORTANT FILES
 # Result: AUTOMATED SYSTEM with FILES
 #
-# Past Modification: Editing The «FileSystem» CLASS (TEMPLATE: KEYS && VALUES)
-# Last Modification: Adding The «Logger» CLASS
-# Modification Date: 2024.02.02, 03:18 PM
+# Past Modification: Editing The «Logger» CLASS (DOCS)
+# Last Modification: Editing The «FileSystem» CLASS (LANGUAGE && LOGGER)
+# Modification Date: 2024.02.02, 08:52 PM
 #
 # Create Date: 2023.11.01, 10:01 PM
 
@@ -14,8 +14,26 @@
 from json import dumps, loads
 from datetime import datetime, timezone
 
-from os import path, chdir, mkdir
+from os import path, chdir, mkdir, getcwd
 from os.path import isfile
+
+
+# ------------- VARIABLES -------------
+
+class FileVariables:
+    """
+    - FOLDER : Folder with DATA for The SOFTWARE in The FILE SYSTEM
+    - FILE_SETTINGS : File for SOFTWARE SETTINGS
+    - FILE_LANGUAGE : File for Saving The SOFTWARE LANGUAGE
+    - FILE_LOGS : File for LOGGING The SOFTWARE
+    """
+
+    FOLDER = ".data"
+    FILE_SETTINGS = ".settings.json"
+    FILE_LANGUAGE = ".lang.txt"
+    FILE_LOGS = ".logs.txt"
+
+# -------------------------------------
 
 
 # ------------ FILE SYSTEM ------------
@@ -40,14 +58,13 @@ class FileSystem:
     The FILE
     - _failed_isfile() -> bool : Checks The «self.failed_isfile» VARIABLE to
     Trigger The Check when The FILE in The FOLDER did not Exist
+    - read_file_settings(self) -> dict[str, any] : Reads The SETTINGS FILE
     - write_file_settings(self, data: dict[str, any]=TEMPLATE) -> None :
     Writes The SETTINGS FILE
-    - read_file_settings(self) -> dict[str, any] : Reads The SETTINGS FILE
+    - read_file_language(language: str=TEMPLATE_LANGUAGE_VALUE) -> str :
+    Reads The LANGUAGE FILE
+    - write_file_language(language: str) -> None : Writes The LANGUAGE FILE
     """
-
-    # MAIN
-    FOLDER = ".data"
-    FILE_SETTINGS = ".settings.json"
 
     # KEYS
     TEMPLATE_TITLE_KEY = "title"
@@ -83,14 +100,21 @@ class FileSystem:
         self, path_main_file: str,
         overwrite_file: bool = False
     ) -> None:
+        variables = FileVariables()
+        self.FOLDER = variables.FOLDER
+        self.FILE_SETTINGS = variables.FILE_SETTINGS
+        self.FILE_LANGUAGE = variables.FILE_LANGUAGE
+        
         self.basedir = path_main_file
         self.is_create_folder = False
         self.failed_isfile = False
 
-        self.path_file_system = path.dirname(__file__)
         self.path_folder_settings = path.join(path_main_file, self.FOLDER)
         self.path_file_settings = path.join(
             self.path_folder_settings, self.FILE_SETTINGS
+        )
+        self.path_file_language = path.join(
+            self.path_folder_settings, self.FILE_LANGUAGE
         )
 
         self._check_existence_folder()
@@ -224,7 +248,7 @@ class FileSystem:
         if path.exists(self.path_folder_settings) is False:
             chdir(self.basedir)
             mkdir(self.FOLDER)
-            chdir("..")
+
             self.is_create_folder = True
 
     def _failed_isfile(self) -> bool:
@@ -240,18 +264,6 @@ class FileSystem:
             return True
 
         return False
-
-    def write_file_settings(self, data: dict[str, any]=TEMPLATE) -> None:
-        """
-        Writes The SETTINGS FILE
-
-        ---
-        PARAMETERS:
-        - data: dict[str, any]=TEMPLATE -> The DATA for SETTINGS FILE
-        """
-
-        with open(self.path_file_settings, "w+") as f:
-            f.write(dumps(data, ensure_ascii=False))
 
     def read_file_settings(self) -> dict[str, any]:
         """
@@ -271,6 +283,49 @@ class FileSystem:
 
         return result
 
+    def write_file_settings(self, data: dict[str, any]=TEMPLATE) -> None:
+        """
+        Writes The SETTINGS FILE
+
+        ---
+        PARAMETERS:
+        - data: dict[str, any]=TEMPLATE -> The DATA for SETTINGS FILE
+        """
+
+        with open(self.path_file_settings, "w+") as f:
+            f.write(dumps(data, ensure_ascii=False))
+
+    def read_file_language(self, language: str=TEMPLATE_LANGUAGE_VALUE) -> str:
+        """
+        Reads The LANGUAGE FILE
+
+        ---
+        PARAMETERS:
+        - language: str="RU" -> Symbols for LANGUAGE
+        ---
+        RESULT: The SYMBOLS for LANGUAGE from LANGUAGE FILE
+        """
+
+        if path.exists(self.path_file_language) is False:
+            self.write_file_language(language)
+
+        with open(self.path_file_language, "r+") as f:
+            language = f.read()
+
+        return language
+
+    def write_file_language(self, language: str) -> None:
+        """
+        Writes The LANGUAGE FILE
+
+        ---
+        PARAMETERS:
+        - language: str -> Symbols for LANGUAGE
+        """
+
+        with open(self.path_file_language, "w+") as f:
+            f.write(language)
+
 # -------------------------------------
 
 
@@ -279,9 +334,17 @@ class FileSystem:
 class Logger(FileSystem):
     """
     Writes LOGGING to «.data/logs.txt» FILE
-    """
 
-    FILE_LOGS = ".logs.txt"
+    ---
+    CLASSES:
+    - LoggerLevel : Logging Level (INFO, SUCCESS || ERROR)
+    ---
+    PARAMETERS:
+    - path_main_file: str -> The «basedir» VARIABLE from The «app/main.py» FILE
+    ---
+    FUNCTIONS:
+    - write_logger(level: LoggerLevel, text: str) -> None : Writes The LOGGER
+    """
 
     class LoggerLevel:
         """
@@ -292,8 +355,15 @@ class Logger(FileSystem):
         LOGGER_SUCCESS = "SUCCESS"
         LOGGER_ERROR = "ERROR"
 
-    def __init__(self) -> None:
-        self.path_logger = path.join(self.path_folder_settings, self.FILE_LOGS)
+    def __init__(self, path_main_file: str) -> None:
+        self.basedir = path_main_file
+
+        variables = FileVariables()
+        self.FOLDER = variables.FOLDER
+        self.FILE_LOGS = variables.FILE_LOGS
+
+        self.path_folder_logger = path.join(path_main_file, self.FOLDER)
+        self.path_logger = path.join(self.path_folder_logger, self.FILE_LOGS)
 
     def write_logger(self, level: LoggerLevel, text: str) -> None:
         """
@@ -305,9 +375,14 @@ class Logger(FileSystem):
         - text: str -> Logging Text
         """
 
-        date = datetime.now(timezone.utc).strftime("%Z %Y.%m.%d, %I:%M:%S %p")
-        logger = date + " : " + level.upper() + " : " + text
-        with open(self.path_logger, "a") as f:
+        if path.exists(self.path_folder_logger) is False:
+            chdir(self.basedir)
+            mkdir(self.FOLDER)
+
+        date = datetime.now(timezone.utc).strftime("%Z %Y.%m.%d, %H:%M:%S")
+        logger = date + " : " + level.upper() + " : " + text + "\n"
+
+        with open(self.path_logger, "a+") as f:
             f.write(logger)
 
 # -------------------------------------
