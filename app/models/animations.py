@@ -4,9 +4,9 @@
 # Goal: Contain All The DIFFERENT ANIMATIONS of The SOFTWARE
 # Result: Finished WORKING ANIMATIONS
 #
-# Past Modification: Moving The «AnimationText» CLASS from «content.py» FILE
-# Last Modification: Renaming «AnimationText» to «AnimationTextEdit»
-# Modification Date: 2023.01.31, 07:02 PM
+# Past Modification: Renaming «AnimationText» to «AnimationTextEdit»
+# Last Modification: Editing The «AnimationTextEdit» CLASS (DOCS)
+# Modification Date: 2024.02.02, 05:23 PM
 #
 # Create Date: 2024.01.31, 12:31 AM
 
@@ -32,7 +32,7 @@ class AnimationTextEdit(QWidget):
     - textbox: QTextEdit -> The TEXTBOX
     ---
     FUNCTIONS:
-    - animation(self) -> None : RUNS to an ANIMATION
+    - animation() -> None : RUNS to an ANIMATION
     """
 
     def __init__(self, textbox: QTextEdit) -> None:
