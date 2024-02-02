@@ -4,14 +4,16 @@
 # Goal: Writing and Reading IMPORTANT FILES
 # Result: AUTOMATED SYSTEM with FILES
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Editing The «FileSystem» CLASS (TEMPLATE: KEYS && VALUES)
-# Modification Date: 2024.01.30, 09:33 PM
+# Past Modification: Editing The «FileSystem» CLASS (TEMPLATE: KEYS && VALUES)
+# Last Modification: Adding The «Logger» CLASS
+# Modification Date: 2024.02.02, 03:18 PM
 #
 # Create Date: 2023.11.01, 10:01 PM
 
 
 from json import dumps, loads
+from datetime import datetime, timezone
+
 from os import path, chdir, mkdir
 from os.path import isfile
 
@@ -44,7 +46,7 @@ class FileSystem:
     """
 
     # MAIN
-    FOLDER = ".settings"
+    FOLDER = ".data"
     FILE_SETTINGS = ".settings.json"
 
     # KEYS
@@ -268,5 +270,44 @@ class FileSystem:
             result = {}
 
         return result
+
+# -------------------------------------
+
+
+# -------------- LOGGER ---------------
+
+class Logger(FileSystem):
+    """
+    Writes LOGGING to «.data/logs.txt» FILE
+    """
+
+    FILE_LOGS = ".logs.txt"
+
+    class LoggerLevel:
+        """
+        Logging Level (INFO, SUCCESS || ERROR)
+        """
+
+        LOGGER_INFO = "INFO"
+        LOGGER_SUCCESS = "SUCCESS"
+        LOGGER_ERROR = "ERROR"
+
+    def __init__(self) -> None:
+        self.path_logger = path.join(self.path_folder_settings, self.FILE_LOGS)
+
+    def write_logger(self, level: LoggerLevel, text: str) -> None:
+        """
+        Writes The LOGGER
+
+        ---
+        PARAMETERS:
+        - level: LoggerLevel -> Logging Level (INFO, SUCCESS || ERROR)
+        - text: str -> Logging Text
+        """
+
+        date = datetime.now(timezone.utc).strftime("%Z %Y.%m.%d, %I:%M:%S %p")
+        logger = date + " : " + level.upper() + " : " + text
+        with open(self.path_logger, "a") as f:
+            f.write(logger)
 
 # -------------------------------------
