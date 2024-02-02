@@ -4,9 +4,9 @@
 # Goal: Create a FOOTER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a FOOTER TEMPLATE
 #
-# Past Modification: Editing The «Footer» CLASS (PATH)
-# Last Modification: Update MESSAGE BOX
-# Modification Date: 2024.02.01, 02:15 PM
+# Past Modification: Update MESSAGE BOX
+# Last Modification: Editing The «Footer» CLASS (LOGGER)
+# Modification Date: 2024.02.02, 04:46 PM
 #
 # Create Date: 2023.10.24, 05:17 PM
 
@@ -15,6 +15,7 @@ from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QFrame, QHBoxLayout, QLabel, QPushButton
 
+from .filesystem import Logger
 from .values import StringsValues
 from .messages import activate_message_box
 
@@ -53,6 +54,7 @@ class Footer(QWidget):
         self.language_char = language_char.lower() + "_"
         self.basedir = parent.basedir
         self.str_val = StringsValues(self.basedir)
+        self.logs = Logger()
 
         template = self.page()
         parent.main_layout.addWidget(
@@ -113,6 +115,9 @@ class Footer(QWidget):
                 "error.svg",
                 self
             )
-
+            self.logs.write_logger(
+                self.logs.LoggerLevel.LOGGER_ERROR,
+                "URL did not open: " + text_git
+            )
 
 # --------------------------------

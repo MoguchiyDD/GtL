@@ -4,14 +4,14 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «Content» CLASS (NOTIFICATION && ANIMATION)
-# Last Modification: Editing The «Content» CLASS (THREADS)
-# Modification Date: 2024.02.01, 08:44 PM
+# Past Modification: Editing The «Content» CLASS (LOGGER)
+# Last Modification: Checking CODE The PEP8
+# Modification Date: 2024.02.02, 04:42 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
 
-from PySide6.QtCore import Qt, Slot, Signal, QObject, QThread
+from PySide6.QtCore import Qt, Slot, Signal, QObject
 from PySide6.QtGui import QGuiApplication, QFont, QIcon
 from PySide6.QtWidgets import (
     QWidget,
@@ -24,7 +24,7 @@ from PySide6.QtWidgets import (
     QPushButton
 )
 
-from .filesystem import FileSystem
+from .filesystem import FileSystem, Logger
 from .values import StringsValues
 from .messages import activate_message_box
 from .animations import AnimationTextEdit
@@ -81,6 +81,7 @@ class Content(QWidget):
         self.language_char = language_char.lower() + "_"
         self.basedir = self.parent.basedir
         self.str_val = StringsValues(self.basedir)
+        self.logs = Logger()
         self.current_percent_progress = 0
         self.text_for_copy = ""
 
@@ -362,6 +363,11 @@ class Content(QWidget):
                 )
                 self.thread_text_processing.start()
 
+            self.logs.write_logger(
+                self.logs.LoggerLevel.LOGGER_SUCCESS,
+                "Successfully processed text"
+            )
+
         def set_animation(animation: bool) -> None:
             """
             Enables or disables The ANIMATION of The 2nd TEXT BLOCK
@@ -444,6 +450,10 @@ class Content(QWidget):
                     "error.svg",
                     self
                 )
+                self.logs.write_logger(
+                    self.logs.LoggerLevel.LOGGER_ERROR,
+                    "Launched the program without text"
+                )
 
             return (result, len_errors)
 
@@ -480,6 +490,10 @@ class Content(QWidget):
                         self.language_char + "info_msg_data_text",
                         "info.svg",
                         self
+                    )
+                    self.logs.write_logger(
+                        self.logs.LoggerLevel.LOGGER_INFO,
+                        "Fixing a damaged program settings file"
                     )
 
             return (valid_keys, len_errors)
@@ -529,10 +543,12 @@ class Content(QWidget):
             clipboard = QGuiApplication.clipboard()
             clipboard.setText(text, clipboard.Mode.Clipboard)
 
+            logger = "success"
             msg_icon = "success.svg"
             msg_title = "success_msg_copy_second_block_title"
             msg_text = "success_msg_copy_second_block_text"
         except:
+            logger = "error"
             msg_icon = "error.svg"
             msg_title = "error_msg_copy_second_block_title"
             msg_text = "error_msg_copy_second_block_text"
@@ -544,6 +560,18 @@ class Content(QWidget):
             msg_icon,
             self
         )
+
+        match logger:
+            case "success":
+                self.logs.write_logger(
+                    self.logs.LoggerLevel.LOGGER_SUCCESS,
+                    "Successfully copied text from the 2nd text block"
+                )
+            case "error":
+                self.logs.write_logger(
+                    self.logs.LoggerLevel.LOGGER_ERROR,
+                    "Failed to copy text from the 2nd text block"
+                )
 
     @Slot()
     def activate_ringtone(self) -> None:
@@ -564,6 +592,10 @@ class Content(QWidget):
                     "ringtone.svg",
                     self
                 )
+                self.logs.write_logger(
+                    self.logs.LoggerLevel.LOGGER_ERROR,
+                    "New ringtone plays for more than 1 second"
+                )
         except PlaysoundException and MutagenError:
             activate_message_box(
                 self.basedir,
@@ -571,6 +603,10 @@ class Content(QWidget):
                 self.language_char + "error_msg_ringtone_text",
                 "ringtone.svg",
                 self
+            )
+            self.logs.write_logger(
+                self.logs.LoggerLevel.LOGGER_ERROR,
+                "Didn't find a ringtone on the way"
             )
 
 # -----------------------------------------

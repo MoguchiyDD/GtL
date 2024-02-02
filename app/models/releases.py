@@ -4,9 +4,9 @@
 # Goal: Check for a New VERSION of The SOFTWARE
 # Result: The VERSION of The Released SOFTWARE
 #
-# Past Modification: Checking CODE The PEP8
-# Last Modification: Update MESSAGE BOX
-# Modification Date: 2024.02.01, 01:59 PM
+# Past Modification: Update MESSAGE BOX
+# Last Modification: Editing The «GetVersion» CLASS (LOGGER)
+# Modification Date: 2024.02.02, 04:44 PM
 #
 # Create Date: 2024.01.25, 02:27 PM
 
@@ -14,6 +14,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget
 
+from .filesystem import Logger
 from .values import StringsValues
 from .messages import activate_message_box
 
@@ -49,6 +50,7 @@ class GetVersion(QWidget):
         self.language_char = language_char.lower() + "_"
         self.basedir = parent.basedir
         self.str_val = StringsValues(self.basedir)
+        self.logs = Logger()
 
         self.soup = None
         try:
@@ -63,6 +65,10 @@ class GetVersion(QWidget):
                 self.language_char + "error_version_text",
                 "net.svg",
                 self
+            )
+            self.logs.write_logger(
+                self.logs.LoggerLevel.LOGGER_ERROR,
+                "Didn't open the required URL page to check the new release"
             )
 
     def get_version(self) -> tuple[bool, str, str]:
@@ -96,6 +102,12 @@ class GetVersion(QWidget):
                     self.language_char + "success_version_text",
                     "version.svg",
                     self
+                )
+
+                text = "Notifying the user about the availability of a new "
+                text += "version of the GtL program"
+                self.logs.write_logger(
+                    self.logs.LoggerLevel.LOGGER_SUCCESS, text
                 )
 
                 result = (True, tag_version[1:], tags.text)

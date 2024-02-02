@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «HeaderModal» CLASS (TEXTBOX ANIMATION)
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2024.02.01, 05:20 PM
+# Past Modification: Checking CODE The PEP8
+# Last Modification: Editing The «Header» and The «HeaderModal» CLASS (LOGGER)
+# Modification Date: 2024.02.02, 04:31 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -28,7 +28,7 @@ from PySide6.QtWidgets import (
 )
 
 from .run import run
-from .filesystem import FileSystem
+from .filesystem import FileSystem, Logger
 from .values import StringsValues
 from .messages import activate_message_box
 
@@ -80,6 +80,7 @@ class Header(QWidget):
 
         self.basedir = self.parent.basedir
         self.str_val = StringsValues(self.basedir)
+        self.logs = Logger()
 
         self.__settings = HeaderModal("settings", self)
         self.__information = HeaderModal("information", self)
@@ -240,6 +241,10 @@ class Header(QWidget):
                 "error.svg",
                 self
             )
+            self.logs.write_logger(
+                self.logs.LoggerLevel.LOGGER_ERROR,
+                "URL did not open: " + url
+            )
 
 # --------------------------------------
 
@@ -338,6 +343,10 @@ class HeaderModal(QWidget):
                     self.language_char + "info_msg_data_text",
                     "info.svg",
                     self
+                )
+                self.parent.logs.write_logger(
+                    self.parent.logs.LoggerLevel.LOGGER_INFO,
+                    "Fixing a damaged program settings file"
                 )
 
         def main_group(data: dict[any]) -> QGroupBox:
@@ -1139,6 +1148,10 @@ class HeaderModal(QWidget):
             self
         )
         self.hide()
+        self.parent.logs.write_logger(
+            self.parent.logs.LoggerLevel.LOGGER_SUCCESS,
+            "The settings were successfully saved"
+        )
 
         # Animation 2nd Textbox
         data_animation = self.parent.parent.data_settings_file["animation"]

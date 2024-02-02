@@ -4,9 +4,9 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Update MESSAGE BOX
-# Last Modification: Editing The «MainWindow» BLOCK (FOOTER)
-# Modification Date: 2024.02.01, 02:17 PM
+# Past Modification: Editing The «MainWindow» BLOCK (FOOTER)
+# Last Modification: Editing The «MainWindow» BLOCK (LOGGER)
+# Modification Date: 2024.02.02, 04:21 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -16,7 +16,7 @@ from PySide6.QtGui import QScreen, QFontDatabase, QIcon
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
 
 from models.releases import GetVersion
-from models.filesystem import FileSystem
+from models.filesystem import FileSystem, Logger
 from models.values import StringsValues
 from models.messages import activate_message_box
 from models.header import Header
@@ -60,8 +60,8 @@ class MainWindow(QMainWindow):
 
         global basedir
         self.basedir = basedir
-
         self.str_val = StringsValues(self.basedir)
+        self.logs = Logger()
 
         self.data_settings_file = self.__ram_settegins_file()  # RAM
         self.language = self.__language(  # LANGUAGE
@@ -169,6 +169,10 @@ class MainWindow(QMainWindow):
                 "ru_info_msg_data_text",
                 "info.svg",
                 self
+            )
+            self.logs.write_logger(
+                self.logs.LoggerLevel.LOGGER_INFO,
+                "Fixing a damaged program settings file"
             )
 
         def __update_data() -> dict[str, any]:
