@@ -6,7 +6,7 @@
 #
 # Past Modification: Editing The «MainWindow» BLOCK (FOOTER)
 # Last Modification: Editing The «MainWindow» BLOCK (LOGGER)
-# Modification Date: 2024.02.02, 04:21 PM
+# Modification Date: 2024.02.02, 08:29 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -61,7 +61,7 @@ class MainWindow(QMainWindow):
         global basedir
         self.basedir = basedir
         self.str_val = StringsValues(self.basedir)
-        self.logs = Logger()
+        self.logs = Logger(self.basedir)
 
         self.data_settings_file = self.__ram_settegins_file()  # RAM
         self.language = self.__language(  # LANGUAGE
@@ -163,10 +163,13 @@ class MainWindow(QMainWindow):
             Displaying a MESSAGE about Updating The SETTINGS FILE and RAM
             """
 
+            symbols_language = filesystem.read_file_language()
+            language = symbols_language.lower() + "_"
+
             activate_message_box(
                 self.basedir,
-                "ru_info_msg_data_title",
-                "ru_info_msg_data_text",
+                language + "info_msg_data_title",
+                language + "info_msg_data_text",
                 "info.svg",
                 self
             )
@@ -194,7 +197,8 @@ class MainWindow(QMainWindow):
 
         is_error_filesystem = filesystem._failed_isfile()
         if is_error_filesystem is True:  # Error : No FILE
-            __info_message()  # INFO MESSAGE BOX
+            if path.exists(filesystem.path_file_language) is False:
+                __info_message()  # INFO MESSAGE BOX
         else:  # Checking KEYS
             valid_keys = filesystem._valid_true_keys(
                 list(data_settings_file.keys())
@@ -203,6 +207,7 @@ class MainWindow(QMainWindow):
             if (valid_keys is False) or (valid_values is False):  # Error
                 data_settings_file = __update_data()
 
+        filesystem.write_file_language(data_settings_file["language"])
         return data_settings_file
 
     def __language(self, language: str) -> tuple[str]:

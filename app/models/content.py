@@ -5,8 +5,8 @@
 # Result: Providing a CONTENT TEMPLATE
 #
 # Past Modification: Editing The «Content» CLASS (LOGGER)
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2024.02.02, 04:42 PM
+# Last Modification: Editing The «Content» CLASS (DATA RAM)
+# Modification Date: 2024.02.02, 08:28 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -81,7 +81,7 @@ class Content(QWidget):
         self.language_char = language_char.lower() + "_"
         self.basedir = self.parent.basedir
         self.str_val = StringsValues(self.basedir)
-        self.logs = Logger()
+        self.logs = Logger(self.basedir)
         self.current_percent_progress = 0
         self.text_for_copy = ""
 
@@ -484,6 +484,10 @@ class Content(QWidget):
 
                     filesystem.write_file_settings()
                     self.parent.data_settings_file = filesystem.TEMPLATE
+                    filesystem.write_file_language(
+                        self.parent.data_settings_file["language"]
+                    )
+
                     activate_message_box(  # INFO
                         self.basedir,
                         self.language_char + "info_msg_data_title",
