@@ -7,9 +7,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Store All STRINGS of The SOFTWARE in 1 PLACE
 Result: Returns 1 Desired STRING via The «name» ATTRIBUTE («string_values» FUN)
 
-Past Modification: Editing The «SETTINGS» String (RU && EN : OTHER)
-Last Modification: Editing The «MESSAGE BOX» String (RU && EN : RINGTONE)
-Modification Date: 2024.02.01, 08:28 PM
+Past Modification: Editing The «MESSAGE BOX» String (RU && EN : INTERNET)
+Last Modification: Editing The «VERSION» String (RU && EN : ERROR VERSION)
+Modification Date: 2024.02.15, 08:22 PM
 
 Create Date: 2023.10.23, 02:49 PM
 -->
@@ -29,12 +29,12 @@ Create Date: 2023.10.23, 02:49 PM
     <string name="ru_success_version_title">Новая версия</string>
     <string name="ru_success_version_text">Появилась новая версия программы «GtL». Если желаете, то можете скачать более новее версию.</string>
     <string name="ru_error_version_title">Ух.. Крабы-Поросяты</string>
-    <string name="ru_error_version_text">Упс.. Я не могу связаться и узнать появилась ли новая версия приложения или нет. Пожалуйста, включите интернет, если отключен!</string>
+    <string name="ru_error_version_text">Упс.. Я не могу связаться и узнать появилась ли новая версия приложения или нет. Если интернет есть, но появилось это сообщение, пожалуйста, сообщите разработчику об этом с доказательствами.</string>
     <string name="en_version_title">New version</string>
     <string name="en_success_version_title">New version</string>
     <string name="en_success_version_text">A new version of the «GtL» program has been released. If you wish, you can download a newer version.</string>
     <string name="en_error_version_title">Uh.. Crabs and Piggies</string>
-    <string name="en_error_version_text">Oops.. I can't contact you and find out if there is a new version of the application or not. Please turn on the Internet if it is disabled!</string>
+    <string name="en_error_version_text">Oops.. I can't contact you and find out if there is a new version of the application or not. If you have Internet access, but this message appears, please notify the developer about this with evidence.</string>
 
     <!-- LANGUAGE -->
     <string name="ru_lang">Русский</string>
@@ -187,6 +187,8 @@ rent text.</string>
     <string name="ru_error_msg_ringtone_text">Если решили заменить рингтон у меня в файловой системе, тогда переназовите файл «success» с форматом «mp3»</string>
     <string name="ru_error_msg_ringtone_time_title">Запретный двор для рингтонщиков</string>
     <string name="ru_error_msg_ringtone_time_text">Если уж меняете рингтон, то будьте так добры поставить рингтон не более, чем на 1 секунду</string>
+    <string name="ru_error_net_title">Отсутствует интернет</string>
+    <string name="ru_error_net_text">Пожалуйста, включите интернет, дабы я сделал все свои полезные делишки!</string>
     <string name="en_success_msg_save_settings_title">Successful saving of new data</string>
     <string name="en_success_msg_save_settings_text">The changed data was successfully saved to a file containing the program settings</string>
     <string name="en_success_msg_finish_title">Success and no other way</string>
@@ -207,5 +209,7 @@ rent text.</string>
     <string name="en_error_msg_ringtone_text">If you decide to replace the ringtone in my file system, then rename the «success» file with the «mp3» format</string>
     <string name="en_error_msg_ringtone_time_title">Forbidden yard for ringtone makers</string>
     <string name="en_error_msg_ringtone_time_text">If you are changing the ringtone, then be so kind as to set the ringtone for no more than 1 second</string>
+    <string name="en_error_net_title">There is no Internet</string>
+    <string name="en_error_net_text">Please turn on the Internet so that I can do all my useful work!</string>
 
 </resources>
