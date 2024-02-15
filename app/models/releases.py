@@ -4,9 +4,9 @@
 # Goal: Check for a New VERSION of The SOFTWARE
 # Result: The VERSION of The Released SOFTWARE
 #
-# Past Modification: Update MESSAGE BOX
-# Last Modification: Editing The «GetVersion» CLASS (LOGGER)
-# Modification Date: 2024.02.02, 06:45 PM
+# Past Modification: Editing The «GetVersion» CLASS (LOGGER)
+# Last Modification: Editing The «GetVersion» CLASS (INTERNET)
+# Modification Date: 2024.02.15, 08:24 PM
 #
 # Create Date: 2024.01.25, 02:27 PM
 
@@ -19,7 +19,8 @@ from .values import StringsValues
 from .messages import activate_message_box
 
 from bs4 import BeautifulSoup
-from urllib.request import urlopen
+from urllib3 import PoolManager
+from requests import head
 
 from re import findall
 
@@ -53,23 +54,39 @@ class GetVersion(QWidget):
         self.logs = Logger(self.basedir)
 
         self.soup = None
-        try:
-            url = self.str_val.string_values("app_version_tags")
-            page = urlopen(url)
-            html = page.read().decode("utf-8")
-            self.soup = BeautifulSoup(html, "html.parser")
-        except:  # ERROR
+
+        is_net = availability_internet(1)
+        if not is_net:
             activate_message_box(
                 self.basedir,
-                self.language_char + "error_version_title",
-                self.language_char + "error_version_text",
+                self.language_char + "error_net_title",
+                self.language_char + "error_net_text",
                 "net.svg",
                 self
             )
-            self.logs.write_logger(
-                self.logs.LoggerLevel.LOGGER_ERROR,
-                "Didn't open the required URL page to check the new release"
-            )
+            text = "There is no connection to the Internet to check "
+            text += "the new release"
+            self.logs.write_logger(self.logs.LoggerLevel.LOGGER_ERROR, text)
+        else:
+            try:
+                url = self.str_val.string_values("app_version_tags")
+                https = PoolManager()
+                response = https.request("GET", url)
+                self.soup = BeautifulSoup(response.data, "html.parser")
+            except:  # ERROR
+                activate_message_box(
+                    self.basedir,
+                    self.language_char + "error_version_title",
+                    self.language_char + "error_version_text",
+                    "net.svg",
+                    self
+                )
+                text = "Didn't open the required URL page to check "
+                text += "the new release"
+                self.logs.write_logger(
+                    self.logs.LoggerLevel.LOGGER_ERROR,
+                    text
+                )
 
     def get_version(self) -> tuple[bool, str, str]:
         """
@@ -117,3 +134,22 @@ class GetVersion(QWidget):
         return result
 
 # -------------------------------------
+
+
+def availability_internet(timeout: int) -> bool:
+    """
+    Checks INTERNET Access on The CURRENT DEVICE
+
+    ---
+    PARAMETERS:
+    - timeout: int -> TIME for Checking
+    ---
+    RESULT: Checking for ACCESS to The INTERNET (True / False)
+    """
+
+    try:
+        head("https://www.google.com/", timeout=timeout)
+    except:
+        return False
+
+    return True
