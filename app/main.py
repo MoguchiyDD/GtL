@@ -4,16 +4,29 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Editing The «MainWindow» BLOCK (FOOTER)
-# Last Modification: Editing The «MainWindow» BLOCK (LOGGER)
-# Modification Date: 2024.02.02, 08:29 PM
+# Past Modification: Adding The «SPLASH» BLOCK
+# Last Modification: Checking CODE The PEP8
+# Modification Date: 2024.02.18, 05:43 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
 
 from PySide6.QtCore import QObject, Qt, Slot, Signal
-from PySide6.QtGui import QScreen, QFontDatabase, QIcon
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
+from PySide6.QtGui import (
+    QMouseEvent,
+    QScreen,
+    QFontDatabase,
+    QIcon,
+    QPixmap,
+    QColor
+)
+from PySide6.QtWidgets import (
+    QApplication,
+    QSplashScreen,
+    QMainWindow,
+    QWidget,
+    QVBoxLayout
+)
 
 from models.releases import GetVersion
 from models.filesystem import FileSystem, Logger
@@ -118,20 +131,6 @@ class MainWindow(QMainWindow):
         geo = self.frameGeometry()
         geo.moveCenter(center)
         self.move(geo.topLeft())
-
-        # FONTS
-        QFontDatabase.addApplicationFont(
-            path.join(basedir, "fonts/Lora", "Lora-Bold.ttf")
-        )
-        QFontDatabase.addApplicationFont(
-            path.join(basedir, "fonts/Lora", "Lora-Regular.ttf")
-        )
-        QFontDatabase.addApplicationFont(
-            path.join(basedir, "fonts/Ubuntu", "Ubuntu-B.ttf")
-        )
-        QFontDatabase.addApplicationFont(
-            path.join(basedir, "fonts/Ubuntu", "Ubuntu-R.ttf")
-        )
 
     def __content(self, number_version: str) -> None:
         """
@@ -352,16 +351,164 @@ class RunSchedule(QObject):
 # ----------------------------------
 
 
+# ------------- SPLASH -------------
+
+class SplashScreen(QSplashScreen):
+    """
+    Slightly Overwriting The «QSplashScreen» WIDGET
+
+    ---
+    PARAMETERS:
+    - pixmap: QPixmap -> Reference to The «QPixmap» CLASS
+    ---
+    EVENTS:
+    - mousePressEvent(e: QMouseEvent) -> None : Overwriting The EVENT of a
+    Pressed Computer Mouse (PASS)
+    """
+
+    def __init__(self, pixmap: QPixmap):
+        super(SplashScreen, self).__init__(pixmap)
+        self.splash = QSplashScreen(pixmap)
+
+    def mousePressEvent(self, _: QMouseEvent) -> None:
+        """
+        Overwriting The EVENT of a Pressed Computer Mouse (PASS)
+
+        ---
+        PARAMETERS:
+        - _: QMouseEvent -> LINK to «QMouseEvent» CLASS
+        """
+
+        pass
+
+
+@Slot()
+def set_splash(splash: SplashScreen, type: str) -> None:
+    """
+    Sets The SPLASH SCREEN to MESSAGES and Runs The REQUIRED SHORT CODE
+
+    ---
+    PARAMETERS
+    - splash: SplashScreen -> Reference to The «SplashScreen» CLASS
+    - type: str -> Mode «qss», «code», «msg-qss», «msg-templates» and
+    «msg-functions»
+    """
+
+    match type:
+        case "qss":
+            with open(path.join(basedir, "qss", "main.qss"), "r") as qss_file:
+                app.setStyleSheet(qss_file.read())
+        case "code":
+            window = MainWindow()
+            window.show()
+            splash.finish(window)
+        case "msg-qss":
+            splash.showMessage(
+                "Loading Styles",
+                Qt.AlignmentFlag.AlignBottom,
+                QColor(Qt.GlobalColor.white)
+            )
+        case "msg-templates":
+            splash.showMessage(
+                "Loading Templates",
+                Qt.AlignmentFlag.AlignBottom,
+                QColor(Qt.GlobalColor.white)
+            )
+        case "msg-functions":
+            splash.showMessage(
+                "Loading Functions",
+                Qt.AlignmentFlag.AlignBottom,
+                QColor(Qt.GlobalColor.white)
+            )
+
+
+class TimerSplashScreen(QObject):
+    """
+    The THREAD Responsible for The SPLASH SCREEN Process
+
+    ---
+    PARAMETERS:
+    - splash: SplashScreen -> Reference to The «SplashScreen» CLASS
+    - _set: set_splash -> Reference to The «set_splash» FUNCTION
+    ---
+    FUNCTIONS:
+    - run() -> None : Starting a THREAD
+    """
+
+    signal_set_splash = Signal(SplashScreen, str)
+
+    def __init__(
+        self, splash: SplashScreen, _set: set_splash
+    ) -> None:
+        super().__init__()
+        self.splash = splash
+        self.signal_set_splash.connect(_set)
+
+    def run(self) -> None:
+        """
+        Starting a THREAD
+        """
+
+        self.signal_set_splash.emit(self.splash, "msg-qss")  # MSG QSS : 250ms
+        sleep(0.25)
+
+        self.signal_set_splash.emit(self.splash, "qss")  # QSS : 250ms + 250ms
+        sleep(0.5)
+
+        self.signal_set_splash.emit(  # MSG TEMPLATE : 500ms + 500ms
+            self.splash, "msg-templates"
+        )
+        sleep(1)
+
+        self.signal_set_splash.emit(  # MSG FUNCS : 1000ms + 1000ms
+            self.splash, "msg-functions"
+        )
+        sleep(1)
+
+        self.signal_set_splash.emit(    # CODE : 2000ms + 1000ms
+            self.splash, "code"
+        )
+
+# ----------------------------------
+
+
 if __name__ == "__main__":
     app = QApplication(argv)
     app.setWindowIcon(
         QIcon(path.join(basedir, "icons/favicons", "favicon_256x256.ico"))
     )
 
-    with open(path.join(basedir, "qss", "main.qss"), "r") as qss_file:
-        app.setStyleSheet(qss_file.read())
+    # FONTS
+    QFontDatabase.addApplicationFont(
+        path.join(basedir, "fonts/Lora", "Lora-Bold.ttf")
+    )
+    QFontDatabase.addApplicationFont(
+        path.join(basedir, "fonts/Lora", "Lora-Regular.ttf")
+    )
+    QFontDatabase.addApplicationFont(
+        path.join(basedir, "fonts/Ubuntu", "Ubuntu-B.ttf")
+    )
+    QFontDatabase.addApplicationFont(
+        path.join(basedir, "fonts/Ubuntu", "Ubuntu-R.ttf")
+    )
 
-    window = MainWindow()
-    window.show()
+    # Splash Screen
+    pixmap = QPixmap(path.join(basedir, "icons/favicons", "splash.svg"))
+    splash = SplashScreen(pixmap)
+    splash.setStyleSheet("font-size: 19px; font-weight: bold;")
+    splash.setFont("Lora")
+    splash.show()
+
+    app.processEvents()
+
+    # Timer for Splash Screen
+    timer = TimerSplashScreen(splash, set_splash)
+    thread_splash_screen = Thread(
+        target=timer.run,
+        name="THREAD_SPLASH_SCREEN",
+        args=(),
+        daemon=True
+    )
+    thread_splash_screen.start()
 
     exit(app.exec())
