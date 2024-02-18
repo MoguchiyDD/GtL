@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «Content» CLASS (LOGGER)
-# Last Modification: Editing The «Content» CLASS (DATA RAM)
-# Modification Date: 2024.02.02, 08:28 PM
+# Past Modification: Editing The «Content» CLASS (DATA RAM)
+# Last Modification: Editing The «Content» CLASS (RINGTONE)
+# Modification Date: 2024.02.18, 02:48 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -587,7 +587,7 @@ class Content(QWidget):
         url = path.join(self.basedir, "ringtone", "success.mp3")
         try:
             if int(MP3(url).info.length) == 1:
-                playsound(url)
+                playsound(url, False)
             else:  # ERROR
                 activate_message_box(
                     self.basedir,
