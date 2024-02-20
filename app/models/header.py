@@ -4,9 +4,9 @@
 # Goal: Create a HEADER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a HEADER TEMPLATE
 #
-# Past Modification: Editing The «Header» CLASS (LOGGER)
-# Last Modification: Editing The «HeaderModal» CLASS (DATA RAM && LOGGER)
-# Modification Date: 2024.02.02, 08:36 PM
+# Past Modification: Editing The «HeaderModal» CLASS (DATA RAM && LOGGER)
+# Last Modification: Editing The «Header» and «HeaderModal» CLASS (TIP)
+# Modification Date: 2024.02.19, 04:04 PM
 #
 # Create Date: 2023.10.23, 06:45 PM
 
@@ -100,7 +100,7 @@ class Header(QWidget):
         """
 
         def btn(
-            object_name: str, icon_name: str, connect: object
+            object_name: str, icon_name: str, tip: str, connect: object
         ) -> QPushButton:
             """
             Creates and Returns 1 QPushButton
@@ -108,6 +108,7 @@ class Header(QWidget):
             ---
             PARAMETERS:
             - object_name: str -> ID for The QPushButton
+            - tip: str -> Text by Hover
             - icon_name: str -> NAME of The ICON for The QPushButton
             - connect: object -> Function that will Work After ACTIVATING
             The QPushButton
@@ -120,6 +121,7 @@ class Header(QWidget):
             btn.setIcon(
                 QIcon(path.join(self.basedir, "icons", icon_name))
             )
+            btn.setToolTip(tip)
             btn.setFixedWidth(40)
             btn.clicked.connect(connect)
 
@@ -141,6 +143,7 @@ class Header(QWidget):
         self.btn_updates = btn(
             "header_btn_updates",
             "updates.svg",
+            text_version,
             lambda _: self.open_url(
                 text_version, "error_msg_url_text_version"
             )
@@ -151,16 +154,25 @@ class Header(QWidget):
         self.btn_settings = btn(
             "header_btn_settings",
             "settings.svg",
+            self.str_val.string_values(
+                self.language_char + "settings_title"
+            ),
             self.activate_btn_settings
         )
         btn_information = btn(
             "header_btn_information",
             "information.svg",
+            self.str_val.string_values(
+                self.language_char + "information_title"
+            ),
             self.activate_btn_information
         )
         btn_license = btn(
             "header_btn_license",
             "license.svg",
+            self.str_val.string_values(
+                self.language_char + "license_part_one"
+            ),
             self.activate_btn_license
         )
 
@@ -668,6 +680,7 @@ class HeaderModal(QWidget):
         text_readme = self.parent.str_val.string_values("app_readme")
         btn_url = QPushButton(text_for_main_url)
         btn_url.setObjectName("information_main_url")
+        btn_url.setToolTip(text_readme)
         btn_url.setFont(QFont("Ubuntu"))
         btn_url.clicked.connect(
             lambda btn: self.parent.open_url(

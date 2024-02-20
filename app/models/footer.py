@@ -4,9 +4,9 @@
 # Goal: Create a FOOTER TEMPLATE with Ready-Made Working Filling
 # Result: Providing a FOOTER TEMPLATE
 #
-# Past Modification: Update MESSAGE BOX
-# Last Modification: Editing The «Footer» CLASS (LOGGER)
-# Modification Date: 2024.02.02, 08:36 PM
+# Past Modification: Editing The «Footer» CLASS (LOGGER)
+# Last Modification: Editing The «Footer» CLASS (TIP)
+# Modification Date: 2024.02.19, 04:08 PM
 #
 # Create Date: 2023.10.24, 05:17 PM
 
@@ -73,6 +73,7 @@ class Footer(QWidget):
         text_zero = self.str_val.string_values("footer_title_zero")
         text_one = self.str_val.string_values("footer_title_one")
         text_two = self.str_val.string_values("footer_title_two")
+        url_git = self.str_val.string_values("app_git")
 
         frame = QFrame()
         frame.setObjectName("footer")
@@ -81,9 +82,10 @@ class Footer(QWidget):
         title_zero.setFont(QFont("Lora"))
 
         title_one = QPushButton(text_one)
+        title_one.setToolTip(url_git)
         title_one.setFont(QFont("Lora"))
         title_one.setFixedWidth(172)
-        title_one.clicked.connect(self.open_url)
+        title_one.clicked.connect(lambda _: self.open_url(url_git))
 
         title_two = QLabel(text_two)
         title_two.setFont(QFont("Lora"))
@@ -99,18 +101,21 @@ class Footer(QWidget):
         return frame
 
     @Slot()
-    def open_url(self) -> None:
+    def open_url(self, url: str) -> None:
         """
         Opens The URL in The BROWSER
+
+        ---
+        PARAMETERS:
+        - url: str -> URL-Address
         """
 
         try:
-            text_git = self.str_val.string_values("app_git")
-            open(text_git)
+            open(url)
 
             self.logs.write_logger(
                 self.logs.LoggerLevel.LOGGER_SUCCESS,
-                "URL opened: " + text_git
+                "URL opened: " + url
             )
         except:
             activate_message_box(  # ERROR
@@ -122,7 +127,7 @@ class Footer(QWidget):
             )
             self.logs.write_logger(
                 self.logs.LoggerLevel.LOGGER_ERROR,
-                "URL did not open: " + text_git
+                "URL did not open: " + url
             )
 
 # --------------------------------
