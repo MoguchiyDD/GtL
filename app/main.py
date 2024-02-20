@@ -4,9 +4,9 @@
 # Goal: Launch Working SOFTWARE
 # Result: Opens The Finished SOFTWARE in The ACTIVE WINDOW
 #
-# Past Modification: Adding The «SPLASH» BLOCK
-# Last Modification: Checking CODE The PEP8
-# Modification Date: 2024.02.18, 05:43 PM
+# Past Modification: Editing The «SPLASH» BLOCK (for OS Windows)
+# Last Modification: Editing The «SCHEDULE» BLOCK (for OS Windows)
+# Modification Date: 2024.02.19, 04:26 PM
 #
 # Create Date: 2023.10.23, 11:28 AM
 
@@ -93,7 +93,7 @@ class MainWindow(QMainWindow):
 
         # For New VERSION
         if version[0] is False:
-            self.schedule = RunSchedule(self.language[0], self)
+            self.schedule = RunSchedule(self.language[0])
             self.schedule.signal_checking_release.connect(
                 self.__check_and_activate_release
             )
@@ -229,16 +229,13 @@ class MainWindow(QMainWindow):
         return result
 
     @Slot()
-    def __check_and_activate_release(
-        self, language: str, parent: QWidget
-    ) -> None:
+    def __check_and_activate_release(self, language: str) -> None:
         """
         Check and Activate The New VERSION (GUI)
 
         ---
         PARAMETERS:
         - language: str -> The «RU» or The «EN»
-        - parent: MainWindow -> Reference to The CLASS «MainWindow»
         """
 
         def rename_window_title(short_name_version: str) -> None:
@@ -281,7 +278,7 @@ class MainWindow(QMainWindow):
             )
             self.header.btn_updates.show()
 
-        version = GetVersion(language, parent).get_version()
+        version = GetVersion(language, self).get_version()
         is_new_version = version[0]
         if is_new_version:
             short_name_version = version[1]
@@ -305,32 +302,30 @@ class RunSchedule(QObject):
     ---
     PARAMETERS:
     - language: str -> The «RU» or The «EN»
-    - parent: MainWindow -> Reference to The CLASS «MainWindow»
     """
 
-    signal_checking_release = Signal(str, QWidget)
+    signal_checking_release = Signal(str)
 
-    def __init__(self, language: str, parent: MainWindow) -> None:
-        super().__init__()
+    def __init__(self, language: str) -> None:
+        super(RunSchedule, self).__init__()
 
         self.is_activate = True
 
         self.thread = Thread(
             target=self.run,
             name="THREAD_RELEASE",
-            args=(language, parent),
+            args=(language,),
             daemon=True
         )
         self.thread.start()
 
-    def run(self, language: str, parent: MainWindow) -> None:
+    def run(self, language: str) -> None:
         """
         Runs a THREAD
 
         ---
         PARAMETERS:
         - language: str -> The «RU» or The «EN»
-        - parent: MainWindow -> Reference to The CLASS «MainWindow»
         """
 
         def release() -> None:
@@ -338,7 +333,7 @@ class RunSchedule(QObject):
             Checking for a New VERSION
             """
 
-            self.signal_checking_release.emit(language, parent)
+            self.signal_checking_release.emit(language)
 
         job = every(10).hours.do(release)
         while self.is_activate:
@@ -383,13 +378,12 @@ class SplashScreen(QSplashScreen):
 
 
 @Slot()
-def set_splash(splash: SplashScreen, type: str) -> None:
+def set_splash(type: str) -> None:
     """
     Sets The SPLASH SCREEN to MESSAGES and Runs The REQUIRED SHORT CODE
 
     ---
     PARAMETERS
-    - splash: SplashScreen -> Reference to The «SplashScreen» CLASS
     - type: str -> Mode «qss», «code», «msg-qss», «msg-templates» and
     «msg-functions»
     """
@@ -428,19 +422,16 @@ class TimerSplashScreen(QObject):
 
     ---
     PARAMETERS:
-    - splash: SplashScreen -> Reference to The «SplashScreen» CLASS
     - _set: set_splash -> Reference to The «set_splash» FUNCTION
     ---
     FUNCTIONS:
     - run() -> None : Starting a THREAD
     """
 
-    signal_set_splash = Signal(SplashScreen, str)
+    signal_set_splash = Signal(str)
 
-    def __init__(
-        self, splash: SplashScreen, _set: set_splash
-    ) -> None:
-        super().__init__()
+    def __init__(self, _set: set_splash) -> None:
+        super(TimerSplashScreen, self).__init__()
         self.splash = splash
         self.signal_set_splash.connect(_set)
 
@@ -449,25 +440,23 @@ class TimerSplashScreen(QObject):
         Starting a THREAD
         """
 
-        self.signal_set_splash.emit(self.splash, "msg-qss")  # MSG QSS : 250ms
+        self.signal_set_splash.emit("msg-qss")  # MSG QSS : 250ms
         sleep(0.25)
 
-        self.signal_set_splash.emit(self.splash, "qss")  # QSS : 250ms + 250ms
+        self.signal_set_splash.emit("qss")  # QSS : 250ms + 250ms
         sleep(0.5)
 
         self.signal_set_splash.emit(  # MSG TEMPLATE : 500ms + 500ms
-            self.splash, "msg-templates"
+            "msg-templates"
         )
         sleep(1)
 
         self.signal_set_splash.emit(  # MSG FUNCS : 1000ms + 1000ms
-            self.splash, "msg-functions"
+            "msg-functions"
         )
         sleep(1)
 
-        self.signal_set_splash.emit(    # CODE : 2000ms + 1000ms
-            self.splash, "code"
-        )
+        self.signal_set_splash.emit("code")  # CODE : 2000ms + 1000ms
 
 # ----------------------------------
 
@@ -502,7 +491,7 @@ if __name__ == "__main__":
     app.processEvents()
 
     # Timer for Splash Screen
-    timer = TimerSplashScreen(splash, set_splash)
+    timer = TimerSplashScreen(set_splash)
     thread_splash_screen = Thread(
         target=timer.run,
         name="THREAD_SPLASH_SCREEN",
