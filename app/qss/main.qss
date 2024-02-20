@@ -5,9 +5,9 @@ LICENSE: MIT License which is located in the text file LICENSE
 Goal: Create The STYLE
 Result: Ready to Use STYLE
 
-Past Modification: Editing The «SETTINGS» STYLE BLOCK (GROUPS)
-Last Modification: Editing The «SCROLL BAR» STYLE BLOCK (HORIZONTAL)
-Modification Date: 2024.01.02, 02:03 PM
+Past Modification: Editing The «SCROLL BAR» STYLE BLOCK (HORIZONTAL)
+Last Modification: Adding The «STOOL TIP» STYLE BLOCK
+Modification Date: 2024.02.20, 07:15 PM
 
 Create Date: 2023.10.23, 09:02 PM
 */
@@ -41,6 +41,20 @@ Hint Text                           : 12px
 
 QMainWindow {
   background-color: #404040;
+}
+
+/* ------------------------------------- */
+
+
+/* ------------- TOOL TIP -------------- */
+
+QToolTip {
+  padding: 0.05em 0.13em;
+  font-size: 12px;
+  font-weight: bold;
+  color: #B71B0F;
+  background-color: #EEEEEE;
+  border: 2px dashed #B71B0F;
 }
 
 /* ------------------------------------- */
