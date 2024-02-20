@@ -4,9 +4,9 @@
 # Goal: Create a CONTENT TEMPLATE with Ready-Made Working Filling
 # Result: Providing a CONTENT TEMPLATE
 #
-# Past Modification: Editing The «Content» CLASS (DATA RAM)
-# Last Modification: Editing The «Content» CLASS (RINGTONE)
-# Modification Date: 2024.02.18, 02:48 PM
+# Past Modification: Editing The «Content» CLASS (RINGTONE)
+# Last Modification: Editing The «Content» CLASS (RINGTONE for OS Windows)
+# Modification Date: 2024.02.19, 05:29 PM
 #
 # Create Date: 2023.10.24, 05:39 PM
 
@@ -30,13 +30,20 @@ from .messages import activate_message_box
 from .animations import AnimationTextEdit
 
 from threading import Thread
-from playsound import playsound, PlaysoundException
-from mutagen.mp3 import MP3, MutagenError
+from mutagen import MutagenError
+from mutagen.wave import WAVE
+from playsound import PlaysoundException
 
 from re import split
 from time import sleep
 
-from os import path
+from sys import platform
+from os import name, path
+
+if (platform == "linux") or (name == "posix"):
+    from playsound import playsound, PlaysoundException
+elif (platform == "win32") or (name == "nt"):
+    from winsound import PlaySound, SND_ASYNC
 
 
 # ---------------- CONTENT ----------------
@@ -584,10 +591,13 @@ class Content(QWidget):
         with an ERROR for The USER
         """
 
-        url = path.join(self.basedir, "ringtone", "success.mp3")
+        url = path.join(self.basedir, "ringtone", "success.wav")
         try:
-            if int(MP3(url).info.length) == 1:
-                playsound(url, False)
+            if int(WAVE(url).info.length) == 1:
+                if (platform == "linux") or (name == "posix"):
+                    playsound(url, False)
+                elif (platform == "win32") or (name == "nt"):
+                    PlaySound(url, SND_ASYNC)
             else:  # ERROR
                 activate_message_box(
                     self.basedir,
